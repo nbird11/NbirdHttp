@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nathan Bird's Home Page</title>
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.png">
+  <link rel="stylesheet" href="./styles/global.css">
+  <link rel="stylesheet" href="./styles/header.css">
+  <link rel="stylesheet" href="./styles/index.css">
+</head>
+
+<body>
+  <div id="header"></div>
+  <script src="./scripts/loadHeader.js"></script>
+
+  <div class="content">
+    <div class="container about-me">
+      <h2>About Me </h2>
+      <i>(Last updated Mid 2024)</i>
+      <p>
+        Hi, I'm Nathan Bird. Welcome to my personal portfolio website. I'm in my third year at BYU-Idaho studying
+        Software
+        Engineering, currently interning as a Web Backend Developer at FamilySearch.
+      </p>
+      <p>
+        I specialize in building and maintaining backend REST APIs and enjoy exploring new technologies. Feel free to
+        explore my site and see what I've been working on!
+      </p>
+      <p>
+        NOTE&sup1;: Projects are listed in reverse chronological order and may refer to earlier projects.
+      </p>
+      <p>
+        NOTE&sup2;: Many projects listed here reference a class I took at BYU-I in Fall 2023 where I worked on a new
+        project every 2 weeks. Most of these projects were quick to write and insightful about a certain language or
+        principle, and already had a demo video made for them which made them perfect/really easy to add for this
+        portfolio page.
+      </p>
+    </div>
+    <div class="container">
+      <h2>QuickPen</h2>
+      <i>Mid 2024</i>
+      <p>
+        This is an app that my wife requested for writing. 
+      </p>
+      <!-- <iframe></iframe> -->
+    </div>
+    <div class="container">
+      <h2>Punch Clock</h2>
+      <i>Mid 2024</i>
+      <p>
+        This was my first and longest ongoing project, starting as a simple CLI app to track coding hours for my dad by
+        letting me "punch" in and out. Over time, I added features like work descriptions, Google Sheets integration for
+        uploading entries, and a status command that showed me when to punch out to achieve a certain number of work
+        hours. Recently, I upgraded it to an authenticated web app on my personal server, allowing for centralized time
+        tracking accessible from any device, anywhere.
+      </p>
+      <!-- <iframe></iframe> -->
+    </div>
+    <div class="container">
+      <h2>RPi Go Webserver</h2>
+      <i>Mid 2024</i>
+      <p>
+        The webserver hosting the website you are currently viewing this on is a Raspberry Pi 4 Model B. The server was
+        written in Go to serve the static html of my portfolio home page as well as host various backend REST endpoints
+        for me to use in some of my other projects.
+      </p>
+      <p>
+        I don't have a video demo for this quite yet to see the code, but just take a look around this site.
+      </p>
+      <!-- <iframe></iframe> -->
+      <button disabled>No GitHub Repo</button>
+    </div>
+    <div class="container">
+      <h2>Journal Bird App</h2>
+      <i>Early 2024</i>
+      <p>
+        This is a mobile application I made while working as a TA at BYU-I. My task was to research the Angular
+        framework for mobile app development. I'm really proud of how far I was able to take this project, even though I
+        couldn't get enough testers for long enough to meet the publishing standards.
+      </p>
+      <iframe src="https://www.youtube.com/embed/3DLyW0TV9Mg" title="Journal Bird App Demonstration" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <span>GitHub Repo is private, but here's the link to the app's home page!</span>
+      <br>
+      <a href="https://nbird11.github.io/Journal-Bird-Web-Utils/">Journal Bird Home</a>
+    </div>
+    <div class="container">
+      <h2>Google Firestore Task Tracker</h2>
+      <i>Late 2023</i>
+      <p>
+        Project from that class. This was my introduction to cloud storage solutions. Kinda. The API I mention in the
+        video that I had used previously was for Google Sheets, which I guess could technically be called cloud storage,
+        haha. But for real, this was my first time using a real cloud database.
+      </p>
+      <iframe src="https://www.youtube.com/embed/5ToeDJayhyM?si=7i2eOntlN-JWwbpd" title="Google Firestore Task Tracker"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <a href="https://github.com/nbird11/TaskTracker">GitHub Repository</a>
+    </div>
+    <div class="container">
+      <h2>Expense Tracker Update! JDBC PosgreSQL</h2>
+      <i>Late 2023</i>
+      <p>
+        This was a refactor of my earlier Java Project to use a Postgres database instead of a plain old csv file. The
+        program demo is essentially the same as the one in the earlier video, so skip to 2:33 in this video to go
+        straight to the code demo.
+      </p>
+      <iframe src="https://www.youtube.com/embed/n8u5SfMi4Ik?si=WK6yEJeDRuitcZ7O" title="Expense Tracker JDBC PosgreSQL"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <a href="https://github.com/nbird11/ExpensesJavaPostgreSQL">GitHub Repository</a>
+    </div>
+    <div class="container">
+      <h2>Rust Lazy File Encryption</h2>
+      <i>Late 2023</i>
+      <p>
+        This was another project I made in my 2-week projects class at BYU-I. This was my first foray into Rust, which I
+        found really challenging to learn at the time I was building this. I'd say it turned out pretty cool.
+      </p>
+      <iframe src="https://www.youtube.com/embed/qgMK2szVrjY?si=DmwBy05_V9UGseQA" title="Rust Lazy File Encryption"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <a href="https://github.com/nbird11/LazyFileEncryptionRust">GitHub Repository</a>
+    </div>
+    <div class="container">
+      <h2>Java Expense Tracker</h2>
+      <i>Late 2023</i>
+      <p>
+        This was a project I did for one of my classes in school. The class was awesome as it was basically broken down
+        into 2-week sprints, agile style, and in each sprint we were to choose a new project to build and show off.
+        This is one of those projects, and I was really happy with it at the time.
+      </p>
+      <iframe src="https://www.youtube.com/embed/jgFlINb02KQ?si=iDcx892U9LRiS0Yp" title="Java Expense Tracker"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+      <a href="https://github.com/nbird11/ExpenseTrackerJava">GitHub Repository</a>
+    </div>
+  </div>
+  <footer>
+    <p>&copy; 2024 Nathan Bird. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>
