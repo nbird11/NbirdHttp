@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪑</text></svg>">
+  <title>Seating</title>
+  <meta name="description" content="Seating chart application.">
+  <meta name="author" content="Nathan Bird">
+  <link rel="stylesheet" href="./styles/global.css">
+  <link rel="stylesheet" href="./styles/seating.css">
+  <script src="./scripts/dropdown.js" defer></script>
+  <script src="./scripts/seating.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <div class="navbar">
+      <div class="dropdown">
+        <button class="dropbtn" onclick="fileDropdown()">File</button>
+        <div class="dropdown-content" id="file-dropdown">
+          <a href="#" onclick="newChart()">New Chart</a>
+          <a href="#">Save Chart</a>
+          <a href="#">Export as PDF</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn" onclick="editDropdown()">Edit</button>
+        <div class="dropdown-content" id="edit-dropdown">
+          <a href="#">Undo</a>
+          <a href="#">Redo</a>
+          <a href="#" onclick="addSeat()">Add Student</a>
+          <a href="#" onclick="removeSeat()">Remove Student</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn" onclick="viewDropdown()">View</button>
+        <div class="dropdown-content" id="view-dropdown">
+          <a href="#">Zoom In</a>
+          <a href="#">Zoom Out</a>
+          <a href="#">Reset View</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn" onclick="helpDropdown()">Help</button>
+        <div class="dropdown-content" id="help-dropdown">
+          <a href="#">About</a>
+          <a href="#">Documentation</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="content">
+      <div class="container">
+        <h2>Seating Chart</h2>
+        <div id="seating-chart">
+          <!-- Placeholder for seating chart UI -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Nathan Bird. All rights reserved.</p>
+  </footer>
+  <script src="./scripts/seating.js"></script>
+</body>
+
+</html>
