@@ -145,6 +145,27 @@
   border: dashed #2b9064;
 }
 
+.seat span[contenteditable] {
+    outline: none;
+    min-width: 1px; /* Ensures cursor is visible even when empty */
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.seat span[contenteditable]:focus {
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Prevent text selection while dragging */
+.seat {
+    user-select: none;
+}
+
+/* Allow text selection while editing */
+.seat span[contenteditable] {
+    user-select: text;
+}
 
 /* Responsive seating chart grid */
 @media (max-width: 800px) {
@@ -152,4 +173,31 @@
     width: 80px;
     height: 80px;
   }
+}
+
+/* Context Menu Styling */
+.context-menu {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+  z-index: 1000;
+  min-width: 150px;
+}
+
+.context-menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #333;
+}
+
+.context-menu-item:hover {
+  background-color: #ddd;
+}
+
+.context-menu-separator {
+  height: 1px;
+  background-color: #ccc;
+  margin: 5px 0;
 }
