@@ -8,10 +8,11 @@
   <title>Seating</title>
   <meta name="description" content="Seating chart application.">
   <meta name="author" content="Nathan Bird">
-  <link rel="stylesheet" href="./styles/global.css">
-  <link rel="stylesheet" href="./styles/seating.css">
-  <script src="./scripts/dropdown.js" defer></script>
-  <script src="./scripts/seating.js" defer></script>
+  <link rel="stylesheet" href="../styles/global.css">
+  <link rel="stylesheet" href="./seating.css">
+  <script src="./dropdown.js" defer></script>
+  <script src="./seating.js" defer></script>
+  <script src="./file-handler.js" defer></script>
 </head>
 
 <body>
@@ -21,7 +22,8 @@
         <button class="dropbtn" onclick="fileDropdown()">File</button>
         <div class="dropdown-content" id="file-dropdown">
           <a href="#" onclick="newChart()">New Chart</a>
-          <a href="#">Save Chart</a>
+          <a href="#" onclick="saveChart()">Save Chart</a>
+          <a href="#" onclick="loadChart()">Open Chart</a>
           <a href="#">Export as PDF</a>
         </div>
       </div>
@@ -51,6 +53,10 @@
       </div>
     </div>
   </header>
+
+  <div class="chart-title-container">
+    <span id="chart-title" contenteditable="true" spellcheck="false">Untitled Seating Chart</span>
+  </div>
 
   <main>
     <div class="content">
