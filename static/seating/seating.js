@@ -339,57 +339,65 @@ function getSnapPosition(x, y) {
 		const chartRect = chartContainer.getBoundingClientRect();
 		const seatX = Math.round(seatRect.left - chartRect.left);
 		const seatY = Math.round(seatRect.top - chartRect.top);
+		
+		let snapPos = null;
 
 		// Right edge snapping
 		if (Math.abs((x + SEAT_SIZE) - seatX) < SNAP_THRESHOLD) {
 			if (Math.abs(y - seatY) < SNAP_THRESHOLD) {
-				return { x: seatX - SEAT_SIZE, y: seatY }; // Align with top
+				snapPos = { x: seatX - SEAT_SIZE, y: seatY }; // Align with top
 			}
 			if (Math.abs(y - (seatY + HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX - SEAT_SIZE, y: seatY + HALF_SEAT }; // Align with middle
+				snapPos = { x: seatX - SEAT_SIZE, y: seatY + HALF_SEAT }; // Align with middle
 			}
 			if (Math.abs(y - (seatY - HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX - SEAT_SIZE, y: seatY - HALF_SEAT }; // Align with bottom
+				snapPos = { x: seatX - SEAT_SIZE, y: seatY - HALF_SEAT }; // Align with bottom
 			}
 		}
 
 		// Left edge snapping
 		if (Math.abs(x - (seatX + SEAT_SIZE)) < SNAP_THRESHOLD) {
 			if (Math.abs(y - seatY) < SNAP_THRESHOLD) {
-				return { x: seatX + SEAT_SIZE, y: seatY }; // Align with top
+				snapPos = { x: seatX + SEAT_SIZE, y: seatY }; // Align with top
 			}
 			if (Math.abs(y - (seatY + HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX + SEAT_SIZE, y: seatY + HALF_SEAT }; // Align with middle
+				snapPos = { x: seatX + SEAT_SIZE, y: seatY + HALF_SEAT }; // Align with middle
 			}
 			if (Math.abs(y - (seatY - HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX + SEAT_SIZE, y: seatY - HALF_SEAT }; // Align with bottom
+				snapPos = { x: seatX + SEAT_SIZE, y: seatY - HALF_SEAT }; // Align with bottom
 			}
 		}
 
 		// Bottom edge snapping
 		if (Math.abs((y + SEAT_SIZE) - seatY) < SNAP_THRESHOLD) {
 			if (Math.abs(x - seatX) < SNAP_THRESHOLD) {
-				return { x: seatX, y: seatY - SEAT_SIZE }; // Align with left
+				snapPos = { x: seatX, y: seatY - SEAT_SIZE }; // Align with left
 			}
 			if (Math.abs(x - (seatX + HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX + HALF_SEAT, y: seatY - SEAT_SIZE }; // Align with middle
+				snapPos = { x: seatX + HALF_SEAT, y: seatY - SEAT_SIZE }; // Align with middle
 			}
 			if (Math.abs(x - (seatX - HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX - HALF_SEAT, y: seatY - SEAT_SIZE }; // Align with right
+				snapPos = { x: seatX - HALF_SEAT, y: seatY - SEAT_SIZE }; // Align with right
 			}
 		}
 
 		// Top edge snapping
 		if (Math.abs(y - (seatY + SEAT_SIZE)) < SNAP_THRESHOLD) {
 			if (Math.abs(x - seatX) < SNAP_THRESHOLD) {
-				return { x: seatX, y: seatY + SEAT_SIZE }; // Align with left
+				snapPos = { x: seatX, y: seatY + SEAT_SIZE }; // Align with left
 			}
 			if (Math.abs(x - (seatX + HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX + HALF_SEAT, y: seatY + SEAT_SIZE }; // Align with middle
+				snapPos = { x: seatX + HALF_SEAT, y: seatY + SEAT_SIZE }; // Align with middle
 			}
 			if (Math.abs(x - (seatX - HALF_SEAT)) < SNAP_THRESHOLD) {
-				return { x: seatX - HALF_SEAT, y: seatY + SEAT_SIZE }; // Align with right
+				snapPos = { x: seatX - HALF_SEAT, y: seatY + SEAT_SIZE }; // Align with right
 			}
+		}
+
+		if (snapPos) {
+			snapPos.x = Math.round(snapPos.x / GRID_SIZE) * GRID_SIZE;
+			snapPos.y = Math.round(snapPos.y / GRID_SIZE) * GRID_SIZE;
+			return snapPos;
 		}
 	}
 	return null;
