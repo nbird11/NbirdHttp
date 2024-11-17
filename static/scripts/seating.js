@@ -7,8 +7,9 @@ let contextMenu = null;
 let contextMenuX = 0;
 let contextMenuY = 0;
 const SNAP_THRESHOLD = 20;    // Distance in pixels when seats will snap together
-const SEAT_SIZE = 100;        // Size of the seat element
-const TOUCH_THRESHOLD = 5;    // New smaller threshold for detecting touching seats
+const SEAT_SIZE = 100;        // Total size including borders
+const GRID_SIZE = 10;         // Grid size
+const TOUCH_THRESHOLD = 5;    // Threshold for detecting touching seats
 let seatGroups = [];      // Array of arrays, each inner array is a group of seats
 
 // Create a draggable seat element
@@ -101,14 +102,19 @@ function drag(event) {
 
 	// Get potential snap positions
 	const snapPosition = getSnapPosition(newX, newY);
+	
 	if (snapPosition) {
 		newX = snapPosition.x;
 		newY = snapPosition.y;
+	} else {
+		// Snap to grid
+		newX = Math.round(newX / GRID_SIZE) * GRID_SIZE;
+		newY = Math.round(newY / GRID_SIZE) * GRID_SIZE;
 	}
 
 	// Bounds checking
-	const maxX = containerRect.width - draggedSeat.offsetWidth;
-	const maxY = containerRect.height - draggedSeat.offsetHeight;
+	const maxX = containerRect.width - SEAT_SIZE;
+	const maxY = containerRect.height - SEAT_SIZE;
 	
 	draggedSeat.style.left = `${Math.max(0, Math.min(newX, maxX))}px`;
 	draggedSeat.style.top = `${Math.max(0, Math.min(newY, maxY))}px`;
@@ -159,8 +165,18 @@ function renameSeat(event) {
 
 // Function to add a new seat
 function addSeat(x = null, y = null) {
-	const newX = x ?? Math.random() * (chartContainer.offsetWidth - 100);
-	const newY = y ?? Math.random() * (chartContainer.offsetHeight - 100);
+	let newX, newY;
+	
+	if (x === null || y === null) {
+		// Random position, snapped to grid
+		newX = Math.round((Math.random() * (chartContainer.offsetWidth - SEAT_SIZE)) / GRID_SIZE) * GRID_SIZE;
+		newY = Math.round((Math.random() * (chartContainer.offsetHeight - SEAT_SIZE)) / GRID_SIZE) * GRID_SIZE;
+	} else {
+		// Provided position, snapped to grid
+		newX = Math.round(x / GRID_SIZE) * GRID_SIZE;
+		newY = Math.round(y / GRID_SIZE) * GRID_SIZE;
+	}
+
 	const newSeat = createSeat(newX, newY);
 	seatingChart.push(newSeat);
 	chartContainer.appendChild(newSeat);
@@ -201,6 +217,15 @@ function main() {
 				break;
 			default:
 				alert('Feature not yet implemented.');
+		}
+	});
+
+	// Add click handler to chart container for unselecting seats
+	chartContainer.addEventListener('click', (e) => {
+		// Only unselect if clicking directly on the container (not on a seat)
+		if (e.target === chartContainer && selectedSeat) {
+			selectedSeat.classList.remove('selected');
+			selectedSeat = null;
 		}
 	});
 }
@@ -312,8 +337,8 @@ function getSnapPosition(x, y) {
 	for (const seat of otherSeats) {
 		const seatRect = seat.getBoundingClientRect();
 		const chartRect = chartContainer.getBoundingClientRect();
-		const seatX = seatRect.left - chartRect.left;
-		const seatY = seatRect.top - chartRect.top;
+		const seatX = Math.round(seatRect.left - chartRect.left);
+		const seatY = Math.round(seatRect.top - chartRect.top);
 
 		// Right edge snapping
 		if (Math.abs((x + SEAT_SIZE) - seatX) < SNAP_THRESHOLD) {
