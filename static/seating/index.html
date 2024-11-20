@@ -19,36 +19,38 @@
   <header>
     <div class="navbar">
       <div class="dropdown">
-        <button class="dropbtn" onclick="fileDropdown()">File</button>
+        <button class="dropbtn" onclick="fileDropdown(event)">File</button>
         <div class="dropdown-content" id="file-dropdown">
-          <a href="#" onclick="newChart()">New Chart</a>
-          <a href="#" onclick="saveChart()">Save Chart</a>
-          <a href="#" onclick="loadChart()">Open Chart</a>
-          <a href="#">Export as PDF</a>
+          <a href="#">New Chart</a>
+          <a href="#" onclick="saveChart(event)">Save <span class="shortcut">Ctrl+S</span></a>
+          <a href="#" onclick="saveChartAs(event)">Save As... <span class="shortcut">Ctrl+Shift+S</span></a>
+          <a href="#" onclick="loadChart(event)">Open Chart <span class="shortcut">Ctrl+O</span></a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Export as PDF</a>
         </div>
       </div>
       <div class="dropdown">
-        <button class="dropbtn" onclick="editDropdown()">Edit</button>
+        <button class="dropbtn" onclick="editDropdown(event)">Edit</button>
         <div class="dropdown-content" id="edit-dropdown">
-          <a href="#">Undo</a>
-          <a href="#">Redo</a>
-          <a href="#" onclick="addSeat()">Add Student</a>
-          <a href="#" onclick="removeSeat()">Remove Student</a>
+          <a href="#" onclick="addSeat(event)">Add Student</a>
+          <a href="#" onclick="removeSeat(event)">Remove Student</a>
+          <a href="#" onclick="randomizeAllSeatNames(event)">Randomize Seats</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Undo</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Redo</a>
         </div>
       </div>
       <div class="dropdown">
-        <button class="dropbtn" onclick="viewDropdown()">View</button>
+        <button class="dropbtn" onclick="viewDropdown(event)">View</button>
         <div class="dropdown-content" id="view-dropdown">
-          <a href="#">Zoom In</a>
-          <a href="#">Zoom Out</a>
-          <a href="#">Reset View</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Zoom In</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Zoom Out</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Reset View</a>
         </div>
       </div>
       <div class="dropdown">
-        <button class="dropbtn" onclick="helpDropdown()">Help</button>
+        <button class="dropbtn" onclick="helpDropdown(event)">Help</button>
         <div class="dropdown-content" id="help-dropdown">
-          <a href="#">About</a>
-          <a href="#">Documentation</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">About</a>
+          <a href="#" onclick="alert('Feature not yet implemented.')">Documentation</a>
         </div>
       </div>
     </div>
@@ -56,6 +58,7 @@
 
   <div class="chart-title-container">
     <span id="chart-title" contenteditable="true" spellcheck="false">Untitled Seating Chart</span>
+    <span class="unsaved-indicator">●&nbsp;Unsaved Changes</span>
   </div>
 
   <main>
