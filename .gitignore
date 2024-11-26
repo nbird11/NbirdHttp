@@ -24,3 +24,12 @@ go.work.sum
 
 # env file
 .env
+
+# Auth
+auth/.auth*
+
+# Punch
+punch/.punch*
+
+# QuickPen
+quickPen/.*
