@@ -1,0 +1,14 @@
+### Sprint Objects
+
+- daily streak
+
+Day
+- sprints: Sprint [*]
+
+Week
+- days: Day [*]
+
+Sprint
+- duration
+- wordCount
+- avgWPM

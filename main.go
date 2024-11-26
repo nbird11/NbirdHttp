@@ -1,12 +1,13 @@
 package main
 
 import (
+	"NbirdHttp/auth"
+	"NbirdHttp/punch"
+	"NbirdHttp/quickPen"
 	"fmt"
 	"log"
 	"net/http"
 	"net/url"
-	"NbirdHttp/auth"
-	"NbirdHttp/punch"
 )
 
 func helloController() {
@@ -57,6 +58,7 @@ Serving...
 	helloController()
 	auth.AuthController()
 	punch.PunchController()
+	quickPen.QuickPenController()
 
 	log.Fatal(http.ListenAndServe(":80", nil))
 }

@@ -9,22 +9,22 @@
   <link rel="stylesheet" href="../styles/global.css">
   <link rel="stylesheet" href="../styles/header.css">
   <link rel="stylesheet" href="./styles/quickPen.css">
-  <script src="../scripts/auth.js"></script>
   <script src="./scripts/quickPen.js" defer></script>
 </head>
 
 <body>
   <div id="header"></div>
   <script src="../scripts/loadHeader.js"></script>
-
+  
   <!--  <div id="auth"></div>
-    for development -->
+  for development -->
+  <!-- <script src="../scripts/auth.js"></script> -->
 
   <!-- Hidden by default until logged in. -->
   <div class="content" id="app" style="display: block;">
     <div class="container">
       <h2>Start a Writing Sprint</h2>
-      <label for="duration">Duration (minutes:seconds):</label>
+      <label for="duration">Duration (MM:SS):</label>
       <input type="text" id="duration" placeholder="e.g. 10:00" required>
       <button onclick="startSprint()">Start Sprint</button>
     </div>

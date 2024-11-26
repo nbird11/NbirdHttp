@@ -1,22 +1,25 @@
-// State management (replacing Go's global variables)
 let sprints = [];
 let sprintId = 0;
 
-// Load sprints from localStorage on page load
-document.addEventListener('DOMContentLoaded', function() {
-  const savedSprints = localStorage.getItem('sprints');
-  if (savedSprints) {
-    sprints = JSON.parse(savedSprints);
-    // Update sprintId to be the highest ID + 1
+// Load sprints from server
+async function loadSprints() {
+  try {
+    const response = await fetch('/api/quickPen/sprints');
+    if (!response.ok) throw new Error('Failed to load sprints');
+    
+    sprints = await response.json();
     sprintId = Math.max(...sprints.map(s => s.id), 0) + 1;
-    // Display existing sprints
     sprints.forEach(sprint => updateProgressBoard(sprint));
-    }
-});
+  } catch (error) {
+    console.error('Error loading sprints:', error);
+  }
+}
 
 async function startSprint() {
+  console.log('Starting new sprint...');
   try {
     sprintId++;
+    console.log(`Sprint ${sprintId} started`);
     document.getElementById('sprintResult').style.display = 'block';
     return sprintId;
   } catch (error) {
@@ -26,11 +29,11 @@ async function startSprint() {
 }
 
 async function endSprint() {
+  console.log('Ending sprint...');
   const wordCount = parseInt(document.getElementById('wordCount').value);
   const durationStr = document.getElementById('duration').value;
 
   try {
-    // Parse duration string (e.g., "10:00") into minutes
     const [minutes, seconds] = durationStr.split(':').map(Number);
     const durationMinutes = minutes + (seconds / 60);
     const wpm = wordCount / durationMinutes;
@@ -43,36 +46,61 @@ async function endSprint() {
       duration: durationStr
     };
 
-    // Add to sprints array and save to localStorage
+    // Save to server
+    const response = await fetch('/api/quickPen/sprint', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newSprint)
+    });
+
+    if (!response.ok) throw new Error('Failed to save sprint');
+
+    // Update local state
     sprints.push(newSprint);
-    localStorage.setItem('sprints', JSON.stringify(sprints));
-
-    // Update UI
     updateProgressBoard(newSprint);
-
+    
     // Reset form
     document.getElementById('wordCount').value = '';
     document.getElementById('sprintResult').style.display = 'none';
   } catch (error) {
     console.error('Error ending sprint:', error);
-    alert('Failed to end sprint');
+    alert('Failed to end sprint: ' + error.message);
   }
 }
 
 function updateProgressBoard(sprintData) {
+  console.log('Updating progress board with sprint:', sprintData);
   const progressBoard = document.getElementById('progressBoard');
   const entry = document.createElement('div');
   entry.innerHTML = `
-    <p>Words: ${sprintData.wordCount}</p>
-    <p>WPM: ${sprintData.wpm.toFixed(2)}</p>
-    <p>Duration: ${sprintData.duration}</p>
-    <p>Time: ${new Date(sprintData.timestamp).toLocaleString()}</p>
-    <hr>
+        <p>Words: ${sprintData.wordCount}</p>
+        <p>WPM: ${sprintData.wpm.toFixed(2)}</p>
+        <p>Duration: ${sprintData.duration}</p>
+        <p>Time: ${new Date(sprintData.timestamp).toLocaleString()}</p>
+        <hr>
     `;
   progressBoard.prepend(entry);
+  console.log('Progress board updated');
 }
 
-// Helper function to get all sprints (replacing Go's getSprints handler)
-function getAllSprints() {
-  return sprints;
-} 
+// Helper functions for querying
+function getHighScores(limit = 10) {
+  return sprints
+    .sort((a, b) => b.wpm - a.wpm)
+    .slice(0, limit);
+}
+
+function getSprintsByDateRange(startDate, endDate) {
+  return sprints.filter(sprint => {
+    const sprintDate = new Date(sprint.timestamp);
+    return sprintDate >= startDate && sprintDate <= endDate;
+  });
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Page loaded, loading sprints...');
+  loadSprints();
+}); 
