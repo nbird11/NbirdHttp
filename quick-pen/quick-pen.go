@@ -102,7 +102,7 @@ func saveSprint(sprint Sprint) error {
 	}
 	defer f.Close()
 
-	entry := fmt.Sprintf("\nID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\n",
+	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\n\n",
 		sprint.ID,
 		sprint.Timestamp.Format(time.RFC3339),
 		sprint.WordCount,
