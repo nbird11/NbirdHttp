@@ -1,4 +1,4 @@
-package quickPen
+package quickpen
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-var SPRINTS_FILE = "./quickPen/.sprints"
+var SPRINTS_FILE = "./quick-pen/.sprints"
 
 type Sprint struct {
 	ID        int       `json:"id"`
@@ -20,7 +20,7 @@ type Sprint struct {
 }
 
 func QuickPenController() {
-	http.HandleFunc("GET /api/quickPen/sprints", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("GET /api/quick-pen/sprints", func(w http.ResponseWriter, r *http.Request) {
 		sprints, err := loadSprints()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -29,7 +29,7 @@ func QuickPenController() {
 		json.NewEncoder(w).Encode(sprints)
 	})
 
-	http.HandleFunc("POST /api/quickPen/sprint", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("POST /api/quick-pen/sprint", func(w http.ResponseWriter, r *http.Request) {
 		var sprint Sprint
 		if err := json.NewDecoder(r.Body).Decode(&sprint); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)

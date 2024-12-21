@@ -3,7 +3,7 @@ package main
 import (
 	"NbirdHttp/auth"
 	"NbirdHttp/punch"
-	"NbirdHttp/quickPen"
+	qp "NbirdHttp/quick-pen"
 	"fmt"
 	"log"
 	"net/http"
@@ -58,7 +58,7 @@ Serving...
 	helloController()
 	auth.AuthController()
 	punch.PunchController()
-	quickPen.QuickPenController()
+	qp.QuickPenController()
 
 	log.Fatal(http.ListenAndServe(":80", nil))
 }

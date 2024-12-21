@@ -4,7 +4,7 @@ let sprintId = 0;
 // Load sprints from server
 async function loadSprints() {
   try {
-    const response = await fetch('/api/quickPen/sprints');
+    const response = await fetch('/api/quick-pen/sprints');
     if (!response.ok) throw new Error('Failed to load sprints');
     
     sprints = await response.json();
@@ -47,7 +47,7 @@ async function endSprint() {
     };
 
     // Save to server
-    const response = await fetch('/api/quickPen/sprint', {
+    const response = await fetch('/api/quick-pen/sprint', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
