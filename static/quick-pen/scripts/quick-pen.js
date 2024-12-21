@@ -8,7 +8,7 @@ async function loadSprints() {
     if (!response.ok) throw new Error('Failed to load sprints');
     
     sprints = await response.json();
-    sprintId = Math.max(...sprints.map(s => s.id), 0) + 1;
+    sprintId = Math.max(...sprints.map(s => s.id), 0);
     sprints.forEach(sprint => updateProgressBoard(sprint));
   } catch (error) {
     console.error('Error loading sprints:', error);
