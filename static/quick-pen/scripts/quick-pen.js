@@ -1,3 +1,13 @@
+/**
+ * @typedef {Object} Sprint
+ * @property {number} id
+ * @property {string} timestamp
+ * @property {number} wordCount
+ * @property {number} wpm
+ * @property {string} duration
+ */
+
+/** @type {Sprint[]} */
 let sprints = [];
 let sprintId = 0;
 
@@ -7,8 +17,8 @@ async function loadSprints() {
     const response = await fetch('/api/quick-pen/sprints');
     if (!response.ok) throw new Error('Failed to load sprints');
     
-    sprints = await response.json();
-    sprintId = Math.max(...sprints.map(s => s.id), 0);
+    sprints = await response.json() || [];
+    sprintId = sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
     sprints.forEach(sprint => updateProgressBoard(sprint));
   } catch (error) {
     console.error('Error loading sprints:', error);
@@ -17,6 +27,33 @@ async function loadSprints() {
 
 async function startSprint() {
   console.log('Starting new sprint...');
+  const durationStr = document.getElementById('duration').value;
+  const errorElement = document.getElementById('duration-error');
+  
+  // Clear any existing error
+  if (errorElement) {
+    errorElement.remove();
+  }
+  
+  if (!durationStr) {
+    showError('duration', 'Please enter a duration');
+    return;
+  }
+
+  const zeroFormat = /^0+(?::0?0?)?$/;
+
+  if (zeroFormat.test(durationStr)) {
+    showError('duration', 'Please enter a non-zero duration');
+    return;
+  }
+
+  // Check if input is valid format (either MM:SS or just minutes)
+  const timeFormat = /^\d+(?::[0-5]\d)?$/;
+  if (!timeFormat.test(durationStr)) {
+    showError('duration', 'Please enter time as MM:SS (00-59 seconds) or just minutes');
+    return;
+  }
+
   try {
     sprintId++;
     console.log(`Sprint ${sprintId} started`);
@@ -24,18 +61,25 @@ async function startSprint() {
     return sprintId;
   } catch (error) {
     console.error('Error starting sprint:', error);
-    alert('Failed to start sprint');
+    showError('duration', 'Failed to start sprint');
   }
 }
 
 async function endSprint() {
   console.log('Ending sprint...');
   const wordCount = parseInt(document.getElementById('wordCount').value);
+  /** @type {string} */
   const durationStr = document.getElementById('duration').value;
 
   try {
-    const [minutes, seconds] = durationStr.split(':').map(Number);
-    const durationMinutes = minutes + (seconds / 60);
+    let durationMinutes;
+    if (durationStr.includes(':')) {
+      const [minutes, seconds] = durationStr.split(':').map(Number);
+      durationMinutes = minutes + (seconds / 60);
+    } else {
+      durationMinutes = parseInt(durationStr);
+    }
+
     const wpm = wordCount / durationMinutes;
 
     const newSprint = {
@@ -43,7 +87,7 @@ async function endSprint() {
       timestamp: new Date().toISOString(),
       wordCount: wordCount,
       wpm: wpm,
-      duration: durationStr
+      duration: durationStr.includes(':') ? durationStr : durationStr + ':00'
     };
 
     // Save to server
@@ -97,6 +141,22 @@ function getSprintsByDateRange(startDate, endDate) {
     const sprintDate = new Date(sprint.timestamp);
     return sprintDate >= startDate && sprintDate <= endDate;
   });
+}
+
+function showError(inputId, message) {
+  const input = document.getElementById(inputId);
+  const errorElement = document.createElement('div');
+  errorElement.id = inputId + '-error';
+  errorElement.className = 'error-message';
+  errorElement.textContent = message;
+  input.parentNode.insertBefore(errorElement, input.nextSibling);
+  input.classList.add('error');
+
+  // Remove error state after user starts typing
+  input.addEventListener('input', function() {
+    errorElement.remove();
+    input.classList.remove('error');
+  }, { once: true });
 }
 
 // Initialize on page load
