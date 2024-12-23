@@ -130,7 +130,7 @@ function updateProgressBoard(sprintData) {
 }
 
 // Helper functions for querying
-function getHighScores(limit = 10) {
+function getHighScores(limit = 5) {
   return sprints
     .sort((a, b) => b.wpm - a.wpm)
     .slice(0, limit);
@@ -149,7 +149,15 @@ function showError(inputId, message) {
   errorElement.id = inputId + '-error';
   errorElement.className = 'error-message';
   errorElement.textContent = message;
-  input.parentNode.insertBefore(errorElement, input.nextSibling);
+  
+  // For duration input, place error after the button
+  if (inputId === 'duration') {
+    const button = input.parentNode.querySelector('button');
+    button.parentNode.insertBefore(errorElement, button.nextSibling);
+  } else {
+    input.parentNode.insertBefore(errorElement, input.nextSibling);
+  }
+  
   input.classList.add('error');
 
   // Remove error state after user starts typing

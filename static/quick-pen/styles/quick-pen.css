@@ -1,36 +1,88 @@
-/* Add QuickPen specific styles here */
-.container {
-    margin-bottom: 20px;
+body {
+    margin: 0;
+    padding: 24px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
-#sprintResult {
-    margin-top: 20px;
+/* Add box-sizing to all elements */
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
+/* Add QuickPen specific styles here */
+.container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin: 24px auto;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+.container h2 {
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
 input {
-    margin: 10px 0;
-    padding: 5px;
-    width: 200px;
+    width: 100%;
+    max-width: 300px;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin: 8px 0 16px 0;
+}
+
+input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+    outline: none;
 }
 
 button {
-    padding: 8px 16px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.2s ease;
 }
 
 button:hover {
     background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(0);
 }
 
 #progressBoard div {
-    margin: 10px 0;
-    padding: 10px;
     background-color: #f8f9fa;
-    border-radius: 4px;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+    border-left: 4px solid #007bff;
+}
+
+#progressBoard p {
+    margin: 8px 0;
+    color: #495057;
+}
+
+#progressBoard hr {
+    display: none;
 }
 
 .error-message {
@@ -38,14 +90,64 @@ button:hover {
     font-size: 0.875rem;
     margin-top: 4px;
     margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.error-message::before {
+    content: "⚠️";
+    font-size: 1rem;
+}
+
+input#duration {
+    margin-bottom: 16px;
 }
 
 input.error {
     border-color: #dc3545;
-    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    background-color: #fff8f8;
 }
 
 input.error:focus {
     border-color: #dc3545;
-    outline: none;
-} 
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+}
+
+label {
+    color: #495057;
+    font-weight: 500;
+    display: block;
+    margin-bottom: 8px;
+}
+
+footer {
+    text-align: center;
+    padding: 24px;
+    color: #6c757d;
+    font-size: 0.875rem;
+}
+
+/* Add some spacing between sections */
+#sprintResult {
+    margin-top: 32px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+    
+    .container {
+        margin: 16px 0;
+        padding: 16px;
+        width: auto;
+    }
+    
+    input {
+        max-width: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+}
