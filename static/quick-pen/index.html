@@ -22,33 +22,57 @@
 
   <!-- Hidden by default until logged in. -->
   <div class="content" id="app" style="display: block;">
-    <div class="container">
-      <h2>Start a Writing Sprint</h2>
-      <label for="duration">Duration (MM:SS):</label>
-      <input type="text" id="duration" placeholder="e.g. 10:00">
-      <button onclick="startSprint()">Start Sprint</button>
+    <div class="sprint-controls">
+      <div class="container">
+        <h2>Start a Writing Sprint</h2>
+        <label for="duration">Duration (MM:SS):</label>
+        <input type="text" id="duration" placeholder="e.g. 10:00">
+        <button onclick="startSprint()">Start Sprint</button>
+      </div>
+
+      <div class="container" id="sprintResult" style="display:none;">
+        <h2>End Sprint</h2>
+        <label for="wordCount">Word Count:</label>
+        <input type="number" id="wordCount" placeholder="e.g., 200" required>
+        <button onclick="endSprint()">End Sprint</button>
+      </div>
     </div>
 
-    <div class="container" id="sprintResult" style="display:none;">
-      <h2>End Sprint</h2>
-      <label for="wordCount">Word Count:</label>
-      <input type="number" id="wordCount" placeholder="e.g., 200" required>
-      <button onclick="endSprint()">End Sprint</button>
-    </div>
+    <div class="progress-section">
+      <div class="container">
+        <h2>Your Progress</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="value">0</div>
+            <div class="label">Words Today</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">0</div>
+            <div class="label">Minutes Written</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">0</div>
+            <div class="label">WPM Average</div>
+          </div>
+          <div class="stat-card">
+            <div class="value">0</div>
+            <div class="label">Day Streak 🔥</div>
+          </div>
+        </div>
+        <div id="progressBoard"></div>
+      </div>
 
-    <div class="container">
-      <h2>Your Progress</h2>
-      <div id="progressBoard"></div>
-    </div>
+      <div class="container">
+        <h2>High Scores</h2>
+        <div id="highScores"></div>
+      </div>
 
-    <div class="container">
-      <h2>High Scores</h2>
-      <div id="highScores"></div>
-    </div>
-
-    <div class="container">
-      <h2>All History</h2>
-      <div id="history"></div>
+      <div class="container">
+        <h2>All History</h2>
+        <div class="timeline">
+          <div id="history"></div>
+        </div>
+      </div>
     </div>
   </div>
   <footer>
