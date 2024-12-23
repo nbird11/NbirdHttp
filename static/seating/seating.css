@@ -6,9 +6,19 @@ html, body {
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
+header {
+  all: unset;
+  display: block;
+}
+
+.container {
+  all: unset;
+  display: block;
+}
+
 /* Navigation Bar */
 .navbar {
-  background: linear-gradient(to right, #2c3e50, #3498db);
+  background: linear-gradient(to right, var(--accent1-color), var(--accent2-color));
   padding: 0 20px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   overflow: hidden;

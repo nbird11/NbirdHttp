@@ -1,15 +1,21 @@
-document.addEventListener('DOMContentLoaded', function () {
-  // In prod, root is from /static/
-  const isDev = window.location.pathname.includes('/static/');
-  const headerPath = isDev ? '/static/header.html' : '/header.html';
-  const pathPrefix = isDev ? '/static/' : '/';
+/**
+ * Generates the HTML template for the header
+ * @returns {string} HTML string containing the logo and navigation menu
+ */
+function headerTemplate() {
+  return `
+    <img src="/assets/profPic.jpg" alt="NB Logo" class="logo">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/resume.html">Résumé</a>
+      <a href="/punch.html">Punch Clock</a>
+      <a href="/quick-pen/">QuickPen</a>
+      <a href="https://github.com/nbird11" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/nathanabird/" target="_blank">LinkedIn</a>
+    </nav>
+  `;
+}
 
-  fetch(headerPath)
-    .then(response => response.text())
-    .then(html => {
-      // Replace relative paths in header content with absolute paths
-      html = html.replace(/\.\//g, pathPrefix);
-      document.getElementById('header').innerHTML = html;
-    })
-    .catch(err => console.error('Failed to load header: ', err));
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelector('header').innerHTML = headerTemplate();
 });

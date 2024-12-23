@@ -1,41 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather');
+@import url('./header.css');
+@import url('./footer.css');
+@import url('./modal.css');
+
+:root {
+  /* Colors */
+  --primary-color: #3D6541;
+  --secondary-color: #AE9461;
+  --accent1-color: #70566D;
+  --accent2-color: #C3DFE0;
+  --background-color: #112A2B;
+  --background-color-light: #F8F8F8;
+  
+  /* High Contrast Colors */
+  --secondary-color-high-contrast-white: #87734B;
+  
+  /* Colors for text */
+  --headline-color-on-white: var(--background-color);
+  --headline-color-on-color: white;
+  --paragraph-color-on-white: var(--background-color);
+  --paragraph-color-on-color: white;
+  --paragraph-color-dim-on-white: #00000090;
+  
+  /* Colors for navigation */
+  --nav-link-color: white;
+  --nav-background-color: var(--secondary-color);
+  --nav-hover-link-color: var(--background-color);
+  --nav-hover-background-color: var(--accent2-color);
+  
+  /* Fonts */
+  --heading-font: "Helvetica", sans-serif;
+  --paragraph-font: "Merriweather", serif;
+}
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
-  padding: 20px;
-  max-width: 100%;
-  margin: auto;
-  background-color: #f1f1f1;
+    margin: 0;
+    padding: 24px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    font-family: var(--paragraph-font);
+    line-height: 1.6;
+    background-color: #f1f1f1;
+}
+
+*, *::before, *::after {
+    box-sizing: inherit;
 }
 
 .content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-  gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .container {
-  height: max-content;
-  padding: 20px;
-  background: #fafafa;
-  text-align: justify;
-  margin-top: 20px;
-  border-radius: 5px;
-  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    margin: 24px auto;
+    max-width: 800px;
 }
 
-.container h2 {
-  text-align: left;
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font);
+    color: var(--headline-color-on-white);
+    margin-top: 0;
 }
 
-footer {
-  text-align: center;
-  margin-top: 20px;
-  color: #666;
-  width: 100%;
-}
-
-@media (max-width: 800px) {
-  .content {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 768px) {
+    body {
+        padding: 16px;
+    }
+    
+    .container {
+        margin: 16px 0;
+        padding: 16px;
+    }
 }
