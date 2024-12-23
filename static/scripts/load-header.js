@@ -10,8 +10,6 @@ function headerTemplate() {
       <a href="/resume.html">Résumé</a>
       <a href="/punch.html">Punch Clock</a>
       <a href="/quick-pen/">QuickPen</a>
-      <a href="https://github.com/nbird11" target="_blank">GitHub</a>
-      <a href="https://www.linkedin.com/in/nathanabird/" target="_blank">LinkedIn</a>
     </nav>
   `;
 }
