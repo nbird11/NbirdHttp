@@ -19,7 +19,7 @@ async function loadSprints() {
     
     sprints = await response.json() || [];
     sprintId = sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
-    sprints.forEach(sprint => updateProgressBoard(sprint));
+    sprints.forEach(sprint => addToHistory(sprint));
   } catch (error) {
     console.error('Error loading sprints:', error);
   }
@@ -103,7 +103,7 @@ async function endSprint() {
 
     // Update local state
     sprints.push(newSprint);
-    updateProgressBoard(newSprint);
+    addToHistory(newSprint);
     
     // Reset form
     document.getElementById('wordCount').value = '';
@@ -114,9 +114,9 @@ async function endSprint() {
   }
 }
 
-function updateProgressBoard(sprintData) {
+function addToHistory(sprintData) {
   console.log('Updating progress board with sprint:', sprintData);
-  const progressBoard = document.getElementById('progressBoard');
+  const history = document.getElementById('history');
   const entry = document.createElement('div');
   entry.innerHTML = `
         <p>Words: ${sprintData.wordCount}</p>
@@ -125,7 +125,7 @@ function updateProgressBoard(sprintData) {
         <p>Time: ${new Date(sprintData.timestamp).toLocaleString()}</p>
         <hr>
     `;
-  progressBoard.prepend(entry);
+  history.prepend(entry);
   console.log('Progress board updated');
 }
 

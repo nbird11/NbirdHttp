@@ -22,6 +22,28 @@
 
   <!-- Hidden by default until logged in. -->
   <div class="content" id="app" style="display: block;">
+    <div class="container">
+      <h2>Your Progress</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="value">0</div>
+          <div class="label">Words Today</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">0</div>
+          <div class="label">Minutes Written</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">0</div>
+          <div class="label">WPM Average</div>
+        </div>
+        <div class="stat-card">
+          <div class="value">0</div>
+          <div class="label">Day Streak 🔥</div>
+        </div>
+      </div>
+    </div>
+
     <div class="sprint-controls">
       <div class="container">
         <h2>Start a Writing Sprint</h2>
@@ -38,46 +60,20 @@
       </div>
     </div>
 
-    <div class="progress-section">
-      <div class="container">
-        <h2>Your Progress</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="value">0</div>
-            <div class="label">Words Today</div>
-          </div>
-          <div class="stat-card">
-            <div class="value">0</div>
-            <div class="label">Minutes Written</div>
-          </div>
-          <div class="stat-card">
-            <div class="value">0</div>
-            <div class="label">WPM Average</div>
-          </div>
-          <div class="stat-card">
-            <div class="value">0</div>
-            <div class="label">Day Streak 🔥</div>
-          </div>
-        </div>
-        <div id="progressBoard"></div>
-      </div>
+    <div class="container">
+      <h2>High Scores</h2>
+      <div id="highScores"></div>
+    </div>
 
-      <div class="container">
-        <h2>High Scores</h2>
-        <div id="highScores"></div>
-      </div>
-
-      <div class="container">
-        <h2>All History</h2>
-        <div class="timeline">
-          <div id="history"></div>
-        </div>
-      </div>
+    <div class="container">
+      <h2>Full History</h2>
+      <div id="history"></div>
     </div>
   </div>
+
   <footer>
     <script src="../scripts/load-footer.js"></script>
   </footer>
 </body>
 
-</html> 
+</html>
