@@ -57,7 +57,7 @@ async function startSprint() {
   try {
     sprintId++;
     console.log(`Sprint ${sprintId} started`);
-    document.getElementById('sprintResult').style.display = 'block';
+    document.querySelector('.end-sprint').classList.add('active');
     return sprintId;
   } catch (error) {
     console.error('Error starting sprint:', error);
@@ -107,7 +107,7 @@ async function endSprint() {
     
     // Reset form
     document.getElementById('wordCount').value = '';
-    document.getElementById('sprintResult').style.display = 'none';
+    document.querySelector('.end-sprint').classList.remove('active');
   } catch (error) {
     console.error('Error ending sprint:', error);
     alert('Failed to end sprint: ' + error.message);
@@ -148,7 +148,7 @@ function showError(inputId, message) {
   const errorElement = document.createElement('div');
   errorElement.id = inputId + '-error';
   errorElement.className = 'error-message';
-  errorElement.textContent = message;
+  errorElement.textContent = '⚠️ ' + message;
   
   // For duration input, place error after the button
   if (inputId === 'duration') {
