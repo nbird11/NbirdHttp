@@ -9,6 +9,9 @@ function footerTemplate() {
     </div>
     <p>&copy; ${new Date().getFullYear()} Nathan Bird</p>
     <div class="social-icons">
+      <a href="https://www.youtube.com/@NathanBird" target="_blank">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/youtube.svg" alt="YouTube">
+      </a>
       <a href="https://github.com/nbird11" target="_blank">
         <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt="GitHub">
       </a>
