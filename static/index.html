@@ -5,9 +5,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nathan Bird's Home Page</title>
+  <meta name="description" content="Nathan Bird's personal webserver.">
+  <meta name="author" content="Nathan Bird (nathanbirdka@gmail.com)">
   <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="stylesheet" href="./styles/global.css">
-  <link rel="stylesheet" href="./styles/index.css">
+  <script type="module" src="./scripts/index.js" defer></script>
 </head>
 
 <body>
@@ -15,30 +17,28 @@
     <script src="./scripts/load-header.js"></script>
   </header>
 
-  <div class="content">
-    <div class="about-me">
-      <h2>About Me </h2>
-      <i>(Last updated Mid 2024)</i>
-      <p>
-        Hi, I'm Nathan Bird. Welcome to my personal portfolio website. I'm in my third year at BYU-Idaho studying
-        Software
-        Engineering, currently interning as a Web Backend Developer at FamilySearch.
-      </p>
-      <p>
-        I specialize in building and maintaining backend REST APIs and enjoy exploring new technologies. Feel free to
-        explore my site and see what I've been working on!
-      </p>
-      <p>
-        NOTE&sup1;: Projects are listed in reverse chronological order and may refer to earlier projects.
-      </p>
-      <p>
-        NOTE&sup2;: Many projects listed here reference a class I took at BYU-I in Fall 2023 where I worked on a new
-        project every 2 weeks. Most of these projects were quick to write and insightful about a certain language or
-        principle, and already had a demo video made for them which made them perfect/really easy to add for this
-        portfolio page.
-      </p>
+  <main>
+    <section class="profile-section">
+      <img src="./assets/prof-pic.jpg" alt="Nathan Bird" class="profile-image">
+      <article id="profile-info">
+        <!-- Profile info will be loaded here -->
+      </article>
+    </section>
+
+    <section class="about">
+      <h2>About Me</h2>
+      <article id="about-text">
+        <!-- About text will be loaded here -->
+      </article>
+    </section>
+
+    <div class="buttons">
+      <a href="./resume/experience/">View Experience</a>
+      <a href="./resume/education/">View Education</a>
+      <a href="./resume/projects/">Project Showcase</a>
     </div>
-  </div>
+  </main>
+
   <footer>
     <script src="./scripts/load-footer.js"></script>
   </footer>

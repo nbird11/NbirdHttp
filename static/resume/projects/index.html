@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Nathan Bird</title>
+  <meta name="description" content="Nathan Bird's project portfolio.">
+  <meta name="author" content="Nathan Bird (nathanbirdka@gmail.com)">
+  <link rel="icon" type="image/png" href="/assets/simple-NB-logo.png" />
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="./projects.css">
+  <script type="module" src="./projects.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <script src="/scripts/load-header.js"></script>
+  </header>
+
+  <main>
+    <h1>Project Showcase</h1>
+    
+    <div class="filter-controls">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="web">Web</button>
+      <button class="filter-btn" data-filter="desktop">Desktop</button>
+      <button class="filter-btn" data-filter="cli">CLI</button>
+    </div>
+
+    <div id="project-grid" class="project-grid">
+      <!-- Projects will be loaded here -->
+    </div>
+  </main>
+
+  <footer>
+    <script src="/scripts/load-footer.js"></script>
+  </footer>
+</body>
+
+</html> 

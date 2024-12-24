@@ -1,0 +1,150 @@
+@import url('/styles/card.css');
+
+main h1 {
+  margin: 2rem 0;
+  text-align: center;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.project-card {
+  background: var(--background-color-light);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+}
+
+.project-image {
+  position: relative;
+  height: 200px;
+}
+
+.project-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-content {
+  padding: 1.5rem;
+}
+
+.project-content h2 {
+  margin: 0 0 1rem 0;
+  color: var(--headline-color-on-white);
+}
+
+.project-content p {
+  margin: 0 0 1rem 0;
+  color: var(--paragraph-color-on-white);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: var(--secondary-color-high-contrast-white);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.tech-stack {
+  margin-bottom: 1rem;
+}
+
+.tech-badge {
+  background: var(--accent2-color);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.8rem;
+  margin: 0.25rem;
+  display: inline-block;
+}
+
+.project-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.project-links a {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  text-decoration: none;
+  font-family: var(--heading-font);
+  transition: background-color 0.2s;
+}
+
+.demo-link {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.github-link {
+  background-color: var(--accent2-color);
+  color: var(--background-color);
+}
+
+.demo-link:hover {
+  background-color: var(--secondary-color);
+}
+
+.github-link:hover {
+  background-color: var(--accent1-color);
+  color: white;
+}
+
+.filter-controls {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.filter-btn {
+  background: none;
+  border: 1px solid var(--primary-color);
+  padding: 0.5rem 1rem;
+  margin: 0.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--heading-font);
+}
+
+.filter-btn:hover {
+  background: var(--accent2-color);
+}
+
+.filter-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+
+.project-header h2 {
+  margin: 0;
+  color: var(--headline-color-on-white);
+}
+
+.project-date {
+  font-style: italic;
+  color: var(--paragraph-color-dim-on-white);
+  font-size: 0.9rem;
+} 

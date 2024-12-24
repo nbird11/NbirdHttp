@@ -4,10 +4,17 @@
  */
 function headerTemplate() {
   return `
-    <img src="/assets/profPic.jpg" alt="NB Logo" class="logo">
+    <img src="/assets/simple-NB-logo.png" alt="NB Logo" class="logo">
     <nav>
       <a href="/">Home</a>
-      <a href="/resume.html">Résumé</a>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">Résumé ▾</a>
+        <div class="dropdown-content">
+          <a href="/resume/education/">Education</a>
+          <a href="/resume/experience/">Experience</a>
+          <a href="/resume/projects/">Projects</a>
+        </div>
+      </div>
       <a href="/punch.html">Punch Clock</a>
       <a href="/quick-pen/">QuickPen</a>
     </nav>

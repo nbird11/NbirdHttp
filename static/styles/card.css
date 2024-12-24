@@ -1,0 +1,81 @@
+/* Card Layout System */
+.card-list {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.card-item {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  background-color: var(--background-color-light);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card-item:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.card-logo {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-header {
+  margin-bottom: 1rem;
+}
+
+.card-header * {
+  margin: 0;
+}
+
+.card-header :not(.card-title) {
+  color: var(--paragraph-color-dim-on-white);
+  font-family: var(--heading-font);
+}
+
+.card-title {
+  font-family: var(--heading-font);
+  color: var(--headline-color-on-white);
+}
+
+.card-list-items {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.card-list-items li {
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.card-list-items li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .card-item,
+  .card-item:nth-child(even) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .card-list-items li {
+    text-align: left;
+  }
+} 

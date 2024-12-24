@@ -1,0 +1,6 @@
+@import url('/styles/card.css');
+
+main h1 {
+  margin: 2rem 0 0 0;
+  text-align: center;
+} 
