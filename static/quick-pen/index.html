@@ -42,21 +42,41 @@
         </div>
       </section>
 
-      <div class="sprint-controls">
-        <section class="container start-sprint">
+      <section class="container sprint-interface">
+        <div class="timer-setup" id="timerSetup">
           <h2>Start a Writing Sprint</h2>
-          <label for="duration">Duration (MM:SS):</label>
-          <input type="text" id="duration" placeholder="e.g. 10:00">
-          <button type="button" onclick="startSprint()">Start Sprint</button>
-        </section>
+          <div class="duration-input">
+            <label for="duration">Duration (MM:SS):</label>
+            <input type="text" id="duration" placeholder="e.g. 10:00">
+          </div>
+          <button type="button" id="startButton">Start Sprint</button>
+        </div>
 
-        <section class="container end-sprint">
-          <h2>End Sprint</h2>
-          <label for="wordCount">Word Count:</label>
-          <input type="number" id="wordCount" placeholder="e.g., 200" required>
-          <button type="button" onclick="endSprint()">End Sprint</button>
-        </section>
-      </div>
+        <div class="active-sprint hidden" id="activeSprint">
+          <div class="timer-display">
+            <div class="time-remaining" id="timeRemaining">00:00</div>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+          </div>
+          
+          <div class="timer-controls">
+            <button type="button" id="pauseButton">Pause</button>
+            <button type="button" id="discardButton" class="danger">Discard</button>
+          </div>
+
+          <div class="writing-area">
+            <textarea 
+              id="sprintText" 
+              placeholder="Start writing here when the timer begins..." 
+              disabled
+            ></textarea>
+            <div class="word-count">
+              Words: <span id="wordCount">0</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section class="container">
         <h2>High Scores</h2>

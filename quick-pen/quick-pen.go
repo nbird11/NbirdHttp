@@ -5,11 +5,16 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 )
 
-var SPRINTS_FILE = "./quick-pen/.sprints"
+var (
+	SPRINTS_DIR  = "./quick-pen/.sprints.d"
+	SPRINTS_FILE = filepath.Join(SPRINTS_DIR, ".sprints")
+	CONTENT_DIR  = filepath.Join(SPRINTS_DIR, ".content.d")
+)
 
 type Sprint struct {
 	ID        int       `json:"id"`
@@ -17,6 +22,20 @@ type Sprint struct {
 	WordCount int       `json:"wordCount"`
 	WPM       float64   `json:"wpm"`
 	Duration  string    `json:"duration"`
+	Completed bool      `json:"completed"`
+	Content   string    `json:"content,omitempty"` // Content is stored separately in files
+}
+
+func init() {
+	// Ensure sprints directory exists
+	if err := os.MkdirAll(SPRINTS_DIR, 0755); err != nil {
+		panic(fmt.Sprintf("Failed to create sprints directory: %v", err))
+	}
+
+	// Ensure content directory exists
+	if err := os.MkdirAll(CONTENT_DIR, 0755); err != nil {
+		panic(fmt.Sprintf("Failed to create content directory: %v", err))
+	}
 }
 
 func QuickPenController() {
@@ -36,12 +55,45 @@ func QuickPenController() {
 			return
 		}
 
+		// Extract content before saving sprint metadata
+		content := sprint.Content
+		sprint.Content = "" // Clear content from metadata
+
 		if err := saveSprint(sprint); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
+		// Save content to separate file
+		if err := saveContent(sprint.ID, content); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		w.WriteHeader(http.StatusCreated)
+	})
+
+	// New endpoint to get sprint content
+	http.HandleFunc("GET /api/quick-pen/sprint/{id}/content", func(w http.ResponseWriter, r *http.Request) {
+		idStr := r.PathValue("id")
+		var id int
+		if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
+			http.Error(w, "Invalid sprint ID", http.StatusBadRequest)
+			return
+		}
+
+		content, err := loadContent(id)
+		if err != nil {
+			if os.IsNotExist(err) {
+				http.Error(w, "Sprint content not found", http.StatusNotFound)
+			} else {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
+			return
+		}
+
+		w.Header().Set("Content-Type", "text/plain")
+		w.Write([]byte(content))
 	})
 }
 
@@ -85,6 +137,8 @@ func loadSprints() ([]Sprint, error) {
 			fmt.Sscanf(value, "%f", &sprint.WPM)
 		case "DURATION":
 			sprint.Duration = value
+		case "COMPLETED":
+			sprint.Completed = value == "true"
 		}
 	}
 
@@ -102,16 +156,33 @@ func saveSprint(sprint Sprint) error {
 	}
 	defer f.Close()
 
-	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\n\n",
+	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\nCOMPLETED::%v\n\n",
 		sprint.ID,
 		sprint.Timestamp.Format(time.RFC3339),
 		sprint.WordCount,
 		sprint.WPM,
-		sprint.Duration)
+		sprint.Duration,
+		sprint.Completed)
 
 	if _, err := f.WriteString(entry); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func getContentPath(id int) string {
+	return filepath.Join(CONTENT_DIR, fmt.Sprintf("sprint_%d.txt", id))
+}
+
+func saveContent(id int, content string) error {
+	return os.WriteFile(getContentPath(id), []byte(content), 0666)
+}
+
+func loadContent(id int) (string, error) {
+	data, err := os.ReadFile(getContentPath(id))
+	if err != nil {
+		return "", err
+	}
+	return string(data), nil
 }
