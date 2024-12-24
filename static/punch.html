@@ -23,33 +23,31 @@
 
   <!-- Hidden by default until logged in. -->
   <div class="content" id="app" style="display: none;">
-    <div class="container">
-      <h2>Commands</h2>
-      <div class="command">
-        <button onclick="punchIn()">Punch In</button>
-      </div>
-      <div class="command">
-        <button onclick="startBreak()">Start Break</button>
-        <button onclick="endBreak()">End Break</button>
-      </div>
-      <div class="command">
-        <button onclick="punchOut()">Punch Out</button>
+    <h2>Commands</h2>
+    <div class="command">
+      <button onclick="punchIn()">Punch In</button>
+    </div>
+    <div class="command">
+      <button onclick="startBreak()">Start Break</button>
+      <button onclick="endBreak()">End Break</button>
+    </div>
+    <div class="command">
+      <button onclick="punchOut()">Punch Out</button>
+    </div>
+
+    <div class="status">
+      <h2>Status</h2>
+      <ul id="status">
+        <!-- Status elements will be appended here -->
+      </ul>
+      <div class="status command">
+        <label for="workHours">Work Hours:</label>
+        <input id="workHours" type="number" value="8" min="1" max="24">
+        <button onclick="checkStatus()">Refresh Status</button>
       </div>
     </div>
-    <div class="container">
-      <div class="status">
-        <h2>Status</h2>
-        <ul id="status">
-          <!-- Status elements will be appended here -->
-        </ul>
-        <div class="status command">
-          <label for="workHours">Work Hours:</label>
-          <input id="workHours" type="number" value="8" min="1" max="24">
-          <button onclick="checkStatus()">Refresh Status</button>
-        </div>
-      </div>
-    </div>
-    <div class="container notes">
+
+    <div class="notes">
       <p>
         &sup1; Time spanned from one day to the next (i.e. over midnight) will not be correctly calculated.
       </p>
