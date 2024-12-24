@@ -25,7 +25,7 @@ function footerTemplate() {
       <div class="modal-content">
         <span class="close-modal" data-modal="about-modal">&times;</span>
         <h2>About This Site</h2>
-        <p>This webserver was created to serve as a personal website for Nathan Bird. It is built with a Go backend and uses HTML templates to display the content. It also acts as a playground for me to experiment with new technologies and create hobby projects.</p>
+        <p>This webserver was created to serve as a personal website for Nathan Bird. It is built with a Go backend and uses HTML templates to display the content. It also acts as a playground for me to experiment with new technologies and host my hobby projects.</p>
       </div>
     </div>
 
