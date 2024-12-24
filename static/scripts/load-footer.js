@@ -4,19 +4,17 @@
  */
 function footerTemplate() {
   return `
-    <div class="footer-content">
-      <div class="footer-links">
-        <a href="#" id="about-link">About</a> | <a href="#" id="contact-link">Contact</a>
-      </div>
-      <p>&copy; ${new Date().getFullYear()} Nathan Bird</p>
-      <div class="social-icons">
-        <a href="https://github.com/nbird11" target="_blank">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt="GitHub">
-        </a>
-        <a href="https://www.linkedin.com/in/nathanabird/" target="_blank">
-          <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg" alt="LinkedIn">
-        </a>
-      </div>
+    <div>
+      <a href="#" id="about-link">About</a> | <a href="#" id="contact-link">Contact</a>
+    </div>
+    <p>&copy; ${new Date().getFullYear()} Nathan Bird</p>
+    <div class="social-icons">
+      <a href="https://github.com/nbird11" target="_blank">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/github.svg" alt="GitHub">
+      </a>
+      <a href="https://www.linkedin.com/in/nathanabird/" target="_blank">
+        <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg" alt="LinkedIn">
+      </a>
     </div>
 
     <!-- About Modal -->
@@ -24,7 +22,7 @@ function footerTemplate() {
       <div class="modal-content">
         <span class="close-modal" data-modal="about-modal">&times;</span>
         <h2>About This Site</h2>
-        <p>This website showcases my projects and experience as a software developer. Built with vanilla JavaScript and modern CSS, it demonstrates my commitment to clean, efficient code and responsive design.</p>
+        <p>This webserver was created to serve as a personal website for Nathan Bird. It is built with a Go backend and uses HTML templates to display the content. It also acts as a playground for me to experiment with new technologies and create hobby projects.</p>
       </div>
     </div>
 
@@ -38,6 +36,15 @@ function footerTemplate() {
           <li>Email: <a href="mailto:nathanbirdka@gmail.com">nathanbirdka@gmail.com</a></li>
           <li>Text: <a href="tel:+13853925995">(385) 392-5995</a></li>
         </ul>
+        <p>You can also connect with me on:</p>
+        <ul>
+          <li>
+            <a href="https://www.linkedin.com/in/nathanabird/" target="_blank">LinkedIn</a>
+          </li>
+          <li>
+            <a href="https://github.com/nbird11" target="_blank">GitHub</a>
+          </li>
+        </ul>
       </div>
     </div>
   `;
@@ -45,6 +52,7 @@ function footerTemplate() {
 
 /**
  * Sets up event listeners for modal functionality
+ * Handles opening and closing of modals through various user interactions
  */
 function setupModals() {
   // Open modals
@@ -83,7 +91,13 @@ function setupModals() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('footer').innerHTML = footerTemplate();
+/**
+ * Initializes the footer by loading the template and setting up modal functionality
+ */
+function loadFooter() {
+  const footer = footerTemplate();
+  document.querySelector('footer').innerHTML = footer;
   setupModals();
-}); 
+}
+
+document.addEventListener('DOMContentLoaded', loadFooter);

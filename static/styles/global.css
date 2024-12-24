@@ -1,7 +1,7 @@
+@import url('header.css');
+@import url('footer.css');
+@import url('modal.css');
 @import url('https://fonts.googleapis.com/css2?family=Merriweather');
-@import url('./header.css');
-@import url('./footer.css');
-@import url('./modal.css');
 
 :root {
   /* Colors */
@@ -21,6 +21,7 @@
   --paragraph-color-on-white: var(--background-color);
   --paragraph-color-on-color: white;
   --paragraph-color-dim-on-white: #00000090;
+  --paragraph-background-color: var(--primary-color);
   
   /* Colors for navigation */
   --nav-link-color: white;
@@ -34,47 +35,142 @@
 }
 
 body {
-    margin: 0;
-    padding: 24px;
-    min-height: 100vh;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    font-family: var(--paragraph-font);
-    line-height: 1.6;
-    background-color: #f1f1f1;
+  margin: 0;
+  padding: 0;
+  font-family: var(--paragraph-font);
+  line-height: 1.6;
 }
 
-*, *::before, *::after {
-    box-sizing: inherit;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--heading-font);
 }
 
-.content {
-    max-width: 1200px;
-    margin: 0 auto;
+.profile-section {
+  display: flex;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 2rem;
+  box-sizing: border-box;
+  width: 100%;
 }
 
-.container {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 24px;
-    margin: 24px auto;
-    max-width: 800px;
+.profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--heading-font);
-    color: var(--headline-color-on-white);
-    margin-top: 0;
+.contact-info {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
 }
 
+.bio {
+  color: var(--accent1-color);
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.websites {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.websites a {
+  color: var(--secondary-color-high-contrast-white);
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--secondary-color-high-contrast-white);
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.websites a:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.about {
+  width: min(1200px, calc(100vw - 5rem));
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: var(--accent2-color);
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.buttons a {
+  padding: 1rem 2rem;
+  background-color: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-family: var(--heading-font);
+  transition: background-color 0.3s;
+}
+
+.buttons a:hover {
+  background-color: var(--secondary-color);
+}
+
+/* Add responsive styles for mobile */
 @media (max-width: 768px) {
-    body {
-        padding: 16px;
-    }
-    
-    .container {
-        margin: 16px 0;
-        padding: 16px;
-    }
+  .profile-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .profile-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .websites {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0 1rem;
+  }
+
+  .buttons {
+    flex-direction: column;
+    padding: 0 1rem;
+    gap: 1rem;
+  }
+
+  .buttons a {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .about {
+    width: auto;
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .contact-info,
+  .bio {
+    padding: 0 1rem;
+  }
 }
