@@ -10,8 +10,8 @@ function headerTemplate() {
       <div class="dropdown">
         <a href="#" class="dropbtn">Résumé ▾</a>
         <div class="dropdown-content">
-          <a href="/resume/education/">Education</a>
           <a href="/resume/experience/">Experience</a>
+          <a href="/resume/education/">Education</a>
           <a href="/resume/projects/">Projects</a>
         </div>
       </div>
