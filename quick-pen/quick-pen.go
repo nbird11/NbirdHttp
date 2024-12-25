@@ -112,8 +112,10 @@ func loadSprints() ([]Sprint, error) {
 
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
+		// fmt.Printf("DEBUG: line:%q\n", line)
 		if line == "" {
 			if sprint.ID != 0 {
+				// fmt.Println("DEBUG: sprint:", sprint)
 				sprints = append(sprints, sprint)
 				sprint = Sprint{}
 			}
@@ -124,6 +126,7 @@ func loadSprints() ([]Sprint, error) {
 		if len(parts) != 2 {
 			continue
 		}
+		// fmt.Println("DEBUG: parts:", parts)
 
 		key, value := parts[0], parts[1]
 		switch key {
@@ -141,6 +144,7 @@ func loadSprints() ([]Sprint, error) {
 			sprint.Completed = value == "true"
 		}
 	}
+	// fmt.Println("DEBUG: sprints:", sprints)
 
 	if sprint.ID != 0 {
 		sprints = append(sprints, sprint)

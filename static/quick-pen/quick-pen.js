@@ -21,6 +21,7 @@ async function loadSprints() {
     
     sprints = await response.json() || [];
     sprintId = sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
+    console.log('sprints', sprints);
     sprints.forEach(sprint => addToHistory(sprint));
   } catch (error) {
     console.error('Error loading sprints:', error);
@@ -39,6 +40,7 @@ class SprintTimer {
   setupEventListeners() {
     // Timer setup elements
     this.timerSetup = document.getElementById('timerSetup');
+    /** @type {HTMLInputElement} */
     this.durationInput = document.getElementById('duration');
     this.startButton = document.getElementById('startButton');
 
@@ -137,13 +139,21 @@ class SprintTimer {
     const wordCount = this.countWords(this.sprintText.value);
     const durationMinutes = this.totalDuration / 60;
     const wpm = wordCount / durationMinutes;
+    let duration = "";
+
+    if (this.durationInput.value.includes(':')) {  // [M...]M:SS
+      const [minutes, seconds] = this.durationInput.value.split(':');
+      duration = `${parseInt(minutes)}:${seconds}`;  // parseInt removes leading zeros
+    } else {  // [M...]M
+      duration = `${parseInt(this.durationInput.value)}:00`;
+    }
 
     const sprintData = {
-      id: ++sprintId, // Global variable from previous implementation
+      id: ++sprintId,
       timestamp: new Date().toISOString(),
       wordCount: wordCount,
       wpm: wpm,
-      duration: this.durationInput.value,
+      duration: duration,
       content: this.sprintText.value,
       completed: true
     };
@@ -161,9 +171,16 @@ class SprintTimer {
       addToHistory(sprintData);
       this.resetInterface();
     } catch (error) {
+      sprintId--;
       console.error('Error saving sprint:', error);
       alert('Failed to save sprint: ' + error.message);
     }
+  }
+
+  async loadSprintContent(id) {
+    const response = await fetch(`/api/quick-pen/sprint/${id}/content`);
+    if (!response.ok) throw new Error('Failed to load sprint content');
+    return await response.text();
   }
 
   resetInterface() {
@@ -224,19 +241,41 @@ class SprintTimer {
   }
 }
 
+async function showSprintContent(sprintData) {
+  const contentViewer = document.getElementById('contentViewer');
+  
+  try {
+    const response = await fetch(`/api/quick-pen/sprint/${sprintData.id}/content`);
+    if (!response.ok) throw new Error('Failed to load sprint content');
+    const content = await response.text();
+    contentViewer.value = content;
+  } catch (error) {
+    console.error('Error loading sprint content:', error);
+    contentViewer.value = 'Failed to load sprint content: ' + error.message;
+  }
+}
+
 function addToHistory(sprintData) {
   console.log('Updating progress board with sprint:', sprintData);
   const history = document.getElementById('history');
   const entry = document.createElement('div');
+  const time = new Date(sprintData.timestamp).toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: true,
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
   entry.innerHTML = `
         <p>Words: ${sprintData.wordCount}</p>
         <p>WPM: ${sprintData.wpm.toFixed(2)}</p>
         <p>Duration: ${sprintData.duration}</p>
-        <p>Time: ${new Date(sprintData.timestamp).toLocaleString()}</p>
+        <p>Time: ${time}</p>
         <hr>
     `;
   history.prepend(entry);
-  console.log('Progress board updated');
+  entry.addEventListener('click', () => showSprintContent(sprintData));
 }
 
 // Helper functions for querying
