@@ -73,6 +73,11 @@ class SprintTimer {
 
     // Show active sprint interface
     this.timerSetup.style.display = 'none';
+    const minutes = Math.floor(this.timeRemaining / 60);
+    const seconds = this.timeRemaining % 60;
+    this.timeRemainingDisplay.textContent = 
+      `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
     this.activeSprint.classList.remove('hidden');
     this.sprintText.disabled = false;
     this.sprintText.focus();
@@ -185,6 +190,8 @@ class SprintTimer {
 
   resetInterface() {
     clearInterval(this.timerInterval);
+    this.timeRemainingDisplay.textContent = '00:00';
+    this.progressFill.style.width = '0%';
     this.timerSetup.style.display = 'block';
     this.activeSprint.classList.add('hidden');
     this.durationInput.value = '';
