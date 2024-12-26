@@ -3,6 +3,7 @@ package quickpen
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -10,11 +11,7 @@ import (
 	"time"
 )
 
-var (
-	SPRINTS_DIR  = "./quick-pen/.sprints.d"
-	SPRINTS_FILE = filepath.Join(SPRINTS_DIR, ".sprints")
-	CONTENT_DIR  = filepath.Join(SPRINTS_DIR, ".content.d")
-)
+var SPRINTS_DIR = "./quick-pen/.sprints.d"
 
 type Sprint struct {
 	ID        int       `json:"id"`
@@ -26,21 +23,39 @@ type Sprint struct {
 	Content   string    `json:"content,omitempty"` // Content is stored separately in files
 }
 
+func getUserSprintsPath(user string) string {
+	return filepath.Join(SPRINTS_DIR, fmt.Sprintf(".sprints_%s", user))
+}
+
+func getUserContentPath(user string) string {
+	return filepath.Join(SPRINTS_DIR, fmt.Sprintf(".content_%s.d", user))
+}
+
 func init() {
 	// Ensure sprints directory exists
 	if err := os.MkdirAll(SPRINTS_DIR, 0755); err != nil {
 		panic(fmt.Sprintf("Failed to create sprints directory: %v", err))
 	}
+}
 
-	// Ensure content directory exists
-	if err := os.MkdirAll(CONTENT_DIR, 0755); err != nil {
-		panic(fmt.Sprintf("Failed to create content directory: %v", err))
+func ensureUserDir(user string) error {
+	// Create user's content directory if it doesn't exist
+	if err := os.MkdirAll(getUserContentPath(user), 0755); err != nil {
+		return fmt.Errorf("failed to create user content directory: %v", err)
 	}
+	return nil
 }
 
 func QuickPenController() {
 	http.HandleFunc("GET /api/quick-pen/sprints", func(w http.ResponseWriter, r *http.Request) {
-		sprints, err := loadSprints()
+		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+		if user == "" {
+			log.Printf("User not specified in request: %+v\n", r)
+			http.Error(w, "User not specified", http.StatusBadRequest)
+			return
+		}
+
+		sprints, err := loadSprints(user)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -49,9 +64,21 @@ func QuickPenController() {
 	})
 
 	http.HandleFunc("POST /api/quick-pen/sprint", func(w http.ResponseWriter, r *http.Request) {
+		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+		if user == "" {
+			log.Printf("User not specified in request: %+v\n", r)
+			http.Error(w, "User not specified", http.StatusBadRequest)
+			return
+		}
+
 		var sprint Sprint
 		if err := json.NewDecoder(r.Body).Decode(&sprint); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if err := ensureUserDir(user); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -59,13 +86,13 @@ func QuickPenController() {
 		content := sprint.Content
 		sprint.Content = "" // Clear content from metadata
 
-		if err := saveSprint(sprint); err != nil {
+		if err := saveSprint(user, sprint); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		// Save content to separate file
-		if err := saveContent(sprint.ID, content); err != nil {
+		if err := saveContent(user, sprint.ID, content); err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -73,8 +100,14 @@ func QuickPenController() {
 		w.WriteHeader(http.StatusCreated)
 	})
 
-	// New endpoint to get sprint content
 	http.HandleFunc("GET /api/quick-pen/sprint/{id}/content", func(w http.ResponseWriter, r *http.Request) {
+		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+		if user == "" {
+			log.Printf("User not specified in request: %+v\n", r)
+			http.Error(w, "User not specified", http.StatusBadRequest)
+			return
+		}
+
 		idStr := r.PathValue("id")
 		var id int
 		if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
@@ -82,7 +115,7 @@ func QuickPenController() {
 			return
 		}
 
-		content, err := loadContent(id)
+		content, err := loadContent(user, id)
 		if err != nil {
 			if os.IsNotExist(err) {
 				http.Error(w, "Sprint content not found", http.StatusNotFound)
@@ -97,8 +130,9 @@ func QuickPenController() {
 	})
 }
 
-func loadSprints() ([]Sprint, error) {
-	data, err := os.ReadFile(SPRINTS_FILE)
+func loadSprints(user string) ([]Sprint, error) {
+	sprintsFile := getUserSprintsPath(user)
+	data, err := os.ReadFile(sprintsFile)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return []Sprint{}, nil
@@ -112,10 +146,8 @@ func loadSprints() ([]Sprint, error) {
 
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
-		// fmt.Printf("DEBUG: line:%q\n", line)
 		if line == "" {
 			if sprint.ID != 0 {
-				// fmt.Println("DEBUG: sprint:", sprint)
 				sprints = append(sprints, sprint)
 				sprint = Sprint{}
 			}
@@ -126,7 +158,6 @@ func loadSprints() ([]Sprint, error) {
 		if len(parts) != 2 {
 			continue
 		}
-		// fmt.Println("DEBUG: parts:", parts)
 
 		key, value := parts[0], parts[1]
 		switch key {
@@ -144,7 +175,6 @@ func loadSprints() ([]Sprint, error) {
 			sprint.Completed = value == "true"
 		}
 	}
-	// fmt.Println("DEBUG: sprints:", sprints)
 
 	if sprint.ID != 0 {
 		sprints = append(sprints, sprint)
@@ -153,8 +183,9 @@ func loadSprints() ([]Sprint, error) {
 	return sprints, nil
 }
 
-func saveSprint(sprint Sprint) error {
-	f, err := os.OpenFile(SPRINTS_FILE, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+func saveSprint(user string, sprint Sprint) error {
+	sprintsFile := getUserSprintsPath(user)
+	f, err := os.OpenFile(sprintsFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		return err
 	}
@@ -175,16 +206,16 @@ func saveSprint(sprint Sprint) error {
 	return nil
 }
 
-func getContentPath(id int) string {
-	return filepath.Join(CONTENT_DIR, fmt.Sprintf("sprint_%d.txt", id))
+func getContentPath(user string, id int) string {
+	return filepath.Join(getUserContentPath(user), fmt.Sprintf("sprint_%d.txt", id))
 }
 
-func saveContent(id int, content string) error {
-	return os.WriteFile(getContentPath(id), []byte(content), 0666)
+func saveContent(user string, id int, content string) error {
+	return os.WriteFile(getContentPath(user, id), []byte(content), 0666)
 }
 
-func loadContent(id int) (string, error) {
-	data, err := os.ReadFile(getContentPath(id))
+func loadContent(user string, id int) (string, error) {
+	data, err := os.ReadFile(getContentPath(user, id))
 	if err != nil {
 		return "", err
 	}

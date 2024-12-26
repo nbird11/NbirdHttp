@@ -18,7 +18,12 @@ let sprintId = 0;
 // Load sprints from server
 async function loadSprints() {
   try {
-    const response = await fetch('/api/quick-pen/sprints');
+    const response = await fetch('/api/quick-pen/sprints', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${getLoggedInUser()}`
+      }
+    });
     if (!response.ok) throw new Error('Failed to load sprints');
     
     sprints = await response.json() || [];
@@ -168,8 +173,11 @@ class SprintTimer {
     try {
       const response = await fetch('/api/quick-pen/sprint', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...sprintData, user: getLoggedInUser() })
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getLoggedInUser()}`
+        },
+        body: JSON.stringify(sprintData),
       });
 
       if (!response.ok) throw new Error('Failed to save sprint');
@@ -186,8 +194,10 @@ class SprintTimer {
 
   async loadSprintContent(id) {
     const response = await fetch(`/api/quick-pen/sprint/${id}/content`, {
-      headers: { 'Content-Type': 'application/json' },
-      params: { user: getLoggedInUser() },
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${getLoggedInUser()}`
+      }
     });
     if (!response.ok) throw new Error('Failed to load sprint content');
     return await response.text();
@@ -257,7 +267,12 @@ async function showSprintContent(sprintData) {
   const contentViewer = document.getElementById('contentViewer');
   
   try {
-    const response = await fetch(`/api/quick-pen/sprint/${sprintData.id}/content`);
+    const response = await fetch(`/api/quick-pen/sprint/${sprintData.id}/content`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${getLoggedInUser()}`
+      }
+    });
     if (!response.ok) throw new Error('Failed to load sprint content');
     const content = await response.text();
     contentViewer.value = content;
