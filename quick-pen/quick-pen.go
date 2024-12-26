@@ -19,7 +19,6 @@ type Sprint struct {
 	WordCount int       `json:"wordCount"`
 	WPM       float64   `json:"wpm"`
 	Duration  string    `json:"duration"`
-	Completed bool      `json:"completed"`
 	Content   string    `json:"content,omitempty"` // Content is stored separately in files
 }
 
@@ -171,8 +170,6 @@ func loadSprints(user string) ([]Sprint, error) {
 			fmt.Sscanf(value, "%f", &sprint.WPM)
 		case "DURATION":
 			sprint.Duration = value
-		case "COMPLETED":
-			sprint.Completed = value == "true"
 		}
 	}
 
@@ -191,13 +188,12 @@ func saveSprint(user string, sprint Sprint) error {
 	}
 	defer f.Close()
 
-	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\nCOMPLETED::%v\n\n",
+	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\n\n",
 		sprint.ID,
 		sprint.Timestamp.Format(time.RFC3339),
 		sprint.WordCount,
 		sprint.WPM,
-		sprint.Duration,
-		sprint.Completed)
+		sprint.Duration)
 
 	if _, err := f.WriteString(entry); err != nil {
 		return err

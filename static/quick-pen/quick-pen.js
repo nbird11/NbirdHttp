@@ -8,7 +8,6 @@ import { getLoggedInUser } from '/scripts/auth.js';
  * @property {number} wpm
  * @property {string} duration
  * @property {string} content
- * @property {boolean} completed
  */
 
 /** @type {Sprint[]} */
@@ -167,7 +166,6 @@ class SprintTimer {
       wpm: wpm,
       duration: duration,
       content: this.sprintText.value,
-      completed: true
     };
 
     try {
