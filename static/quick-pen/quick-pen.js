@@ -1,3 +1,5 @@
+import { getLoggedInUser } from '/scripts/auth.js';
+
 /**
  * @typedef {Object} Sprint
  * @property {number} id
@@ -167,7 +169,7 @@ class SprintTimer {
       const response = await fetch('/api/quick-pen/sprint', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sprintData)
+        body: JSON.stringify({ ...sprintData, user: getLoggedInUser() })
       });
 
       if (!response.ok) throw new Error('Failed to save sprint');
@@ -183,7 +185,10 @@ class SprintTimer {
   }
 
   async loadSprintContent(id) {
-    const response = await fetch(`/api/quick-pen/sprint/${id}/content`);
+    const response = await fetch(`/api/quick-pen/sprint/${id}/content`, {
+      headers: { 'Content-Type': 'application/json' },
+      params: { user: getLoggedInUser() },
+    });
     if (!response.ok) throw new Error('Failed to load sprint content');
     return await response.text();
   }

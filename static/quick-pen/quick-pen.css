@@ -18,6 +18,13 @@ body {
   grid-template-columns: 1fr;
 }
 
+/* Logout Button */
+#logout {
+  position: absolute;
+  top: 6rem;
+  right: 1rem;
+}
+
 /* Card Styling */
 .container {
   background: var(--background-color-light);
@@ -313,6 +320,7 @@ input.error {
 /* Base Button Style */
 button {
   width: 100%;
+  max-width: 200px;
   padding: 0.75rem;
   background: var(--primary-color);
   color: white;
