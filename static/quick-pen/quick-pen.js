@@ -8,6 +8,7 @@ import { getLoggedInUser } from '/scripts/auth.js';
  * @property {number} wpm
  * @property {string} duration
  * @property {string} content
+ * @property {string[]} tags
  */
 
 /** @type {Sprint[]} */
@@ -40,7 +41,13 @@ class SprintTimer {
     this.totalDuration = 0;
     this.timerInterval = null;
     this.isPaused = false;
+    this.currentSprintId = null;
+    this.sprints = [];
+    this.sprintId = 0;
+    
     this.setupEventListeners();
+    this.setupTagsEditor();
+    this.loadSprints();
   }
 
   setupEventListeners() {
@@ -64,6 +71,88 @@ class SprintTimer {
     this.pauseButton.addEventListener('click', () => this.togglePause());
     this.discardButton.addEventListener('click', () => this.discardSprint());
     this.sprintText.addEventListener('input', () => this.updateWordCount());
+  }
+
+  setupTagsEditor() {
+    this.tagsList = document.getElementById('tagsList');
+    this.newTagInput = document.getElementById('newTag');
+    this.addTagButton = document.getElementById('addTagButton');
+
+    this.addTagButton.addEventListener('click', () => this.addTag());
+    this.newTagInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this.addTag();
+      }
+    });
+  }
+
+  async addTag() {
+    const tag = this.newTagInput.value.trim();
+    if (!tag || !this.currentSprintId) return;
+
+    try {
+      const currentTags = Array.from(this.tagsList.children)
+        .map(tag => tag.dataset.value);
+      
+      const newTags = [...new Set([...currentTags, tag])]; // Ensure uniqueness
+
+      await this.updateSprintTags(this.currentSprintId, newTags);
+      this.renderTags(newTags);
+      this.newTagInput.value = '';
+    } catch (error) {
+      console.error('Error adding tag:', error);
+      alert('Failed to add tag: ' + error.message);
+    }
+  }
+
+  async removeTag(tagToRemove) {
+    if (!this.currentSprintId) return;
+
+    try {
+      const newTags = Array.from(this.tagsList.children)
+        .map(tag => tag.dataset.value)
+        .filter(tag => tag !== tagToRemove);
+
+      await this.updateSprintTags(this.currentSprintId, newTags);
+      this.renderTags(newTags);
+    } catch (error) {
+      console.error('Error removing tag:', error);
+      alert('Failed to remove tag: ' + error.message);
+    }
+  }
+
+  async updateSprintTags(sprintId, tags) {
+    const response = await fetch(`/api/quick-pen/sprint/${sprintId}/tags`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${getLoggedInUser()}`
+      },
+      body: JSON.stringify(tags)
+    });
+
+    if (!response.ok) throw new Error('Failed to update tags');
+
+    // Update local sprint data after successful PATCH
+    const index = this.sprints.findIndex(s => s.id === sprintId);
+    if (index !== -1) {
+      this.sprints[index].tags = tags;
+    }
+  }
+
+  renderTags(tags) {
+    this.tagsList.innerHTML = '';
+    tags.forEach(tag => {
+      const tagElement = document.createElement('span');
+      tagElement.className = 'tag';
+      tagElement.dataset.value = tag;
+      tagElement.innerHTML = `
+        ${tag}
+        <span class="tag-remove" onclick="window.sprintTimer.removeTag('${tag}')">&times;</span>
+      `;
+      this.tagsList.appendChild(tagElement);
+    });
   }
 
   startSprint() {
@@ -152,20 +241,21 @@ class SprintTimer {
     const wpm = wordCount / durationMinutes;
     let duration = "";
 
-    if (this.durationInput.value.includes(':')) {  // [M...]M:SS
+    if (this.durationInput.value.includes(':')) {
       const [minutes, seconds] = this.durationInput.value.split(':');
-      duration = `${parseInt(minutes)}:${seconds}`;  // parseInt removes leading zeros
-    } else {  // [M...]M
+      duration = `${parseInt(minutes)}:${seconds}`;
+    } else {
       duration = `${parseInt(this.durationInput.value)}:00`;
     }
 
     const sprintData = {
-      id: ++sprintId,
+      id: ++this.sprintId,
       timestamp: new Date().toISOString(),
       wordCount: wordCount,
       wpm: wpm,
       duration: duration,
       content: this.sprintText.value,
+      tags: []
     };
 
     try {
@@ -180,11 +270,11 @@ class SprintTimer {
 
       if (!response.ok) throw new Error('Failed to save sprint');
 
-      sprints.push(sprintData); // Global variable from previous implementation
-      addToHistory(sprintData);
+      this.sprints.push(sprintData);
+      this.addToHistory(sprintData);
       this.resetInterface();
     } catch (error) {
-      sprintId--;
+      this.sprintId--;
       console.error('Error saving sprint:', error);
       alert('Failed to save sprint: ' + error.message);
     }
@@ -259,67 +349,89 @@ class SprintTimer {
       input.classList.remove('error');
     }, { once: true });
   }
-}
 
-async function showSprintContent(sprintData) {
-  const contentViewer = document.getElementById('contentViewer');
-  
-  try {
-    const response = await fetch(`/api/quick-pen/sprint/${sprintData.id}/content`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${getLoggedInUser()}`
-      }
+  async loadSprints() {
+    try {
+      const response = await fetch('/api/quick-pen/sprints', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getLoggedInUser()}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to load sprints');
+      
+      this.sprints = await response.json() || [];
+      this.sprintId = this.sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
+      console.log('sprints', this.sprints);
+      this.sprints.forEach(sprint => this.addToHistory(sprint));
+    } catch (error) {
+      console.error('Error loading sprints:', error);
+    }
+  }
+
+  addToHistory(sprintData) {
+    console.log('Updating progress board with sprint:', sprintData);
+    const history = document.getElementById('history');
+    const entry = document.createElement('div');
+    const time = new Date(sprintData.timestamp).toLocaleString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
     });
-    if (!response.ok) throw new Error('Failed to load sprint content');
-    const content = await response.text();
-    contentViewer.value = content;
-  } catch (error) {
-    console.error('Error loading sprint content:', error);
-    contentViewer.value = 'Failed to load sprint content: ' + error.message;
+    entry.innerHTML = `
+      <p>Words: ${sprintData.wordCount}</p>
+      <p>WPM: ${sprintData.wpm.toFixed(2)}</p>
+      <p>Duration: ${sprintData.duration}</p>
+      <p>Time: ${time}</p>
+      <hr>
+    `;
+    history.prepend(entry);
+    entry.addEventListener('click', () => this.showSprintContent(sprintData));
+  }
+
+  async showSprintContent(sprintData) {
+    const contentViewer = document.getElementById('contentViewer');
+    this.currentSprintId = sprintData.id;
+    
+    try {
+      const response = await fetch(`/api/quick-pen/sprint/${sprintData.id}/content`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getLoggedInUser()}`
+        }
+      });
+      if (!response.ok) throw new Error('Failed to load sprint content');
+      const content = await response.text();
+      contentViewer.value = content;
+
+      // Use the updated local sprint data
+      const sprint = this.sprints.find(s => s.id === sprintData.id);
+      this.renderTags(sprint?.tags || []);
+    } catch (error) {
+      console.error('Error loading sprint content:', error);
+      contentViewer.value = 'Failed to load sprint content: ' + error.message;
+    }
+  }
+
+  getHighScores(limit = 5) {
+    return this.sprints
+      .sort((a, b) => b.wpm - a.wpm)
+      .slice(0, limit);
+  }
+
+  getSprintsByDateRange(startDate, endDate) {
+    return this.sprints.filter(sprint => {
+      const sprintDate = new Date(sprint.timestamp);
+      return sprintDate >= startDate && sprintDate <= endDate;
+    });
   }
 }
 
-function addToHistory(sprintData) {
-  console.log('Updating progress board with sprint:', sprintData);
-  const history = document.getElementById('history');
-  const entry = document.createElement('div');
-  const time = new Date(sprintData.timestamp).toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    hour12: true,
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric'
-  });
-  entry.innerHTML = `
-        <p>Words: ${sprintData.wordCount}</p>
-        <p>WPM: ${sprintData.wpm.toFixed(2)}</p>
-        <p>Duration: ${sprintData.duration}</p>
-        <p>Time: ${time}</p>
-        <hr>
-    `;
-  history.prepend(entry);
-  entry.addEventListener('click', () => showSprintContent(sprintData));
-}
-
-// Helper functions for querying
-function getHighScores(limit = 5) {
-  return sprints
-    .sort((a, b) => b.wpm - a.wpm)
-    .slice(0, limit);
-}
-
-function getSprintsByDateRange(startDate, endDate) {
-  return sprints.filter(sprint => {
-    const sprintDate = new Date(sprint.timestamp);
-    return sprintDate >= startDate && sprintDate <= endDate;
-  });
-}
-
-// Initialize on page load
+// Simplified initialization
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Page loaded, initializing sprint timer...');
   window.sprintTimer = new SprintTimer();
-  loadSprints();
 });

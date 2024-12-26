@@ -19,7 +19,8 @@ type Sprint struct {
 	WordCount int       `json:"wordCount"`
 	WPM       float64   `json:"wpm"`
 	Duration  string    `json:"duration"`
-	Content   string    `json:"content,omitempty"` // Content is stored separately in files
+	Content   string    `json:"content,omitempty"`
+	Tags      []string  `json:"tags"`
 }
 
 func getUserSprintsPath(user string) string {
@@ -127,6 +128,35 @@ func QuickPenController() {
 		w.Header().Set("Content-Type", "text/plain")
 		w.Write([]byte(content))
 	})
+
+	http.HandleFunc("PATCH /api/quick-pen/sprint/{id}/tags", func(w http.ResponseWriter, r *http.Request) {
+		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+		if user == "" {
+			log.Printf("User not specified in request: %+v\n", r)
+			http.Error(w, "User not specified", http.StatusBadRequest)
+			return
+		}
+
+		idStr := r.PathValue("id")
+		var id int
+		if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
+			http.Error(w, "Invalid sprint ID", http.StatusBadRequest)
+			return
+		}
+
+		var tags []string
+		if err := json.NewDecoder(r.Body).Decode(&tags); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		if err := updateSprintTags(user, id, tags); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+	})
 }
 
 func loadSprints(user string) ([]Sprint, error) {
@@ -170,6 +200,12 @@ func loadSprints(user string) ([]Sprint, error) {
 			fmt.Sscanf(value, "%f", &sprint.WPM)
 		case "DURATION":
 			sprint.Duration = value
+		case "TAGS":
+			if value != "" {
+				sprint.Tags = strings.Split(value, ",")
+			} else {
+				sprint.Tags = []string{}
+			}
 		}
 	}
 
@@ -188,12 +224,13 @@ func saveSprint(user string, sprint Sprint) error {
 	}
 	defer f.Close()
 
-	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\n\n",
+	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\nTAGS::%s\n\n",
 		sprint.ID,
 		sprint.Timestamp.Format(time.RFC3339),
 		sprint.WordCount,
 		sprint.WPM,
-		sprint.Duration)
+		sprint.Duration,
+		strings.Join(sprint.Tags, ","))
 
 	if _, err := f.WriteString(entry); err != nil {
 		return err
@@ -216,4 +253,39 @@ func loadContent(user string, id int) (string, error) {
 		return "", err
 	}
 	return string(data), nil
+}
+
+func updateSprintTags(user string, sprintId int, tags []string) error {
+	sprints, err := loadSprints(user)
+	if err != nil {
+		return err
+	}
+
+	// Find and update the sprint
+	sprintFound := false
+	for i, sprint := range sprints {
+		if sprint.ID == sprintId {
+			sprints[i].Tags = tags
+			sprintFound = true
+			break
+		}
+	}
+
+	if !sprintFound {
+		return fmt.Errorf("sprint not found")
+	}
+
+	// Rewrite the entire sprints file
+	sprintsFile := getUserSprintsPath(user)
+	if err := os.Truncate(sprintsFile, 0); err != nil {
+		return err
+	}
+
+	for _, sprint := range sprints {
+		if err := saveSprint(user, sprint); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

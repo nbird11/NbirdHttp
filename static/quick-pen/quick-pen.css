@@ -389,3 +389,58 @@ button:hover {
     position: static;
   }
 }
+
+/* Tags Editor */
+.tags-editor {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--accent2-color);
+}
+
+.tags-editor h3 {
+  font-size: 1.2rem;
+  margin: 0 0 1rem 0;
+  color: var(--primary-color);
+}
+
+.tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.tag {
+  background: var(--background-light-grey);
+  border: 1px solid var(--accent2-color);
+  border-radius: 16px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tag-remove {
+  cursor: pointer;
+  color: var(--paragraph-color-dim-on-white);
+  font-weight: bold;
+}
+
+.tag-remove:hover {
+  color: #dc3545;
+}
+
+.add-tag {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-tag input {
+  flex: 1;
+  margin: 0;
+}
+
+.add-tag button {
+  width: auto;
+}
