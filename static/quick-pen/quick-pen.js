@@ -25,7 +25,7 @@ async function loadSprints() {
       }
     });
     if (!response.ok) throw new Error('Failed to load sprints');
-    
+
     sprints = await response.json() || [];
     sprintId = sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
     console.log('sprints', sprints);
@@ -44,7 +44,7 @@ class SprintTimer {
     this.currentSprintId = null;
     this.sprints = [];
     this.sprintId = 0;
-    
+
     this.setupEventListeners();
     this.setupTagsEditor();
     this.loadSprints();
@@ -94,7 +94,7 @@ class SprintTimer {
     try {
       const currentTags = Array.from(this.tagsList.children)
         .map(tag => tag.dataset.value);
-      
+
       const newTags = [...new Set([...currentTags, tag])]; // Ensure uniqueness
 
       await this.updateSprintTags(this.currentSprintId, newTags);
@@ -157,7 +157,7 @@ class SprintTimer {
 
   startSprint() {
     const durationStr = this.durationInput.value;
-    
+
     if (!this.validateDuration(durationStr)) {
       return;
     }
@@ -170,9 +170,9 @@ class SprintTimer {
     this.timerSetup.style.display = 'none';
     const minutes = Math.floor(this.timeRemaining / 60);
     const seconds = this.timeRemaining % 60;
-    this.timeRemainingDisplay.textContent = 
+    this.timeRemainingDisplay.textContent =
       `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    
+
     this.activeSprint.classList.remove('hidden');
     this.sprintText.disabled = false;
     this.sprintText.focus();
@@ -261,7 +261,7 @@ class SprintTimer {
     try {
       const response = await fetch('/api/quick-pen/sprint', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${getLoggedInUser()}`
         },
@@ -307,9 +307,9 @@ class SprintTimer {
   updateTimerDisplay() {
     const minutes = Math.floor(this.timeRemaining / 60);
     const seconds = this.timeRemaining % 60;
-    this.timeRemainingDisplay.textContent = 
+    this.timeRemainingDisplay.textContent =
       `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-    
+
     const progress = (this.timeRemaining / this.totalDuration) * 100;
     this.progressFill.style.width = `calc(100% - ${progress}%)`;
   }
@@ -337,14 +337,14 @@ class SprintTimer {
     errorElement.id = inputId + '-error';
     errorElement.className = 'error-message';
     errorElement.textContent = '⚠️ ' + message;
-    
+
     const existingError = document.getElementById(inputId + '-error');
     if (existingError) existingError.remove();
-    
+
     input.parentNode.insertBefore(errorElement, input.nextSibling);
     input.classList.add('error');
 
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
       errorElement.remove();
       input.classList.remove('error');
     }, { once: true });
@@ -359,7 +359,7 @@ class SprintTimer {
         }
       });
       if (!response.ok) throw new Error('Failed to load sprints');
-      
+
       this.sprints = await response.json() || [];
       this.sprintId = this.sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
       console.log('sprints', this.sprints);
@@ -395,7 +395,7 @@ class SprintTimer {
   async showSprintContent(sprintData) {
     const contentViewer = document.getElementById('contentViewer');
     this.currentSprintId = sprintData.id;
-    
+
     try {
       const response = await fetch(`/api/quick-pen/sprint/${sprintData.id}/content`, {
         method: 'GET',
@@ -434,4 +434,4 @@ class SprintTimer {
 document.addEventListener('DOMContentLoaded', () => {
   console.log('Page loaded, initializing sprint timer...');
   window.sprintTimer = new SprintTimer();
-});
+}); 
