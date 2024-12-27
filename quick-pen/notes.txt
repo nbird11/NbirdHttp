@@ -15,6 +15,6 @@ Sprint
 
 
 TODO:
-- Add tag field to sprint (list of string)
 - In sprint content viewer, add option to view all content for certain date range (i.e., today, this week, etc.) and be able to save combined content to single file.
+- Filters for sprint history. e.g., date, tags, wpm ranges, etc.
 - Add early end timer button
