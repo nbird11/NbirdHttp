@@ -17,6 +17,7 @@ Sprint
 TODO | Priority
 - Progress unit, filter by today, week, month, year, total. 2
 - Progress unit, daily streak - view streak history. 1
+- Duration: toggleShowTimer, always show sprint progress bar? 2
 - In sprint content viewer, add option to view all content for certain date range (i.e., today, this week, etc.) and be able to save combined content to single file. 1
 - High score unit by words/minute and highest streak, like progress unit. 1
 - High score unit, show (crown?) emoji for new high score. 2
