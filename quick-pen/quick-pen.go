@@ -47,116 +47,126 @@ func ensureUserDir(user string) error {
 }
 
 func QuickPenController() {
-	http.HandleFunc("GET /api/quick-pen/sprints", func(w http.ResponseWriter, r *http.Request) {
-		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
-		if user == "" {
-			log.Printf("User not specified in request: %+v\n", r)
-			http.Error(w, "User not specified", http.StatusBadRequest)
-			return
-		}
+	// List all supported endpoints
+	http.HandleFunc("GET /api/quick-pen/sprints", handleGetSprints)
+	http.HandleFunc("POST /api/quick-pen/sprint", handleCreateSprint)
+	http.HandleFunc("GET /api/quick-pen/sprint/{id}/content", handleGetSprintContent)
+	http.HandleFunc("PATCH /api/quick-pen/sprint/{id}/tags", handleUpdateSprintTags)
+}
 
-		sprints, err := loadSprints(user)
-		if err != nil {
+// handleGetSprints returns all sprints for a user
+func handleGetSprints(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
+
+	sprints, err := loadSprints(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	json.NewEncoder(w).Encode(sprints)
+}
+
+// handleCreateSprint creates a new sprint for a user
+func handleCreateSprint(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
+
+	var sprint Sprint
+	if err := json.NewDecoder(r.Body).Decode(&sprint); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	if err := ensureUserDir(user); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Extract content before saving sprint metadata
+	content := sprint.Content
+	sprint.Content = "" // Clear content from metadata
+
+	if err := saveSprint(user, sprint); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// Save content to separate file
+	if err := saveContent(user, sprint.ID, content); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusCreated)
+}
+
+// handleGetSprintContent returns the text content of a specific sprint
+func handleGetSprintContent(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
+
+	idStr := r.PathValue("id")
+	var id int
+	if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
+		http.Error(w, "Invalid sprint ID", http.StatusBadRequest)
+		return
+	}
+
+	content, err := loadContent(user, id)
+	if err != nil {
+		if os.IsNotExist(err) {
+			http.Error(w, "Sprint content not found", http.StatusNotFound)
+		} else {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
 		}
-		json.NewEncoder(w).Encode(sprints)
-	})
+		return
+	}
 
-	http.HandleFunc("POST /api/quick-pen/sprint", func(w http.ResponseWriter, r *http.Request) {
-		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
-		if user == "" {
-			log.Printf("User not specified in request: %+v\n", r)
-			http.Error(w, "User not specified", http.StatusBadRequest)
-			return
-		}
+	w.Header().Set("Content-Type", "text/plain")
+	w.Write([]byte(content))
+}
 
-		var sprint Sprint
-		if err := json.NewDecoder(r.Body).Decode(&sprint); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
+// handleUpdateSprintTags updates the tags for a specific sprint
+func handleUpdateSprintTags(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
 
-		if err := ensureUserDir(user); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	idStr := r.PathValue("id")
+	var id int
+	if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
+		http.Error(w, "Invalid sprint ID", http.StatusBadRequest)
+		return
+	}
 
-		// Extract content before saving sprint metadata
-		content := sprint.Content
-		sprint.Content = "" // Clear content from metadata
+	var tags []string
+	if err := json.NewDecoder(r.Body).Decode(&tags); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
-		if err := saveSprint(user, sprint); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	if err := updateSprintTags(user, id, tags); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
-		// Save content to separate file
-		if err := saveContent(user, sprint.ID, content); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		w.WriteHeader(http.StatusCreated)
-	})
-
-	http.HandleFunc("GET /api/quick-pen/sprint/{id}/content", func(w http.ResponseWriter, r *http.Request) {
-		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
-		if user == "" {
-			log.Printf("User not specified in request: %+v\n", r)
-			http.Error(w, "User not specified", http.StatusBadRequest)
-			return
-		}
-
-		idStr := r.PathValue("id")
-		var id int
-		if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
-			http.Error(w, "Invalid sprint ID", http.StatusBadRequest)
-			return
-		}
-
-		content, err := loadContent(user, id)
-		if err != nil {
-			if os.IsNotExist(err) {
-				http.Error(w, "Sprint content not found", http.StatusNotFound)
-			} else {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
-			}
-			return
-		}
-
-		w.Header().Set("Content-Type", "text/plain")
-		w.Write([]byte(content))
-	})
-
-	http.HandleFunc("PATCH /api/quick-pen/sprint/{id}/tags", func(w http.ResponseWriter, r *http.Request) {
-		user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
-		if user == "" {
-			log.Printf("User not specified in request: %+v\n", r)
-			http.Error(w, "User not specified", http.StatusBadRequest)
-			return
-		}
-
-		idStr := r.PathValue("id")
-		var id int
-		if _, err := fmt.Sscanf(idStr, "%d", &id); err != nil {
-			http.Error(w, "Invalid sprint ID", http.StatusBadRequest)
-			return
-		}
-
-		var tags []string
-		if err := json.NewDecoder(r.Body).Decode(&tags); err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
-
-		if err := updateSprintTags(user, id, tags); err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		w.WriteHeader(http.StatusOK)
-	})
+	w.WriteHeader(http.StatusOK)
 }
 
 func splitEscapedCommas(s string) []string {
