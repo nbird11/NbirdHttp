@@ -15,14 +15,23 @@ Sprint
 
 
 TODO | Priority
-- Progress unit, filter by today, week, month, year, total. 2
-- Progress unit, daily streak - view streak history. 1
-- Duration: toggleShowTimer, always show sprint progress bar? 2
-- In sprint content viewer, add option to view all content for certain date range (i.e., today, this week, etc.) and be able to save combined content to single file. 1
-- High score unit by words/minute and highest streak, like progress unit. 1
-- High score unit, show (crown?) emoji for new high score. 2
-- High score unit history. 2
-- Filters for sprint history. e.g., date, tags, wpm ranges, duration, etc. 1
-- Add ability to reuse an old duration. 1
-  - 3 most recent (or fequent?) durations
-- Add refresh button in history to refetch all sprints. 2
+- Progress widget:
+  - filter by today, week, month, year, total. | 1
+  - view history for each category. | 1
+
+- Current sprint widget:
+  - Add ability to reuse an old duration. | 2
+    - 3 most recent (or fequent?) durations
+  - Duration: toggleShowTimer, always show sprint progress bar? | 2
+
+- High score widget:
+  - High score unit by words/minute and highest streak, like progress unit. | 1
+  - High score unit, show (crown?) emoji for new high score. | 2
+  - Pick one:
+    - Full category history. | 2
+    - Click a stat to view top 5 in category. | 2
+
+- History/content viewer widgets
+  - Filters for sprint history. e.g., date, tags, wpm ranges, duration, etc. | 1
+  - In sprint content viewer, add option to view all content for certain date range (i.e., today, this week, etc.) and be able to save combined content to single file. | 1
+  - Add refresh button in history to refetch all sprints. | 2
