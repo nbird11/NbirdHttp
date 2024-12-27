@@ -1,0 +1,9 @@
+#!/bin/bash
+
+git fetch
+git pull
+
+# Check if any .go files were changed in the pull
+if git diff --name-only ORIG_HEAD HEAD | grep -q "\.go$"; then
+    ./restart
+fi
