@@ -22,7 +22,7 @@ body {
 #logout {
   position: absolute;
   top: 6rem;
-  right: 1rem;
+  left: 1rem;
 }
 
 /* Card Styling */
