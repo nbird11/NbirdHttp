@@ -410,10 +410,10 @@ class SprintTimer {
       year: 'numeric'
     });
     entry.innerHTML = `
+      <p>Time: ${time}</p>
       <p>Words: ${sprintData.wordCount}</p>
       <p>WPM: ${sprintData.wpm.toFixed(2)}</p>
       <p>Duration: ${sprintData.duration}</p>
-      <p>Time: ${time}</p>
       <hr>
     `;
     history.prepend(entry);
