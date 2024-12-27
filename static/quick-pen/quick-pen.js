@@ -63,6 +63,7 @@ class SprintTimer {
     this.progressFill = document.getElementById('progressFill');
     this.pauseButton = document.getElementById('pauseButton');
     this.discardButton = document.getElementById('discardButton');
+    this.endButton = document.getElementById('endButton');
     this.sprintText = document.getElementById('sprintText');
     this.wordCountDisplay = document.getElementById('wordCount');
 
@@ -71,6 +72,7 @@ class SprintTimer {
     this.pauseButton.addEventListener('click', () => this.togglePause());
     this.discardButton.addEventListener('click', () => this.discardSprint());
     this.sprintText.addEventListener('input', () => this.updateWordCount());
+    this.endButton.addEventListener('click', () => this.endSprint());
   }
 
   setupTagsEditor() {
@@ -163,7 +165,9 @@ class SprintTimer {
     }
 
     // Convert duration to seconds
+    /** seconds */
     this.totalDuration = this.durationToSeconds(durationStr);
+    /** seconds */
     this.timeRemaining = this.totalDuration;
 
     // Show active sprint interface
@@ -205,7 +209,7 @@ class SprintTimer {
   startTimer() {
     this.timerInterval = setInterval(() => {
       if (this.timeRemaining <= 0) {
-        this.completeSprint();
+        this.endSprint(false);
       } else {
         this.timeRemaining--;
         this.updateTimerDisplay();
@@ -232,20 +236,44 @@ class SprintTimer {
     }
   }
 
-  async completeSprint() {
+  async endSprint() {
+    // If early end, confirm with user
+    if (this.timeRemaining > 0) {
+      if (this.sprintText.value.trim().length === 0) {
+        if (confirm('No content was written. Discard this sprint?')) {
+          this.resetInterface();
+          return;
+        }
+      } else if (!confirm('Are you sure you want to end this sprint early?')) {
+        return;
+      }
+    }
+
+    // Calculate time spent and WPM
+    const timeSpent = this.totalDuration - this.timeRemaining;
+    const timeSpentMinutes = timeSpent / 60;
+
     clearInterval(this.timerInterval);
     this.sprintText.disabled = true;
 
     const wordCount = this.countWords(this.sprintText.value);
-    const durationMinutes = this.totalDuration / 60;
+    const durationMinutes = timeSpent / 60;
+    console.assert(durationMinutes > 0, 'Duration should be guaranteed to be greater than 0 in duration input validation.');
     const wpm = wordCount / durationMinutes;
-    let duration = "";
 
-    if (this.durationInput.value.includes(':')) {
-      const [minutes, seconds] = this.durationInput.value.split(':');
-      duration = `${parseInt(minutes)}:${seconds}`;
+    // Format duration
+    let duration;
+    if (this.timeRemaining > 0) {
+      const minutes = Math.floor(timeSpent / 60);
+      const seconds = timeSpent % 60;
+      duration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
     } else {
-      duration = `${parseInt(this.durationInput.value)}:00`;
+      if (this.durationInput.value.includes(':')) {
+        const [minutes, seconds] = this.durationInput.value.split(':');
+        duration = `${parseInt(minutes)}:${seconds}`;
+      } else {
+        duration = `${parseInt(this.durationInput.value)}:00`;
+      }
     }
 
     const sprintData = {

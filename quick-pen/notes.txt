@@ -23,7 +23,6 @@ TODO | Priority
 - High score unit, show (crown?) emoji for new high score. 2
 - High score unit history. 2
 - Filters for sprint history. e.g., date, tags, wpm ranges, duration, etc. 1
-- Add early end timer button. 1
 - Add ability to reuse an old duration. 1
   - 3 most recent (or fequent?) durations
 - Add refresh button in history to refetch all sprints. 2

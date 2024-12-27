@@ -49,8 +49,8 @@
         <div class="timer-setup" id="timerSetup">
           <h2>Start a Writing Sprint</h2>
           <div class="duration-input">
-            <label for="duration">Duration (MM:SS):</label>
-            <input type="text" id="duration" placeholder="e.g. 10:00">
+            <label for="duration">Duration: <pre>([M...]M[:SS])</pre></label>
+            <input type="text" id="duration" placeholder="e.g. 10:00, 30, 90:30">
           </div>
           <button type="button" id="startButton">Start Sprint</button>
         </div>
@@ -66,6 +66,7 @@
           <div class="timer-controls">
             <button type="button" id="pauseButton">Pause</button>
             <button type="button" id="discardButton" class="danger">Discard</button>
+            <button type="button" id="endButton" class="end">End Sprint</button>
           </div>
 
           <div class="writing-area">
