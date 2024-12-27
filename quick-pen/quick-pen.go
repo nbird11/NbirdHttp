@@ -159,6 +159,34 @@ func QuickPenController() {
 	})
 }
 
+func splitEscapedCommas(s string) []string {
+	var result []string
+	var current strings.Builder
+	escaped := false
+
+	for i := 0; i < len(s); i++ {
+		if escaped {
+			current.WriteByte(s[i])
+			escaped = false
+			continue
+		}
+		if s[i] == '\\' {
+			escaped = true
+			continue
+		}
+		if s[i] == ',' {
+			result = append(result, current.String())
+			current.Reset()
+			continue
+		}
+		current.WriteByte(s[i])
+	}
+	if current.Len() > 0 {
+		result = append(result, current.String())
+	}
+	return result
+}
+
 func loadSprints(user string) ([]Sprint, error) {
 	sprintsFile := getUserSprintsPath(user)
 	data, err := os.ReadFile(sprintsFile)
@@ -202,7 +230,8 @@ func loadSprints(user string) ([]Sprint, error) {
 			sprint.Duration = value
 		case "TAGS":
 			if value != "" {
-				sprint.Tags = strings.Split(value, ",")
+				// Use custom split function that respects escaped commas
+				sprint.Tags = splitEscapedCommas(value)
 			} else {
 				sprint.Tags = []string{}
 			}
@@ -224,13 +253,19 @@ func saveSprint(user string, sprint Sprint) error {
 	}
 	defer f.Close()
 
+	// Escape commas in tags
+	escapedTags := make([]string, len(sprint.Tags))
+	for i, tag := range sprint.Tags {
+		escapedTags[i] = strings.ReplaceAll(tag, ",", "\\,")
+	}
+
 	entry := fmt.Sprintf("ID::%d\nTIME::%s\nWORDS::%d\nWPM::%.2f\nDURATION::%s\nTAGS::%s\n\n",
 		sprint.ID,
 		sprint.Timestamp.Format(time.RFC3339),
 		sprint.WordCount,
 		sprint.WPM,
 		sprint.Duration,
-		strings.Join(sprint.Tags, ","))
+		strings.Join(escapedTags, ","))
 
 	if _, err := f.WriteString(entry); err != nil {
 		return err
