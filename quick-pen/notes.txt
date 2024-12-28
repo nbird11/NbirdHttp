@@ -16,7 +16,6 @@ Sprint
 
 TODO | Priority
 - Progress widget:
-  - filter by today, week, month, year, total. | 1
   - view history for each category. | 1
 
 - Current sprint widget:
