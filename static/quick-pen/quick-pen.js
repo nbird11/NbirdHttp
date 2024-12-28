@@ -48,6 +48,16 @@ class SprintTimer {
     this.setupEventListeners();
     this.setupTagsEditor();
     this.loadSprints();
+
+    // Add high score elements
+    this.highScoreElements = {
+      words: document.querySelector('.stat-card .value[data-category="words"]'),
+      wpm: document.querySelector('.stat-card .value[data-category="wpm"]'),
+      duration: document.querySelector('.stat-card .value[data-category="duration"]'),
+      streak: document.querySelector('.stat-card .value[data-category="streak"]')
+    };
+
+    this.loadHighScores();
   }
 
   setupEventListeners() {
@@ -300,6 +310,8 @@ class SprintTimer {
 
       this.sprints.push(sprintData);
       this.addToHistory(sprintData);
+      // TODO: if highscore changed, add crown emoji to highscore unit
+      this.loadHighScores();  // Reload high scores after new sprint
       this.resetInterface();
     } catch (error) {
       this.sprintId--;
@@ -455,6 +467,66 @@ class SprintTimer {
       const sprintDate = new Date(sprint.timestamp);
       return sprintDate >= startDate && sprintDate <= endDate;
     });
+  }
+
+  // Add new method to load high scores
+  async loadHighScores() {
+    const categories = ['words', 'wpm', 'duration'];
+
+    for (const category of categories) {
+      try {
+        const response = await fetch(`/api/quick-pen/best-sprint/${category}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${getLoggedInUser()}`
+          }
+        });
+
+        if (!response.ok) throw new Error(`Failed to load ${category} high score`);
+        
+        /** @type {Sprint?} */
+        const sprint = await response.json();
+        if (sprint === null) continue;
+
+        const element = this.highScoreElements[category];
+        if (!element) continue;
+
+        switch (category) {
+          case 'words':
+            element.textContent = sprint.wordCount;
+            break;
+          case 'wpm':
+            element.textContent = sprint.wpm.toFixed(2);
+            break;
+          case 'duration':
+            element.textContent = sprint.duration;
+            break;
+        }
+      } catch (error) {
+        console.error(`Error loading ${category} high score:`, error);
+      }
+    }
+
+    // Load streak separately
+    try {
+      const response = await fetch('/api/quick-pen/best-streak', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getLoggedInUser()}`,
+          'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load streak');
+
+      const streak = await response.json();
+      const element = this.highScoreElements.streak;
+      if (element) {
+        element.textContent = streak.length;
+      }
+    } catch (error) {
+      console.error('Error loading streak:', error);
+    }
   }
 }
 

@@ -7,11 +7,20 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 )
 
-var SPRINTS_DIR = "./quick-pen/.sprints.d"
+type HighScoreCategory string
+
+const SPRINTS_DIR = "./quick-pen/.sprints.d"
+
+const (
+	HighScoreWPM      HighScoreCategory = "wpm"
+	HighScoreWords    HighScoreCategory = "words"
+	HighScoreDuration HighScoreCategory = "duration"
+)
 
 type Sprint struct {
 	ID        int       `json:"id"`
@@ -52,9 +61,12 @@ func QuickPenController() {
 	http.HandleFunc("POST /api/quick-pen/sprint", handleCreateSprint)
 	http.HandleFunc("GET /api/quick-pen/sprint/{id}/content", handleGetSprintContent)
 	http.HandleFunc("PATCH /api/quick-pen/sprint/{id}/tags", handleUpdateSprintTags)
+	http.HandleFunc("GET /api/quick-pen/best-sprint/{category}", handleGetBestSprint)
+	http.HandleFunc("GET /api/quick-pen/best-streak", handleGetBestStreak)
 }
 
-// handleGetSprints returns all sprints for a user
+// Returns all sprints for a user
+// GET /api/quick-pen/sprints
 func handleGetSprints(w http.ResponseWriter, r *http.Request) {
 	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 	if user == "" {
@@ -71,7 +83,8 @@ func handleGetSprints(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(sprints)
 }
 
-// handleCreateSprint creates a new sprint for a user
+// Creates a new sprint for a user
+// POST /api/quick-pen/sprint
 func handleCreateSprint(w http.ResponseWriter, r *http.Request) {
 	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 	if user == "" {
@@ -109,7 +122,8 @@ func handleCreateSprint(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-// handleGetSprintContent returns the text content of a specific sprint
+// Returns the text content of a specific sprint
+// GET /api/quick-pen/sprint/{id}/content
 func handleGetSprintContent(w http.ResponseWriter, r *http.Request) {
 	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 	if user == "" {
@@ -139,7 +153,8 @@ func handleGetSprintContent(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(content))
 }
 
-// handleUpdateSprintTags updates the tags for a specific sprint
+// Updates the tags for a specific sprint
+// PATCH /api/quick-pen/sprint/{id}/tags
 func handleUpdateSprintTags(w http.ResponseWriter, r *http.Request) {
 	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
 	if user == "" {
@@ -167,6 +182,91 @@ func handleUpdateSprintTags(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+// Returns the sprint with the highest score in the given category
+// GET /api/quick-pen/best-sprint/{category}
+func handleGetBestSprint(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
+
+	category := HighScoreCategory(r.PathValue("category"))
+	switch category {
+	case HighScoreWPM, HighScoreWords, HighScoreDuration:
+		// Valid category
+	default:
+		http.Error(w, "Invalid category. Must be one of: wpm, words, duration", http.StatusBadRequest)
+		return
+	}
+
+	sprints, err := loadSprints(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if len(sprints) == 0 {
+		// Return null if no sprints exist
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte("null"))
+		return
+	}
+
+	highScore := sprints[0]
+	for _, sprint := range sprints[1:] {
+		switch category {
+		case HighScoreWPM:
+			if sprint.WPM > highScore.WPM {
+				highScore = sprint
+			}
+		case HighScoreWords:
+			if sprint.WordCount > highScore.WordCount {
+				highScore = sprint
+			}
+		case HighScoreDuration:
+			currentMins := durationToMinutes(sprint.Duration)
+			highScoreMins := durationToMinutes(highScore.Duration)
+			if currentMins > highScoreMins {
+				highScore = sprint
+			}
+		}
+	}
+
+	json.NewEncoder(w).Encode(highScore)
+}
+
+// Returns the longest streak of consecutive days with sprints
+// GET /api/quick-pen/best-streak
+func handleGetBestStreak(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
+
+	timezone := r.Header.Get("X-Timezone")
+	if timezone == "" {
+		timezone = "UTC" // Default to UTC if not specified
+	}
+
+	sprints, err := loadSprints(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if len(sprints) == 0 {
+		json.NewEncoder(w).Encode(map[string]int{"length": 0})
+		return
+	}
+
+	streakLength := calculateLongestStreak(sprints, timezone)
+	json.NewEncoder(w).Encode(map[string]int{"length": streakLength})
 }
 
 func splitEscapedCommas(s string) []string {
@@ -333,4 +433,72 @@ func updateSprintTags(user string, sprintId int, tags []string) error {
 	}
 
 	return nil
+}
+
+// Converts a duration string ([M...]M:SS) to total minutes
+func durationToMinutes(duration string) float64 {
+	parts := strings.Split(duration, ":")
+	if len(parts) != 2 {
+		return 0
+	}
+	minutes, _ := strconv.Atoi(parts[0])
+	seconds, _ := strconv.Atoi(parts[1])
+	return float64(minutes) + float64(seconds)/60
+}
+
+// Calculates the longest streak of consecutive days with sprints
+func calculateLongestStreak(sprints []Sprint, timezone string) int {
+	if len(sprints) == 0 {
+		return 0
+	}
+
+	// Load timezone location
+	location, err := time.LoadLocation(timezone)
+	if err != nil {
+		log.Printf("Invalid timezone %q, falling back to UTC: %v\n", timezone, err)
+		location = time.UTC
+	}
+
+	// Helper function to get date string in user's timezone
+	getDateStr := func(t time.Time) string {
+		return t.In(location).Format("2006-01-02")
+	}
+
+	// Helper function to check if two dates are consecutive calendar days in user's timezone
+	isConsecutive := func(d1, d2 time.Time) bool {
+		date1 := getDateStr(d1)
+		date2 := getDateStr(d2)
+		day, _ := strconv.Atoi(date1[8:])
+		return date2 > date1 && date2 <= date1[:8]+fmt.Sprintf("%02d", day+1)
+	}
+
+	currentLength := 1
+	longestLength := 1
+	lastDate := getDateStr(sprints[0].Timestamp)
+	lastSprint := sprints[0]
+
+	// Iterate through sprints, which are already ordered by date
+	for _, sprint := range sprints[1:] {
+		currentDate := getDateStr(sprint.Timestamp)
+
+		// Skip if same day
+		if currentDate == lastDate {
+			continue
+		}
+
+		// Check if dates are consecutive
+		if isConsecutive(lastSprint.Timestamp, sprint.Timestamp) {
+			currentLength++
+			if currentLength > longestLength {
+				longestLength = currentLength
+			}
+		} else {
+			currentLength = 1
+		}
+
+		lastDate = currentDate
+		lastSprint = sprint
+	}
+
+	return longestLength
 }

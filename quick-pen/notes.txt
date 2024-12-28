@@ -23,9 +23,9 @@ TODO | Priority
   - Add ability to reuse an old duration. | 2
     - 3 most recent (or fequent?) durations
   - Duration: toggleShowTimer, always show sprint progress bar? | 2
+  - End sprint early button: ask whether to use time time spent or original duration. 2
 
 - High score widget:
-  - High score unit by words/minute and highest streak, like progress unit. | 1
   - High score unit, show (crown?) emoji for new high score. | 2
   - Pick one:
     - Full category history. | 2
