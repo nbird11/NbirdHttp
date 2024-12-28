@@ -29,7 +29,8 @@ function authTemplate() {
 
   <style>
     #auth {
-      border: 1px solid var(--background-color);
+      background-color: var(--background-color-light);
+      border: 1px solid var(--accent2-color);
       border-radius: 16px;
       padding: 1rem;
       margin: 2rem auto;
