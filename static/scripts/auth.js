@@ -41,7 +41,7 @@ function authTemplate() {
       flex-direction: row;
       flex-wrap: wrap;
       justify-content: space-around;
-      align-items: center;
+      align-items: end;
     }
 
     .toggle-form {
