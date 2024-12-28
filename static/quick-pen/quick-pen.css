@@ -20,9 +20,8 @@ body {
 
 /* Logout Button */
 #logout {
-  position: absolute;
-  top: 6rem;
-  left: 1rem;
+  margin: 1rem;
+  margin-bottom: 0;
 }
 
 /* Card Styling */

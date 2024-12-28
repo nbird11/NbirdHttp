@@ -5,26 +5,81 @@ function authTemplate() {
     <h3>Register</h3>
     <input type="text" id="regUsername" placeholder="Username" required>
     <input type="password" id="regPassword" placeholder="Password" required>
-    <button type="submit">Register</button>
+    <div class="button-container">
+      <button type="submit">Register</button>
+      <span class="toggle-form">
+        <p>Already have an account?</p>
+        <button type="button" id="goToLogin">Login</button>
+      </span>
+    </div>
   </form>
 
   <form id="loginForm">
     <h3>Login</h3>
     <input type="text" id="loginUsername" placeholder="Username" required>
     <input type="password" id="loginPassword" placeholder="Password" required>
-    <button type="submit">Login</button>
-  </form>`;
+    <div class="button-container">
+      <button type="submit">Login</button>
+      <span class="toggle-form">
+        <p>Don't have an account?</p>
+        <button type="button" id="goToRegister">Create One</button>
+      </span>
+    </div>
+  </form>
+
+  <style>
+    #auth {
+      border: 1px solid var(--background-color);
+      border-radius: 16px;
+      padding: 1rem;
+      margin: 2rem auto;
+      max-width: 600px;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .toggle-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .toggle-form p {
+      margin-bottom: 0;
+    }
+
+    .toggle-form button {
+      background-color: var(--accent1-color);
+    }
+
+    .toggle-form button:hover {
+      background-color: var(--secondary-color);
+    }
+  </style>
+  `;
 }
 
 function createAuthElement() {
   const authElement = document.createElement('div');
   authElement.id = 'auth';
   authElement.innerHTML = authTemplate();
+
+  /** @type {HTMLFormElement} */
+  const registerForm = authElement.querySelector('#registerForm');
+  registerForm.style.display = 'none';
+
   return authElement;
 }
 
 function createLogoutButton() {
-  const logoutButton = document.createElement('button');
+  const logoutButton = document.querySelector('header').appendChild(document.createElement('button'));
   logoutButton.id = 'logout';
   logoutButton.textContent = 'Logout';
   return logoutButton;
@@ -48,6 +103,9 @@ function setupListeners() {
     const password = document.getElementById('loginPassword').value;
     await loginUser(username, password);
   };
+
+  document.getElementById('goToRegister').onclick = toggleRegister;
+  document.getElementById('goToLogin').onclick = toggleRegister;
 }
 
 function init() {
@@ -99,6 +157,13 @@ function setContentVisible(contentVisible) {
   document.querySelector('#auth').style.display = contentVisible ? 'none' : 'block';
   document.querySelector('main').style.display = contentVisible ? 'block' : 'none';
   document.querySelector('#logout').style.display = contentVisible ? 'block' : 'none';
+}
+
+function toggleRegister() {
+  const registerForm = document.getElementById('registerForm');
+  const loginForm = document.getElementById('loginForm');
+  registerForm.style.display = registerForm.style.display === 'none' ? 'block' : 'none';
+  loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
 }
 
 /**
