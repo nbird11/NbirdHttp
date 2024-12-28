@@ -37,12 +37,19 @@ async function loadSprints() {
 
 class SprintTimer {
   constructor() {
+    /** @type {number} seconds */
     this.timeRemaining = 0;
+    /** @type {number} seconds */
     this.totalDuration = 0;
+    /** @type {number} interval */
     this.timerInterval = null;
+    /** @type {boolean} */
     this.isPaused = false;
+    /** @type {number?} */
     this.currentSprintId = null;
+    /** @type {Sprint[]} */
     this.sprints = [];
+    /** @type {number} */
     this.sprintId = 0;
 
     this.setupEventListeners();
@@ -402,7 +409,7 @@ class SprintTimer {
 
       this.sprints = await response.json() || [];
       this.sprintId = this.sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
-      console.log('sprints', this.sprints);
+      // console.log('sprints', this.sprints);
       this.sprints.forEach(sprint => this.addToHistory(sprint));
     } catch (error) {
       console.error('Error loading sprints:', error);
@@ -410,7 +417,7 @@ class SprintTimer {
   }
 
   addToHistory(sprintData) {
-    console.log('Updating progress board with sprint:', sprintData);
+    // console.log('Updating progress board with sprint:', sprintData);
     const history = document.getElementById('history');
     const entry = document.createElement('div');
     const time = new Date(sprintData.timestamp).toLocaleString('en-US', {
@@ -433,6 +440,7 @@ class SprintTimer {
   }
 
   async showSprintContent(sprintData) {
+    /** @type {HTMLTextAreaElement} */
     const contentViewer = document.getElementById('contentViewer');
     this.currentSprintId = sprintData.id;
 
@@ -446,6 +454,7 @@ class SprintTimer {
       if (!response.ok) throw new Error('Failed to load sprint content');
       const content = await response.text();
       contentViewer.value = content;
+      contentViewer.placeholder = '';
 
       // Use the updated local sprint data
       const sprint = this.sprints.find(s => s.id === sprintData.id);
@@ -532,6 +541,6 @@ class SprintTimer {
 
 // Simplified initialization
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Page loaded, initializing sprint timer...');
+  // console.log('Page loaded, initializing sprint timer...');
   window.sprintTimer = new SprintTimer();
 }); 
