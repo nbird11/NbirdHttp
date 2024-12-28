@@ -32,6 +32,23 @@ type Sprint struct {
 	Tags      []string  `json:"tags"`
 }
 
+type ProgressRange string
+
+const (
+	ProgressToday ProgressRange = "today"
+	ProgressWeek  ProgressRange = "week"
+	ProgressMonth ProgressRange = "month"
+	ProgressYear  ProgressRange = "year"
+	ProgressTotal ProgressRange = "total"
+)
+
+type ProgressStats struct {
+	WordCount      int     `json:"wordCount"`
+	MinutesWritten float64 `json:"minutesWritten"`
+	AverageWPM     float64 `json:"averageWPM"`
+	CurrentStreak  int     `json:"currentStreak"`
+}
+
 func getUserSprintsPath(user string) string {
 	return filepath.Join(SPRINTS_DIR, fmt.Sprintf(".sprints_%s", user))
 }
@@ -63,6 +80,7 @@ func QuickPenController() {
 	http.HandleFunc("PATCH /api/quick-pen/sprint/{id}/tags", handleUpdateSprintTags)
 	http.HandleFunc("GET /api/quick-pen/best-sprint/{category}", handleGetBestSprint)
 	http.HandleFunc("GET /api/quick-pen/best-streak", handleGetBestStreak)
+	http.HandleFunc("GET /api/quick-pen/progress/{range}", handleGetProgress)
 }
 
 // Returns all sprints for a user
@@ -267,6 +285,40 @@ func handleGetBestStreak(w http.ResponseWriter, r *http.Request) {
 
 	streakLength := calculateLongestStreak(sprints, timezone)
 	json.NewEncoder(w).Encode(map[string]int{"length": streakLength})
+}
+
+// Returns progress stats for the given time range
+// GET /api/quick-pen/progress/{range}
+func handleGetProgress(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.Header.Get("Authorization"), "Bearer ")
+	if user == "" {
+		log.Printf("User not specified in request: %+v\n", r)
+		http.Error(w, "User not specified", http.StatusBadRequest)
+		return
+	}
+
+	timezone := r.Header.Get("X-Timezone")
+	if timezone == "" {
+		timezone = "UTC"
+	}
+
+	rangeType := ProgressRange(r.PathValue("range"))
+	switch rangeType {
+	case ProgressToday, ProgressWeek, ProgressMonth, ProgressYear, ProgressTotal:
+		// Valid range
+	default:
+		http.Error(w, "Invalid range. Must be one of: today, week, month, year, total", http.StatusBadRequest)
+		return
+	}
+
+	sprints, err := loadSprints(user)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	stats := calculateProgressStats(sprints, rangeType, timezone)
+	json.NewEncoder(w).Encode(stats)
 }
 
 func splitEscapedCommas(s string) []string {
@@ -501,4 +553,137 @@ func calculateLongestStreak(sprints []Sprint, timezone string) int {
 	}
 
 	return longestLength
+}
+
+// Calculates aggregate stats for sprints within the given time range
+func calculateProgressStats(sprints []Sprint, rangeType ProgressRange, timezone string) ProgressStats {
+	if len(sprints) == 0 {
+		return ProgressStats{}
+	}
+
+	// Load timezone location
+	location, err := time.LoadLocation(timezone)
+	if err != nil {
+		log.Printf("Invalid timezone %q, falling back to UTC: %v\n", timezone, err)
+		location = time.UTC
+	}
+
+	// Get range start time based on range type
+	now := time.Now().In(location)
+	var rangeStart time.Time
+	switch rangeType {
+	case ProgressToday:
+		rangeStart = time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, location)
+	case ProgressWeek:
+		// Get start of current week (Sunday)
+		weekday := now.Weekday()
+		rangeStart = time.Date(now.Year(), now.Month(), now.Day()-int(weekday), 0, 0, 0, 0, location)
+	case ProgressMonth:
+		// Get start of current month
+		rangeStart = time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, location)
+	case ProgressYear:
+		// Get start of current year
+		rangeStart = time.Date(now.Year(), 1, 1, 0, 0, 0, 0, location)
+	case ProgressTotal:
+		// No filtering needed
+	}
+
+	// Filter and aggregate stats
+	var totalWords int
+	var totalMinutes float64
+	var totalWPM float64
+	var sprintCount int
+
+	for _, sprint := range sprints {
+		// Skip sprints outside range (except for total)
+		if rangeType != ProgressTotal {
+			sprintTime := sprint.Timestamp.In(location)
+			if sprintTime.Before(rangeStart) {
+				continue
+			}
+		}
+
+		totalWords += sprint.WordCount
+		totalMinutes += durationToMinutes(sprint.Duration)
+		totalWPM += sprint.WPM
+		sprintCount++
+	}
+
+	// Calculate averages
+	var avgWPM float64
+	if sprintCount > 0 {
+		avgWPM = totalWPM / float64(sprintCount)
+	}
+
+	// Calculate current streak
+	currentStreak := calculateCurrentStreak(sprints, timezone)
+
+	return ProgressStats{
+		WordCount:      totalWords,
+		MinutesWritten: totalMinutes,
+		AverageWPM:     avgWPM,
+		CurrentStreak:  currentStreak,
+	}
+}
+
+// Calculates the current (ongoing) streak of consecutive days with sprints
+func calculateCurrentStreak(sprints []Sprint, timezone string) int {
+	if len(sprints) == 0 {
+		return 0
+	}
+
+	location, err := time.LoadLocation(timezone)
+	if err != nil {
+		log.Printf("Invalid timezone %q, falling back to UTC: %v\n", timezone, err)
+		location = time.UTC
+	}
+
+	now := time.Now().In(location)
+	today := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, location)
+	yesterday := today.AddDate(0, 0, -1)
+
+	// Get most recent sprint's date
+	lastSprintTime := sprints[len(sprints)-1].Timestamp.In(location)
+	lastSprintDate := time.Date(
+		lastSprintTime.Year(),
+		lastSprintTime.Month(),
+		lastSprintTime.Day(),
+		0, 0, 0, 0,
+		location,
+	)
+
+	// If last sprint isn't from today or yesterday, no current streak
+	if lastSprintDate.Before(yesterday) {
+		return 0
+	}
+
+	// Count consecutive days backwards from the last sprint
+	streak := 1
+	lastDate := lastSprintDate
+	for i := len(sprints) - 2; i >= 0; i-- {
+		sprintTime := sprints[i].Timestamp.In(location)
+		sprintDate := time.Date(
+			sprintTime.Year(),
+			sprintTime.Month(),
+			sprintTime.Day(),
+			0, 0, 0, 0,
+			location,
+		)
+
+		// Skip if same day
+		if sprintDate.Equal(lastDate) {
+			continue
+		}
+
+		// Check if dates are consecutive
+		expectedPrevDate := lastDate.AddDate(0, 0, -1)
+		if !sprintDate.Equal(expectedPrevDate) {
+			break
+		}
+
+		streak++
+		lastDate = sprintDate
+	}
+
+	return streak
 }

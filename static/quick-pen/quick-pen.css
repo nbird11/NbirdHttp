@@ -448,3 +448,24 @@ button:hover {
 .add-tag button {
   width: auto;
 }
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+#progressRange {
+  padding: 0.5rem;
+  border: 1px solid var(--accent2-color);
+  border-radius: 4px;
+  background: var(--background-color-light);
+  font-size: 0.9rem;
+}
+
+#progressRange:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(61, 101, 65, 0.1);
+}

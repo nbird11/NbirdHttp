@@ -11,6 +11,14 @@ import { getLoggedInUser } from '/scripts/auth.js';
  * @property {string[]} tags
  */
 
+/**
+ * @typedef {Object} ProgressStats
+ * @property {number} wordCount
+ * @property {number} minutesWritten
+ * @property {number} averageWPM
+ * @property {number} currentStreak
+ */
+
 /** @type {Sprint[]} */
 let sprints = [];
 let sprintId = 0;
@@ -55,6 +63,19 @@ class SprintTimer {
     this.setupEventListeners();
     this.setupTagsEditor();
     this.loadSprints();
+
+    // Add progress elements
+    this.progressElements = {
+      words: document.querySelector('.progress-section .value[data-stat="words"]'),
+      minutes: document.querySelector('.progress-section .value[data-stat="minutes"]'),
+      wpm: document.querySelector('.progress-section .value[data-stat="wpm"]'),
+      streak: document.querySelector('.progress-section .value[data-stat="streak"]')
+    };
+
+    this.progressRange = document.getElementById('progressRange');
+    this.progressRange.addEventListener('change', () => this.loadProgress());
+
+    this.loadProgress();
 
     // Add high score elements
     this.highScoreElements = {
@@ -535,6 +556,46 @@ class SprintTimer {
       }
     } catch (error) {
       console.error('Error loading streak:', error);
+    }
+  }
+
+  async loadProgress() {
+    try {
+      const range = this.progressRange.value;
+      const response = await fetch(`/api/quick-pen/progress/${range}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${getLoggedInUser()}`,
+          'X-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to load progress stats');
+
+      /** @type {ProgressStats} */
+      const stats = await response.json();
+      this.updateProgressStats(stats);
+    } catch (error) {
+      console.error('Error loading progress:', error);
+    }
+  }
+
+  /**
+   * Update the progress stats widget
+   * @param {ProgressStats} stats
+   */
+  updateProgressStats(stats) {
+    if (this.progressElements.words) {
+      this.progressElements.words.textContent = stats.wordCount;
+    }
+    if (this.progressElements.minutes) {
+      this.progressElements.minutes.textContent = Math.round(stats.minutesWritten);
+    }
+    if (this.progressElements.wpm) {
+      this.progressElements.wpm.textContent = stats.averageWPM.toFixed(2);
+    }
+    if (this.progressElements.streak) {
+      this.progressElements.streak.textContent = stats.currentStreak;
     }
   }
 }

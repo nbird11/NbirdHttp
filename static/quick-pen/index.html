@@ -23,23 +23,31 @@
 
     <div class="content">
       <section class="container progress-section">
-        <h2>Your Progress [today|this week|this month|this year|total]</h2>
+        <div class="progress-header">
+          <h2>Your Progress</h2>
+          <select id="progressRange">
+            <option value="today">Today</option>
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+            <option value="total">Total</option>
+          </select>
+        </div>
         <div class="stats-grid">
-          <!-- TODO filter by today, week, month, year, total -->
           <article class="stat-card">
-            <p class="value">0</p>
+            <p class="value" data-stat="words">0</p>
             <p class="label">Words Written</p>
           </article>
           <article class="stat-card">
-            <p class="value">0</p>
+            <p class="value" data-stat="minutes">0</p>
             <p class="label">Minutes Written</p>
           </article>
           <article class="stat-card">
-            <p class="value">0</p>
+            <p class="value" data-stat="wpm">0</p>
             <p class="label">WPM Average</p>
           </article>
           <article class="stat-card">
-            <p class="value">0</p>
+            <p class="value" data-stat="streak">0</p>
             <p class="label">Current Streak 🔥</p>
           </article>
         </div>
