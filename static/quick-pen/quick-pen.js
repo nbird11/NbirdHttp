@@ -19,30 +19,6 @@ import { getLoggedInUser, AUTH_EVENT } from '/scripts/auth.js';
  * @property {number} currentStreak
  */
 
-/** @type {Sprint[]} */
-let sprints = [];
-let sprintId = 0;
-
-// Load sprints from server
-async function loadSprints() {
-  try {
-    const response = await fetch('/api/quick-pen/sprints', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${getLoggedInUser()}`
-      }
-    });
-    if (!response.ok) throw new Error('Failed to load sprints');
-
-    sprints = await response.json() || [];
-    sprintId = sprints.reduce((maxId, sprint) => Math.max(maxId, sprint.id), 0);
-    console.log('sprints', sprints);
-    sprints.forEach(sprint => addToHistory(sprint));
-  } catch (error) {
-    console.error('Error loading sprints:', error);
-  }
-}
-
 class SprintTimer {
   constructor() {
     /** @type {number} seconds */
