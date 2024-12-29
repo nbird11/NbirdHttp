@@ -1,4 +1,4 @@
-import { getLoggedInUser } from '/scripts/auth.js';
+import { getLoggedInUser, AUTH_EVENT } from '/scripts/auth.js';
 
 /**
  * @typedef {Object} Sprint
@@ -86,7 +86,7 @@ class SprintTimer {
     };
 
     this.loadHighScores();
-    
+
     // Add state for timer visibility
     this.isTimerVisible = true;
   }
@@ -379,7 +379,7 @@ class SprintTimer {
     this.updateWordCount();
     this.isPaused = false;
     this.pauseButton.textContent = 'Pause';
-    
+
     if (!this.isTimerVisible) {
       this.toggleTimerDisplay(); // Restore timer visibility
     }
@@ -534,7 +534,7 @@ class SprintTimer {
         });
 
         if (!response.ok) throw new Error(`Failed to load ${category} high score`);
-        
+
         /** @type {Sprint?} */
         const sprint = await response.json();
         if (sprint === null) continue;
@@ -626,8 +626,16 @@ class SprintTimer {
   }
 }
 
-// Simplified initialization
 document.addEventListener('DOMContentLoaded', () => {
-  // console.log('Page loaded, initializing sprint timer...');
-  window.sprintTimer = new SprintTimer();
-}); 
+  if (getLoggedInUser()) {
+    window.sprintTimer = new SprintTimer();
+  }
+});
+
+// Listen for auth changes
+window.addEventListener(AUTH_EVENT, (event) => {
+  console.log('Auth change event received:', event);
+  if (event.detail.action === 'login') {
+    window.location.reload();
+  }
+});
