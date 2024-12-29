@@ -28,6 +28,11 @@ function authTemplate() {
   </form>
 
   <style>
+    #logout {
+      margin: 1rem;
+      margin-bottom: 0;
+    }
+
     #auth {
       background-color: var(--background-color-light);
       border: 1px solid var(--accent2-color);

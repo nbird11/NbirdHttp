@@ -86,6 +86,9 @@ class SprintTimer {
     };
 
     this.loadHighScores();
+    
+    // Add state for timer visibility
+    this.isTimerVisible = true;
   }
 
   setupEventListeners() {
@@ -98,6 +101,7 @@ class SprintTimer {
     // Active sprint elements
     this.activeSprint = document.getElementById('activeSprint');
     this.timeRemainingDisplay = document.getElementById('timeRemaining');
+    this.toggleTimerButton = document.getElementById('toggleTimer');
     this.progressFill = document.getElementById('progressFill');
     this.pauseButton = document.getElementById('pauseButton');
     this.discardButton = document.getElementById('discardButton');
@@ -107,6 +111,7 @@ class SprintTimer {
 
     // Bind event listeners
     this.startButton.addEventListener('click', () => this.startSprint());
+    this.toggleTimerButton.addEventListener('click', () => this.toggleTimerDisplay());
     this.pauseButton.addEventListener('click', () => this.togglePause());
     this.discardButton.addEventListener('click', () => this.discardSprint());
     this.sprintText.addEventListener('input', () => this.updateWordCount());
@@ -374,6 +379,10 @@ class SprintTimer {
     this.updateWordCount();
     this.isPaused = false;
     this.pauseButton.textContent = 'Pause';
+    
+    if (!this.isTimerVisible) {
+      this.toggleTimerDisplay(); // Restore timer visibility
+    }
   }
 
   updateTimerDisplay() {
@@ -609,6 +618,11 @@ class SprintTimer {
     if (this.progressElements.streak) {
       this.progressElements.streak.textContent = stats.currentStreak;
     }
+  }
+
+  toggleTimerDisplay() {
+    this.isTimerVisible = !this.isTimerVisible;
+    this.timeRemainingDisplay.classList.toggle('hidden', !this.isTimerVisible);
   }
 }
 

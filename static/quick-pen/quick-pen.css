@@ -18,12 +18,6 @@ body {
   grid-template-columns: 1fr;
 }
 
-/* Logout Button */
-#logout {
-  margin: 1rem;
-  margin-bottom: 0;
-}
-
 /* Card Styling */
 .container {
   background: var(--background-color-light);
@@ -467,4 +461,38 @@ button:hover {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(61, 101, 65, 0.1);
+}
+
+.timer-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 90px;
+}
+
+#toggleTimer {
+  padding: 0.5rem;
+  width: 32px;
+  border: none;
+  border-radius: 50%;
+}
+
+#toggleTimer:hover {
+  background: var(--background-light-grey);
+  transform: none;
+  cursor: pointer;
+}
+
+.time-remaining {
+  margin: 0;
+  opacity: 1;
+  flex-basis: 160px;
+  transition: opacity 0.5s ease, flex-basis 0.5s ease;
+  overflow: hidden;
+}
+
+.time-remaining.hidden {
+  opacity: 0;
+  flex-basis: 0;
 }

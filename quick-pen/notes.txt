@@ -19,9 +19,9 @@ TODO | Priority
   - view history for each category. | 1
 
 - Current sprint widget:
+  - Duration: toggleShowTimer, always show sprint progress bar? | 1
   - Add ability to reuse an old duration. | 2
     - 3 most recent (or fequent?) durations
-  - Duration: toggleShowTimer, always show sprint progress bar? | 1
 
 - High score widget:
   - High score unit, show (crown?) emoji for new high score. | 2
