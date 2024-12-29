@@ -1,7 +1,14 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 footer {
   background-color: var(--background-color);
   color: white;
   padding: 1rem;
+  margin-top: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -39,6 +39,7 @@ function authTemplate() {
       border-radius: 16px;
       padding: 1rem;
       margin: 2rem auto;
+      margin-top: auto;
       max-width: 600px;
     }
 
