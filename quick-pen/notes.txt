@@ -21,8 +21,7 @@ TODO | Priority
 - Current sprint widget:
   - Add ability to reuse an old duration. | 2
     - 3 most recent (or fequent?) durations
-  - Duration: toggleShowTimer, always show sprint progress bar? | 2
-  - End sprint early button: ask whether to use time time spent or original duration. 2
+  - Duration: toggleShowTimer, always show sprint progress bar? | 1
 
 - High score widget:
   - High score unit, show (crown?) emoji for new high score. | 2

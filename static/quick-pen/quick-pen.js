@@ -285,6 +285,9 @@ class SprintTimer {
       } else if (!confirm('Are you sure you want to end this sprint early?')) {
         return;
       }
+      if (confirm('Use original duration rather than actual time spent?')) {
+        this.timeRemaining = 0;
+      }
     }
 
     // Calculate time spent and WPM
@@ -295,9 +298,8 @@ class SprintTimer {
     this.sprintText.disabled = true;
 
     const wordCount = this.countWords(this.sprintText.value);
-    const durationMinutes = timeSpent / 60;
-    console.assert(durationMinutes > 0, 'Duration should be guaranteed to be greater than 0 in duration input validation.');
-    const wpm = wordCount / durationMinutes;
+    console.assert(timeSpentMinutes > 0, 'Duration should be guaranteed to be greater than 0 in duration input validation.');
+    const wpm = wordCount / timeSpentMinutes;
 
     // Format duration
     let duration;
@@ -338,9 +340,11 @@ class SprintTimer {
 
       this.sprints.push(sprintData);
       this.addToHistory(sprintData);
+      this.loadProgress();
       // TODO: if highscore changed, add crown emoji to highscore unit
-      this.loadHighScores();  // Reload high scores after new sprint
+      this.loadHighScores();
       this.resetInterface();
+      this.showSprintContent(sprintData);
     } catch (error) {
       this.sprintId--;
       console.error('Error saving sprint:', error);
@@ -437,6 +441,10 @@ class SprintTimer {
     }
   }
 
+  /**
+   * Add a sprint to the history widget
+   * @param {Sprint} sprintData
+   */
   addToHistory(sprintData) {
     // console.log('Updating progress board with sprint:', sprintData);
     const history = document.getElementById('history');
@@ -460,6 +468,10 @@ class SprintTimer {
     entry.addEventListener('click', () => this.showSprintContent(sprintData));
   }
 
+  /**
+   * Show the content of a given sprint in the content viewer
+   * @param {Sprint} sprintData
+   */
   async showSprintContent(sprintData) {
     /** @type {HTMLTextAreaElement} */
     const contentViewer = document.getElementById('contentViewer');
