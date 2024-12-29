@@ -151,7 +151,7 @@ async function loginUser(username, password) {
   if (response.ok) {
     localStorage.setItem('loggedInUser', username);
     setContentVisible(true);
-    window.dispatchEvent(new CustomEvent(AUTH_EVENT, { 
+    window.dispatchEvent(new CustomEvent(AUTH_EVENT, {
       detail: { user: username, action: 'login' }
     }));
   } else {
@@ -164,7 +164,7 @@ function logoutUser() {
   const user = getLoggedInUser();
   localStorage.removeItem('loggedInUser');
   setContentVisible(false);
-  window.dispatchEvent(new CustomEvent(AUTH_EVENT, { 
+  window.dispatchEvent(new CustomEvent(AUTH_EVENT, {
     detail: { user, action: 'logout' }
   }));
 }

@@ -1,7 +1,7 @@
 async function handlePost(endpoint) {
   endpoint += `?user=${g_loggedInUser}`
   try {
-    const response = await fetch(endpoint, { 
+    const response = await fetch(endpoint, {
       method: 'POST',
     });
 

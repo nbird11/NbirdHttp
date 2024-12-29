@@ -27,20 +27,20 @@ function profileInfoTemplate(name, contact, bio, websites) {
 }
 
 /**
- * Loads the profile information into the DOM.  
+ * Loads the profile information into the DOM.
  * Populates the profile-info section with user data from profile.mjs
  */
 function loadProfile() {
   document.getElementById('profile-info').innerHTML = profileInfoTemplate(
-    profile.name, 
-    profile.contact, 
-    profile.bio, 
+    profile.name,
+    profile.contact,
+    profile.bio,
     profile.websites
   );
 }
 
 /**
- * Loads the about text into the DOM  
+ * Loads the about text into the DOM
  * Converts newlines to semantic paragraphs and populates the about section
  */
 function loadAbout() {

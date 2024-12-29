@@ -68,6 +68,7 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+
   .card-item,
   .card-item:nth-child(even) {
     flex-direction: column;
@@ -78,4 +79,4 @@
   .card-list-items li {
     text-align: left;
   }
-} 
+}

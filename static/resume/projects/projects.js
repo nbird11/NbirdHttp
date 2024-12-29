@@ -6,15 +6,15 @@ import projects from './projects.mjs';
  * @returns {string} HTML string representing the project card
  */
 function projectTemplate(project) {
-  const techStack = project.technologies.map(tech => 
+  const techStack = project.technologies.map(tech =>
     `<span class="tech-badge">${tech}</span>`
   ).join('');
-  
+
   return `
     <div class="project-card" data-categories="${project.categories.join(' ')}">
       <div class="project-image">
         ${project.featured ? '<span class="featured-badge">Featured</span>' : ''}
-        <img src="${project.image || './assets/project-default.png'}" 
+        <img src="${project.image || './assets/project-default.png'}"
              alt="${project.title} screenshot"
              onerror="this.src='./assets/project-default.png'">
       </div>
@@ -42,13 +42,13 @@ function projectTemplate(project) {
 function setupFilters() {
   /** @type {NodeListOf<HTMLButtonElement>} */
   const filterButtons = document.querySelectorAll('.filter-btn');
-  
+
   filterButtons.forEach(button => {
     button.addEventListener('click', () => {
       // Update active button
       filterButtons.forEach(btn => btn.classList.remove('active'));
       button.classList.add('active');
-      
+
       const filter = button.dataset.filter;
       filterProjects(filter);
     });
@@ -62,7 +62,7 @@ function setupFilters() {
 function filterProjects(filter) {
   /** @type {NodeListOf<HTMLDivElement>} */
   const projects = document.querySelectorAll('.project-card');
-  
+
   projects.forEach(project => {
     if (filter === 'all') {
       project.style.display = 'block';
@@ -74,7 +74,7 @@ function filterProjects(filter) {
 }
 
 /**
- * Initializes the projects page by loading project data and setting up filters.  
+ * Initializes the projects page by loading project data and setting up filters.
  * Renders all projects and initializes the filtering functionality
  */
 function loadProjects() {
@@ -83,4 +83,4 @@ function loadProjects() {
   setupFilters();
 }
 
-loadProjects(); 
+loadProjects();

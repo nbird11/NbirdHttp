@@ -8,7 +8,7 @@ import profile from '/scripts/profile.mjs';
 function experienceTemplate(experience) {
   const logoSrc = experience.logo || '/assets/simple-NB-logo.png';
   const bullets = experience.bullets.map(bullet => `<li>${bullet}</li>`).join('');
-  
+
   return `
     <div class="card-item">
       <img class="card-logo company-logo" src="${logoSrc}" alt="${experience.company} logo">
@@ -34,4 +34,4 @@ function loadExperience() {
   document.getElementById('experience-list').innerHTML = experienceHTML;
 }
 
-loadExperience(); 
+loadExperience();

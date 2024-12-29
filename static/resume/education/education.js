@@ -9,7 +9,7 @@ function educationTemplate(education) {
   const logoSrc = education.logo || '../assets/simple-NB-logo.png';
   const activities = education.activities.map(activity => `<li>${activity}</li>`).join('');
   const gpaSection = education.gpa ? `<p>GPA: ${education.gpa}</p>` : '';
-  
+
   return `
     <div class="card-item">
       <img class="card-logo" src="${logoSrc}" alt="${education.institution} logo">
@@ -31,7 +31,7 @@ function educationTemplate(education) {
 }
 
 /**
- * Loads all education items into the DOM.  
+ * Loads all education items into the DOM.
  * Renders education cards using data from profile.mjs
  */
 function loadEducation() {
@@ -39,4 +39,4 @@ function loadEducation() {
   document.getElementById('education-list').innerHTML = educationHTML;
 }
 
-loadEducation(); 
+loadEducation();

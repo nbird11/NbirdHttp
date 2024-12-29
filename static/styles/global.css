@@ -11,10 +11,10 @@
   --accent2-color: #C3DFE0;
   --background-color: #112A2B;
   --background-color-light: #F8F8F8;
-  
+
   /* High Contrast Colors */
   --secondary-color-high-contrast-white: #87734B;
-  
+
   /* Colors for text */
   --headline-color-on-white: var(--background-color);
   --headline-color-on-color: white;
@@ -22,13 +22,13 @@
   --paragraph-color-on-color: white;
   --paragraph-color-dim-on-white: #00000090;
   --paragraph-background-color: var(--primary-color);
-  
+
   /* Colors for navigation */
   --nav-link-color: white;
   --nav-background-color: var(--secondary-color);
   --nav-hover-link-color: var(--background-color);
   --nav-hover-background-color: var(--accent2-color);
-  
+
   /* Fonts */
   --heading-font: "Helvetica", sans-serif;
   --paragraph-font: "Merriweather", serif;
