@@ -1,11 +1,15 @@
 #!/bin/bash
 
-git fetch
-git pull
+echo "Executing CI on $(date)"
+
+cd /home/nbird11/dev/Go/NbirdHttp
+
+/usr/bin/git fetch
+/usr/bin/git pull
 
 # Check if any .go files were changed in the pull
-if git diff --name-only ORIG_HEAD HEAD | grep -q "\.go$"; then
+if /usr/bin/git diff --name-only ORIG_HEAD HEAD | /usr/bin/grep -q "\.go$"; then
     echo "Restarting server..."
-    ./restart
+    /home/nbird11/dev/Go/NbirdHttp/restart
     echo "Running."
 fi

@@ -1,4 +1,6 @@
 #!/bin/bash
 
-./build
+cd /home/nbird11/dev/Go/NbirdHttp
+
+/home/nbird11/dev/Go/NbirdHttp/build
 sudo systemctl restart nbirdHttp.service
