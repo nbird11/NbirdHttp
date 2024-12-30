@@ -78,6 +78,7 @@ func QuickPenController() {
 	http.HandleFunc("POST /api/quick-pen/sprint", handleCreateSprint)
 	http.HandleFunc("GET /api/quick-pen/sprint/{id}/content", handleGetSprintContent)
 	http.HandleFunc("PATCH /api/quick-pen/sprint/{id}/tags", handleUpdateSprintTags)
+
 	http.HandleFunc("GET /api/quick-pen/best-sprint/{category}", handleGetBestSprint)
 	http.HandleFunc("GET /api/quick-pen/best-streak", handleGetBestStreak)
 	http.HandleFunc("GET /api/quick-pen/progress/{range}", handleGetProgress)
