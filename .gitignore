@@ -34,4 +34,13 @@ punch/.punch*
 # QuickPen
 quick-pen/.*
 
+# Build/util scripts
+# dev
 run-local*
+# prod
+build
+restart
+pull
+status-server
+status-ci
+status
