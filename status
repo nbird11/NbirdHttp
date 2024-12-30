@@ -1,3 +1,22 @@
 #!/bin/bash
 
-systemctl status nbirdHttp.service
+SESSION_NAME="status"
+
+# Check if the session exists
+tmux has-session -t $SESSION_NAME 2>/dev/null
+
+if [ $? -eq 0 ]; then
+    # Session exists, attach to it
+    echo "Attaching to existing session '$SESSION_NAME'..."
+    tmux attach -t $SESSION_NAME
+else
+    # Session doesn't exist, create it
+    echo "Creating new session '$SESSION_NAME'..."
+    tmux new-session -s $SESSION_NAME \; \
+        split-window -v \; \
+        select-pane -t 1 \; \
+        send-keys './status-server' C-m \; \
+        select-pane -t 2 \; \
+        send-keys './status-ci' C-m \; \
+        select-layout main-horizontal
+fi

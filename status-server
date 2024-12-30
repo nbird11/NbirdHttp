@@ -1,0 +1,3 @@
+#!/bin/bash
+
+watch -w systemctl status nbirdHttp.service
