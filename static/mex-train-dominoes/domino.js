@@ -8,6 +8,24 @@ const Orientation = {
   VERTICAL: 1
 };
 
+/** @type {Record<number, string>} */
+const PipColors = {
+  1: '#ff0000',   // Red
+  2: '#638c4d',   // Green
+  3: '#7f4db3',   // Purple
+  4: '#63d4d3',   // Bright Blue
+  5: '#ff69b4',   // Pink
+  6: '#d0870e',   // Orange
+  7: '#707070',   // Gray
+  8: '#e6c619',   // Yellow
+  9: '#009d9d',   // Cyan
+  10: '#4242ff',  // Blue
+  11: '#704214',  // Brown
+  12: '#75929b'   // Light Blue
+};
+
+const DOMINO_BACKGROUND_COLOR = '#f8f6ec';
+
 class Domino {
   /**
    * @param {number} end1 - Number on one end (0-12)
@@ -28,21 +46,21 @@ class Domino {
    * @param {number} y - Center y coordinate
    */
   draw(ctx, x, y) {
-    // Save the current context state
     ctx.save();
 
-    // Align to pixel grid for crisp lines
     const leftX = Math.round(x - this.width / 2);
     const topY = Math.round(y - this.height / 2);
 
     // Draw the domino background
-    ctx.fillStyle = 'white';
+    ctx.fillStyle = DOMINO_BACKGROUND_COLOR;
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 2;
 
-    // Main rectangle
-    ctx.fillRect(leftX, topY, this.width, this.height);
-    ctx.strokeRect(leftX + 0.5, topY + 0.5, this.width - 1, this.height - 1);
+    // Main rectangle with rounded corners
+    ctx.beginPath();
+    ctx.roundRect(leftX, topY, this.width, this.height, 5);
+    ctx.fill();
+    ctx.stroke();
 
     // Dividing line
     ctx.beginPath();
@@ -67,7 +85,9 @@ class Domino {
   drawPips(ctx, centerX, centerY, value) {
     const positions = this.getPipPositions(value);
 
-    ctx.fillStyle = 'black';
+    // Use black for 0, otherwise use the color for the pip count
+    if (value === 0) return;
+    ctx.fillStyle = PipColors[value];
     positions.forEach(([xOffset, yOffset]) => {
       ctx.beginPath();
       ctx.arc(
@@ -108,8 +128,8 @@ class Domino {
       case 7: append(offsets, threeAcross(0), oneAcross(1), threeAcross(2)); break;
       case 8: append(offsets, threeAcross(0), twoAcross(1), threeAcross(2)); break;
       case 9: append(offsets, threeAcross(0), threeAcross(1), threeAcross(2)); break;
-      case 10: append(offsets, fourAcross(0), twoAcross(1), fourAcross(2)); break;
-      case 11: append(offsets, fourAcross(0), threeAcross(1), fourAcross(2)); break;
+      case 10: append(offsets, fourAcross(0), [[-1.5, 0], [1.5, 0]], fourAcross(2)); break;
+      case 11: append(offsets, fourAcross(0), [[-1.5, 0], [0, 0], [1.5, 0]], fourAcross(2)); break;
       case 12: append(offsets, fourAcross(0), fourAcross(1), fourAcross(2)); break;
       default: return [];
     }
@@ -134,16 +154,16 @@ class PipOffsetBuilder {
   constructor(orientation, index, quantity) {
     this.#validateIndex(orientation, index);
     this.#validateQuantity(quantity);
-    
+
     if (![Orientation.HORIZONTAL, Orientation.VERTICAL].includes(orientation)) {
       throw new Error(`Invalid orientation: ${orientation}. Must be 0 (HORIZONTAL) or 1 (VERTICAL).`);
     }
     const indexOffset = index - 1;
     const combineIndexAndOffset = (position) =>
       orientation === Orientation.HORIZONTAL
-    ? [position, indexOffset]
-    : [indexOffset, position];
-    
+        ? [position, indexOffset]
+        : [indexOffset, position];
+
     /** @type {Array<[number, number]>} `[x offset, y offset]`   */
     this.offsets = PipOffsetBuilder.#POSITIONS[quantity].map(combineIndexAndOffset);
   }
