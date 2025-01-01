@@ -19,21 +19,41 @@
       <script type="module" src="./index.js"></script>
     </canvas>
     <style>
+      main {
+        background-color: #181818;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100vw;
+        height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
       canvas {
-        aspect-ratio: 16/9;
-        width: 800px;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
         height: auto;
+        aspect-ratio: 16/9;
+      }
+
+      /* Ensure the canvas maintains aspect ratio and fits the screen */
+      @media (min-aspect-ratio: 16/9) {
+        canvas {
+          width: auto;
+          height: 95vh;
+        }
+      }
+
+      @media (max-aspect-ratio: 16/9) {
+        canvas {
+          width: 95vw;
+          height: auto;
+        }
       }
     </style>
   </main>
-  <style>
-    main {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-  </style>
   <!-- <footer>
     <link rel="stylesheet" href="/styles/footer.css">
     <script src="/scripts/load-footer.js"></script>
