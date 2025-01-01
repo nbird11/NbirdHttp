@@ -36,9 +36,9 @@ class Game {
     this.drawBackground();
     this.writeText('Mexican Train Dominoes', this.width / 2, this.height / 8, 32);
 
-    let position = { x: 45, y: 25 };
+    let position = { x: 45, y: this.height - 13 * 35 };
     let prev = this.dominoes[0].end1;
-    for (const domino of this.dominoes) {
+    for (const domino of this.dominoes) {``
       // if (position.x > this.width - 45) {
       if (domino.end1 !== prev) {
         prev = domino.end1;

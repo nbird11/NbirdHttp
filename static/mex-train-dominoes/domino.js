@@ -134,27 +134,27 @@ class PipOffsetBuilder {
   constructor(orientation, index, quantity) {
     this.#validateIndex(orientation, index);
     this.#validateQuantity(quantity);
-    /** @type {Array<[number, number]>} `[x offset, y offset]`   */
-    this.offsets = [];
-    switch (orientation) {
-      case Orientation.HORIZONTAL:
-        this.offsets = PipOffsetBuilder.#POSITIONS[quantity].map(position => [position, index - 1]);
-        break;
-      case Orientation.VERTICAL:
-        this.offsets = PipOffsetBuilder.#POSITIONS[quantity].map(position => [index - 1, position]);
-        break;
-      default:
-        throw new Error(`Invalid orientation (0,1): ${orientation}`);
+    
+    if (![Orientation.HORIZONTAL, Orientation.VERTICAL].includes(orientation)) {
+      throw new Error(`Invalid orientation: ${orientation}. Must be 0 (HORIZONTAL) or 1 (VERTICAL).`);
     }
+    const indexOffset = index - 1;
+    const combineIndexAndOffset = (position) =>
+      orientation === Orientation.HORIZONTAL
+    ? [position, indexOffset]
+    : [indexOffset, position];
+    
+    /** @type {Array<[number, number]>} `[x offset, y offset]`   */
+    this.offsets = PipOffsetBuilder.#POSITIONS[quantity].map(combineIndexAndOffset);
   }
 
   /**
    * @param {number} index - 0-based index
    * @throws {Error} if the index is invalid for the given orientation
    */
-  #validateIndex(orientation, index) {
+  #validateIndex(index) {
     if (index < 0 || index > 2) {
-      throw new Error(`Invalid row index (0-2) : ${index}`);
+      throw new Error(`Invalid row index: ${index}. Must be in range 0-2.`);
     }
   }
 
@@ -164,7 +164,7 @@ class PipOffsetBuilder {
    */
   #validateQuantity(quantity) {
     if (quantity < 1 || quantity > 4) {
-      throw new Error(`Invalid quantity (1-4) : ${quantity}`);
+      throw new Error(`Invalid quantity: ${quantity}. Must be in range 1-4.`);
     }
   }
 }  // class PipOffsetBuilder
