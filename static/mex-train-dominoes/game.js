@@ -4,8 +4,18 @@ class Game {
   /** @param {CanvasRenderingContext2D} ctx */
   constructor(ctx) {
     this.ctx = ctx;
-    this.testDomino = new Domino(6, 4);
+    /** @type {Domino[]} */
+    this.dominoes = [];  // DELETEME: for testing
     this.updateDimensions(ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+    this.createDominoes();  // DELETEME: for testing
+  }
+
+  createDominoes() {  // DELETEME: for testing
+    for (let i = 0; i < 13; i++) {
+      for (let j = 0; j <= i; j++) {
+        this.dominoes.push(new Domino(i, j));
+      }
+    }
   }
 
   /**
@@ -26,12 +36,18 @@ class Game {
     this.drawBackground();
     this.writeText('Mexican Train Dominoes', this.width / 2, this.height / 8, 32);
 
-    // Draw test domino in the center of the canvas
-    this.testDomino.draw(
-      this.ctx,
-      this.width / 2,
-      this.height / 2
-    );
+    let position = { x: 45, y: 25 };
+    let prev = this.dominoes[0].end1;
+    for (const domino of this.dominoes) {
+      // if (position.x > this.width - 45) {
+      if (domino.end1 !== prev) {
+        prev = domino.end1;
+        position.x = 45;
+        position.y += 35;
+      }
+      domino.draw(this.ctx, position.x, position.y);
+      position.x += 75;
+    }
   }
 
   drawBackground() {
