@@ -31,7 +31,7 @@ function setupCanvas() {
 function main() {
   setupCanvas();
   game = new Game(ctx);
-  game.draw();
+  game.run();  // This will start the animation loop
 }
 
 /**

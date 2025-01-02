@@ -1,13 +1,3 @@
-/**
- * Enum representing the orientation of a domino
- * @enum {number}
- * @readonly
- */
-const Orientation = {
-  HORIZONTAL: 0,
-  VERTICAL: 1
-};
-
 /** @type {Record<number, string>} */
 const PipColors = {
   1: '#ff0000',   // Red
@@ -21,7 +11,7 @@ const PipColors = {
   9: '#009d9d',   // Cyan
   10: '#4242ff',  // Blue
   11: '#704214',  // Brown
-  12: '#75929b'   // Light Blue
+  12: '#75929b',  // Light Blue
 };
 
 const DOMINO_BACKGROUND_COLOR = '#f8f6ec';
@@ -34,10 +24,21 @@ class Domino {
   constructor(end1, end2) {
     this.end1 = end1;
     this.end2 = end2;
-    this.orientation = Orientation.HORIZONTAL;
+    this.rotation = 0;  // Angle in radians
     this.width = 70;
     this.height = 30;
     this.pipRadius = 2;
+  }
+
+  /**
+   * Set the rotation of the domino
+   * @param {number} degrees - Rotation in degrees
+   */
+  setRotation(degrees) {
+    // Normalize degrees to 0-360 range
+    degrees = ((degrees % 360) + 360) % 360;
+    this.rotation = degrees * Math.PI / 180;
+    return this;  // for chaining
   }
 
   /**
@@ -48,8 +49,12 @@ class Domino {
   draw(ctx, x, y) {
     ctx.save();
 
-    const leftX = Math.round(x - this.width / 2);
-    const topY = Math.round(y - this.height / 2);
+    // Move to center point and rotate
+    ctx.translate(x, y);
+    ctx.rotate(this.rotation);
+
+    const leftX = Math.round(-this.width / 2);
+    const topY = Math.round(-this.height / 2);
 
     // Draw the domino background
     ctx.fillStyle = DOMINO_BACKGROUND_COLOR;
@@ -64,16 +69,18 @@ class Domino {
 
     // Dividing line
     ctx.beginPath();
-    ctx.moveTo(Math.round(x) + 0.5, topY);
-    ctx.lineTo(Math.round(x) + 0.5, topY + this.height);
+    ctx.moveTo(0, topY);
+    ctx.lineTo(0, topY + this.height);
     ctx.stroke();
 
     // Draw pips
     const halfWidth = this.width / 2;
-    this.drawPips(ctx, leftX + halfWidth / 2, topY + this.height / 2, this.end1);
-    this.drawPips(ctx, leftX + halfWidth * 1.5, topY + this.height / 2, this.end2);
+    this._drawPips(ctx, -halfWidth / 2, 0, this.end1);
+    this._drawPips(ctx, halfWidth / 2, 0, this.end2);
 
     ctx.restore();
+
+    return this;  // for chaining
   }
 
   /**
@@ -82,8 +89,8 @@ class Domino {
    * @param {number} centerY - Center y coordinate of the domino half
    * @param {number} value - Number of pips to draw (0-12)
    */
-  drawPips(ctx, centerX, centerY, value) {
-    const positions = this.getPipPositions(value);
+  _drawPips(ctx, centerX, centerY, value) {
+    const positions = this._getPipPositions(value);
 
     // Use black for 0, otherwise use the color for the pip count
     if (value === 0) return;
@@ -106,11 +113,11 @@ class Domino {
    * @param {number} value 
    * @returns {Array<[number, number]>} Array of [x, y] offsets
    */
-  getPipPositions(value) {
-    const oneAcross = (index) => new PipOffsetBuilder(this.orientation, index, 1).offsets;
-    const twoAcross = (index) => new PipOffsetBuilder(this.orientation, index, 2).offsets;
-    const threeAcross = (index) => new PipOffsetBuilder(this.orientation, index, 3).offsets;
-    const fourAcross = (index) => new PipOffsetBuilder(this.orientation, index, 4).offsets;
+  _getPipPositions(value) {
+    const oneAcross = (index) => new PipOffsetBuilder(index, 1).offsets;
+    const twoAcross = (index) => new PipOffsetBuilder(index, 2).offsets;
+    const threeAcross = (index) => new PipOffsetBuilder(index, 3).offsets;
+    const fourAcross = (index) => new PipOffsetBuilder(index, 4).offsets;
 
     const append = (target, ...offsets) => extendArray(target, ...offsets);
 
@@ -146,26 +153,20 @@ class PipOffsetBuilder {
   }
 
   /**
-   * @param {Orientation} orientation - 0: horizontal, 1: vertical
    * @param {number} index - 0-based row(/column) index
    * @param {number} quantity - 1-based quantity
-   * @throws {Error} if the orientation, index, or quantity is invalid
+   * @throws {Error} if the index or quantity is invalid
    */
-  constructor(orientation, index, quantity) {
-    this.#validateIndex(orientation, index);
+  constructor(index, quantity) {
+    this.#validateIndex(index);
     this.#validateQuantity(quantity);
 
-    if (![Orientation.HORIZONTAL, Orientation.VERTICAL].includes(orientation)) {
-      throw new Error(`Invalid orientation: ${orientation}. Must be 0 (HORIZONTAL) or 1 (VERTICAL).`);
-    }
     const indexOffset = index - 1;
-    const combineIndexAndOffset = (position) =>
-      orientation === Orientation.HORIZONTAL
-        ? [position, indexOffset]
-        : [indexOffset, position];
 
-    /** @type {Array<[number, number]>} `[x offset, y offset]`   */
-    this.offsets = PipOffsetBuilder.#POSITIONS[quantity].map(combineIndexAndOffset);
+    /** @type {Array<[number, number]>} `[x offset, y offset]` */
+    this.offsets = PipOffsetBuilder.#POSITIONS[quantity].map(
+      position => [position, indexOffset]
+    );
   }
 
   /**
