@@ -1,3 +1,5 @@
+import Angle from './angle.js';
+
 /** @type {Record<number, string>} */
 const PipColors = {
   1: '#ff0000',   // Red
@@ -22,23 +24,18 @@ class Domino {
    * @param {number} end2 - Number on the other end (0-12)
    */
   constructor(end1, end2) {
+    /** @type {number} */
     this.end1 = end1;
+    /** @type {number} */
     this.end2 = end2;
-    this.rotation = 0;  // Angle in radians
+    /** @type {Angle} */
+    this.rotation = new Angle(0);  // Angle in radians
+    /** @type {number} */
     this.width = 70;
+    /** @type {number} */
     this.height = 30;
+    /** @type {number} */
     this.pipRadius = 2;
-  }
-
-  /**
-   * Set the rotation of the domino
-   * @param {number} degrees - Rotation in degrees
-   */
-  setRotation(degrees) {
-    // Normalize degrees to 0-360 range
-    degrees = ((degrees % 360) + 360) % 360;
-    this.rotation = degrees * Math.PI / 180;
-    return this;  // for chaining
   }
 
   /**
@@ -51,7 +48,7 @@ class Domino {
 
     // Move to center point and rotate
     ctx.translate(x, y);
-    ctx.rotate(this.rotation);
+    ctx.rotate(this.rotation.getRadians());
 
     const leftX = Math.round(-this.width / 2);
     const topY = Math.round(-this.height / 2);
