@@ -72,7 +72,6 @@ class Domino {
     ctx.stroke();
 
     // Draw pips
-    const halfWidth = this.width / 2;
     this._drawPips(ctx, true, this.end1);
     this._drawPips(ctx, false, this.end2);
 
@@ -83,13 +82,31 @@ class Domino {
 
   /**
    * @param {CanvasRenderingContext2D} ctx
+   * @param {number} x - X coordinate
+   * @param {number} y - Y coordinate
+   */
+  drawAt(ctx, x, y) {
+    this.position.setPosition({ x, y });
+    this.draw(ctx);
+  }
+  
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {Position} position
+   */
+  drawAtPosition(ctx, position) {
+    this.position.setPosition(position);
+    this.draw(ctx);
+  }
+
+  /**
+   * @param {CanvasRenderingContext2D} ctx
    * @param {boolean} end1 - True if end1, default true
    * @param {number} value - Number of pips to draw (0-12)
    */
   _drawPips(ctx, end1 = true, value) {
     const positions = this._getPipPositions(value);
 
-    // Use black for 0, otherwise use the color for the pip count
     if (value === 0) return;
     ctx.fillStyle = PipColors[value];
     positions.forEach(([xOffset, yOffset]) => {
