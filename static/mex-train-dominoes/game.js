@@ -21,6 +21,9 @@ class Game {
     this.height = ctx.canvas.clientHeight;
     /** @type {Scene} */
     this.currentScene = new TitleScene(this);
+
+    // Add click handler
+    ctx.canvas.addEventListener('click', (event) => this._handleClick(event));
   }
 
   /**
@@ -73,6 +76,21 @@ class Game {
    */
   setScene(scene) {
     this.currentScene = scene;
+  }
+
+  /**
+   * Handle click events
+   * @param {MouseEvent} event 
+   */
+  _handleClick(event) {
+    const rect = this.ctx.canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    
+    // Forward click to current scene if it handles clicks
+    if (typeof this.currentScene.onClick === 'function') {
+      this.currentScene.onClick(x, y);
+    }
   }
 }
 
