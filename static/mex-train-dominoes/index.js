@@ -1,24 +1,24 @@
 import Game from './game.js';
 
 /** @type {HTMLCanvasElement} */
-const canvas = document.getElementById('game');
+const canvasElement = document.getElementById('game');
 /** @type {CanvasRenderingContext2D} */
-const ctx = canvas.getContext('2d');
+const ctx = canvasElement.getContext('2d');
 
-/** @type {Game} */
+/** @type {Game?} */
 let game = null;
 
-function setupCanvas() {
+function updateCanvasScale() {
   // Get the display size
-  const displayWidth = canvas.clientWidth;
-  const displayHeight = canvas.clientHeight;
+  const displayWidth = canvasElement.clientWidth;
+  const displayHeight = canvasElement.clientHeight;
 
   // Get the device pixel ratio
   const dpr = window.devicePixelRatio || 1;
 
   // Set the canvas size in actual pixels
-  canvas.width = displayWidth * dpr;
-  canvas.height = displayHeight * dpr;
+  canvasElement.width = displayWidth * dpr;
+  canvasElement.height = displayHeight * dpr;
 
   // Scale the context to ensure correct drawing operations
   ctx.scale(dpr, dpr);
@@ -26,10 +26,12 @@ function setupCanvas() {
   // Enable text anti-aliasing
   ctx.textRendering = 'optimizeLegibility';
   ctx.imageSmoothingEnabled = true;
+
+  game?.updateDimensions();
 }
 
 function main() {
-  setupCanvas();
+  updateCanvasScale();
   game = new Game(ctx);
   game.run();  // This will start the animation loop
 }
@@ -54,12 +56,6 @@ function debounce(func, wait) {
 }
 
 // Handle resize events
-window.addEventListener('resize', debounce(() => {
-  if (game) {
-    setupCanvas();
-    game.updateDimensions(canvas.clientWidth, canvas.clientHeight);
-    game.draw();
-  }
-}, 250));
+window.addEventListener('resize', debounce(updateCanvasScale, 250));
 
 document.addEventListener('DOMContentLoaded', main);

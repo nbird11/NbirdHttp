@@ -1,107 +1,78 @@
-import Domino from './domino.js';
+import TitleScene from './scenes/title-scene.js';
 
-var debug = true;
-var loopCount = 0;
+/** @typedef {import('./scene.js').default} Scene */
 
+/**
+ * The main game class
+ * @class Game
+ * @property {CanvasRenderingContext2D} ctx - The canvas context
+ * @property {Scene} currentScene - The current scene
+ */
 class Game {
-  /** @param {CanvasRenderingContext2D} ctx */
+  /**
+   * @param {CanvasRenderingContext2D} ctx - The canvas context
+   */
   constructor(ctx) {
+    /** @type {CanvasRenderingContext2D} */
     this.ctx = ctx;
-    /** @type {Domino[]} */
-    this.dominoes = [];  // DELETEME: for testing
-    this.updateDimensions(ctx.canvas.clientWidth, ctx.canvas.clientHeight);
-    this._createAllDominoes();  // DELETEME: for testing
-  }
-
-  _createAllDominoes() {  // DELETEME: for testing
-    for (let i = 0; i < 13; i++) {
-      for (let j = 0; j <= i; j++) {
-        const domino = new Domino(i, j);
-        // Rotate every other domino by 45 degrees for testing
-        // if ((i + j) % 2 === 0) {
-        domino.rotation.setDegrees(90);
-        // }
-        this.dominoes.push(domino);
-      }
-    }
-    // this.dominoes.push(new Domino(3, 7).setRotation(0));
+    /** @type {number} */
+    this.width = ctx.canvas.clientWidth;
+    /** @type {number} */
+    this.height = ctx.canvas.clientHeight;
+    /** @type {Scene} */
+    this.currentScene = new TitleScene(this);
   }
 
   /**
-   * Update the game dimensions
-   * @param {number} width 
-   * @param {number} height 
+   * Write text to the canvas.
+   * @param {string} text - The text to write
+   * @param {number} x - The x coordinate
+   * @param {number} y - The y coordinate
+   * @param {number} fontSize - The font size
    */
-  updateDimensions(width, height) {
-    this.width = width;
-    this.height = height;
-  }
-
-  run() {
-    if (debug) {
-      console.log(`Running game loop ${loopCount}`);  // Debug
-      loopCount++;
-      if (loopCount > 10) {
-        debug = false;
-      }
-    }
-    this.update();
-    this.draw();
-    requestAnimationFrame(() => this.run());
-  }
-
-  draw() {
-    this.drawBackground();
-    this.writeText('Mexican Train Dominoes', this.width / 2, this.height / 8, 32);
-    this._displayAllDominoes();
-  }
-
-  update() {
-    if (debug) console.log('Updating dominoes');  // Debug
-    this.dominoes.forEach(domino => {
-      const before = domino.rotation.getDegrees();  // Debug
-      domino.rotation.addDegrees(1);
-      const after = domino.rotation.getDegrees();   // Debug
-      if (debug) console.log(`Domino rotation: ${before} -> ${after}`);  // Debug
-    });
-  }
-
-  _displayAllDominoes() {  // DELETEME: for testing
-    let position = { x: 45, y: 70 };
-    let prev = this.dominoes[0].end1;
-    for (const domino of this.dominoes) {
-      // if (position.x > this.width - 45) {  // snippet
-      if (domino.end1 <= 6) {
-        if (domino.end1 !== prev) {
-          prev = domino.end1;
-          position.x = 45;
-          position.y += 75;
-        }
-        domino.draw(this.ctx, position.x, position.y);
-        position.x += 35;
-        // }
-      } else {
-        if (domino.end1 !== prev) {
-          prev = domino.end1;
-          position.x = this.width - 45;
-          position.y -= domino.end1 !== 7 ? 75 : 0;
-        }
-        position.x -= 35;
-        domino.draw(this.ctx, position.x, position.y);
-      }
-    }
-  }
-
-  drawBackground() {
-    this.ctx.fillStyle = '#35654d';
-    this.ctx.fillRect(0, 0, this.width, this.height);
-  }
-
   writeText(text, x, y, fontSize = 20) {
     this.ctx.font = `${fontSize}px Arial`;
     this.ctx.fillStyle = 'white';
     this.ctx.textAlign = 'center';
     this.ctx.fillText(text, x, y);
+  }
+
+  /**
+   * Update the game dimensions
+   */
+  updateDimensions() {
+    this.width = this.ctx.canvas.clientWidth;
+    this.height = this.ctx.canvas.clientHeight;
+    this.currentScene.updateDimensions();
+  }
+
+  run() {
+    this.update();
+    this.draw();
+
+    requestAnimationFrame(() => this.run());
+  }
+
+  /**
+   * Update the game using the current scene.
+   */
+  update() {
+    this.currentScene.update();
+  }
+
+  /**
+   * Draw the game using the current scene.
+   */
+  draw() {
+    this.currentScene.draw();
+  }
+
+  /**
+   * Set the current scene.
+   * @param {Scene} scene - The scene to set
+   */
+  setScene(scene) {
+    this.currentScene = scene;
   }
 }
 
