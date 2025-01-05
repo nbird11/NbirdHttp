@@ -54,7 +54,7 @@ const profile = {
   name: "Nathan Bird",
   contact: {
     location: "Rexburg, ID",
-    email: "nathanbirdka+resume@gmail.com",
+    email: "nathanbirdka@gmail.com",
     phone: "(385) 392-5995"
   },
   bio: "Former Backend Software Development Intern at FamilySearch\nSoftware Engineering Student at Brigham Young University-Idaho",
