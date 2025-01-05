@@ -1,4 +1,5 @@
 import Angle from './angle.js';
+import Position from './position.js';
 
 /** @type {Record<number, string>} */
 const PipColors = {
@@ -28,6 +29,8 @@ class Domino {
     this.end1 = end1;
     /** @type {number} */
     this.end2 = end2;
+    /** @type {Position} */
+    this.position = new Position(0, 0);
     /** @type {Angle} */
     this.rotation = new Angle(0);  // Angle in radians
     /** @type {number} */
@@ -40,14 +43,12 @@ class Domino {
 
   /**
    * @param {CanvasRenderingContext2D} ctx
-   * @param {number} x - Center x coordinate
-   * @param {number} y - Center y coordinate
    */
-  draw(ctx, x, y) {
+  draw(ctx) {
     ctx.save();
 
     // Move to center point and rotate
-    ctx.translate(x, y);
+    ctx.translate(this.position.x, this.position.y);
     ctx.rotate(this.rotation.getRadians());
 
     const leftX = Math.round(-this.width / 2);
@@ -72,8 +73,8 @@ class Domino {
 
     // Draw pips
     const halfWidth = this.width / 2;
-    this._drawPips(ctx, -halfWidth / 2, 0, this.end1);
-    this._drawPips(ctx, halfWidth / 2, 0, this.end2);
+    this._drawPips(ctx, true, this.end1);
+    this._drawPips(ctx, false, this.end2);
 
     ctx.restore();
 
@@ -82,11 +83,10 @@ class Domino {
 
   /**
    * @param {CanvasRenderingContext2D} ctx
-   * @param {number} centerX - Center x coordinate of the domino half
-   * @param {number} centerY - Center y coordinate of the domino half
+   * @param {boolean} end1 - True if end1, default true
    * @param {number} value - Number of pips to draw (0-12)
    */
-  _drawPips(ctx, centerX, centerY, value) {
+  _drawPips(ctx, end1 = true, value) {
     const positions = this._getPipPositions(value);
 
     // Use black for 0, otherwise use the color for the pip count
@@ -94,9 +94,10 @@ class Domino {
     ctx.fillStyle = PipColors[value];
     positions.forEach(([xOffset, yOffset]) => {
       ctx.beginPath();
+      const halfWidth = this.width / 2;
       ctx.arc(
-        Math.round(centerX + xOffset * 8),
-        Math.round(centerY + yOffset * 8),
+        Math.round(end1 ? (-halfWidth / 2) + xOffset * 8 : (halfWidth / 2) + xOffset * 8),
+        Math.round(yOffset * 8),
         this.pipRadius,
         0,
         Math.PI * 2
