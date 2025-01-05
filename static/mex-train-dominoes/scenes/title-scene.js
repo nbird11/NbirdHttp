@@ -1,5 +1,6 @@
-import Scene from '../scene.js';
+import Scene from './scene.js';
 import Domino from '../domino.js';
+import GameScene from './game-scene.js';
 
 /** @typedef {import('../game.js').default} Game */
 
@@ -88,8 +89,8 @@ class TitleScene extends Scene {
    */
   onClick(x, y) {
     if (this.isPointInPlayButton(x, y)) {
-      console.log('Play button clicked!');
-      // TODO: Switch to game scene when implemented
+      const gameScene = new GameScene(this.game);
+      this.game.setScene(gameScene);
     }
   }
 

@@ -1,4 +1,4 @@
-/** @typedef {import('./game.js').default} Game */
+/** @typedef {import('../game.js').default} Game */
 
 /** @abstract */
 class Scene {
