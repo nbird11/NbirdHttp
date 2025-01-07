@@ -21,7 +21,7 @@ class GameScene extends Scene {
     this.notchDepth = Domino.LENGTH / 4;  // How deep the notches are
     /** @type {number} */
     this.notchWidth = Domino.WIDTH * 1.2;  // Slightly wider than domino width
-    
+
     this._createBoneyard();
   }
 
@@ -47,7 +47,7 @@ class GameScene extends Scene {
     const centerY = this.game.height / 2;
     const radius = this.hubSize / 2;
     const baseRotation = Math.PI / 8;  // 22.5 degrees
-    
+
     ctx.save();
     ctx.translate(centerX, centerY);
     ctx.rotate(baseRotation);  // Rotate octagon to align edges with axes
@@ -58,7 +58,7 @@ class GameScene extends Scene {
       const angle = (i * Math.PI) / 4;
       const x = Math.cos(angle) * radius;
       const y = Math.sin(angle) * radius;
-      
+
       if (i === 0) {
         ctx.moveTo(x, y);
       } else {
@@ -73,31 +73,31 @@ class GameScene extends Scene {
     ctx.strokeStyle = HUB_BORDER;
     ctx.lineWidth = 2;
     ctx.stroke();
-    
+
     // Draw the notches for the trains
     for (let i = 0; i < 8; i++) {
       const midAngle = (i * Math.PI) / 4 + Math.PI / 8;  // Halfway between vertices
       const midX = Math.cos(midAngle) * radius;
       const midY = Math.sin(midAngle) * radius;
-      
+
       // Draw notch rectangle
       ctx.save();
       ctx.translate(midX, midY);
       ctx.rotate(((i + 1) * Math.PI / 4) - baseRotation);  // 45° increments, counter-rotated by baseRotation
-      
+
       // Draw the notch with background color fill and hub border
       ctx.beginPath();
-      ctx.moveTo(-this.notchWidth / 2, this.notchDepth/2);
-      ctx.lineTo(-this.notchWidth / 2, -this.notchDepth/2);
-      ctx.lineTo(this.notchWidth / 2, -this.notchDepth/2);
-      ctx.lineTo(this.notchWidth / 2, this.notchDepth/2);
+      ctx.moveTo(-this.notchWidth / 2, this.notchDepth / 2);
+      ctx.lineTo(-this.notchWidth / 2, -this.notchDepth / 2);
+      ctx.lineTo(this.notchWidth / 2, -this.notchDepth / 2);
+      ctx.lineTo(this.notchWidth / 2, this.notchDepth / 2);
       ctx.closePath();
-      
+
       ctx.fillStyle = POKER_GREEN;
       ctx.fill();
       ctx.strokeStyle = HUB_BORDER;
       ctx.stroke();
-      
+
       ctx.restore();
     }
 
