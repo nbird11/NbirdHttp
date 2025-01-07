@@ -71,8 +71,8 @@ class TitleScene extends Scene {
   }
 
   /**
-   * @param {number} x 
-   * @param {number} y 
+   * @param {number} x
+   * @param {number} y
    * @returns {boolean}
    */
   isPointInPlayButton(x, y) {

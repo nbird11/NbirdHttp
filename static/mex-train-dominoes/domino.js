@@ -89,7 +89,7 @@ class Domino {
     this.position.setPosition({ x, y });
     this.draw(ctx);
   }
-  
+
   /**
    * @param {CanvasRenderingContext2D} ctx
    * @param {Position} position
@@ -125,7 +125,7 @@ class Domino {
 
   /**
    * Get relative pip positions for a given value
-   * @param {number} value 
+   * @param {number} value
    * @returns {Array<[number, number]>} Array of [x, y] offsets
    */
   _getPipPositions(value) {
@@ -222,4 +222,4 @@ function extendArray(target, ...offsets) {
   return target;  // for chaining
 }
 
-export default Domino; 
+export default Domino;

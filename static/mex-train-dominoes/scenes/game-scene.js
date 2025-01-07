@@ -48,4 +48,4 @@ class GameScene extends Scene {
   }
 }
 
-export default GameScene; 
+export default GameScene;
