@@ -85,7 +85,7 @@ class GameScene extends Scene {
       ctx.translate(midX, midY);
       ctx.rotate(((i + 1) * Math.PI / 4) - baseRotation);  // 45° increments, counter-rotated by baseRotation
 
-      // Draw the notch with background color fill and hub border
+      // Draw the notch with background color fill only
       ctx.beginPath();
       ctx.moveTo(-this.notchWidth / 2, this.notchDepth / 2);
       ctx.lineTo(-this.notchWidth / 2, -this.notchDepth / 2);
@@ -95,8 +95,6 @@ class GameScene extends Scene {
 
       ctx.fillStyle = POKER_GREEN;
       ctx.fill();
-      ctx.strokeStyle = HUB_BORDER;
-      ctx.stroke();
 
       ctx.restore();
     }
