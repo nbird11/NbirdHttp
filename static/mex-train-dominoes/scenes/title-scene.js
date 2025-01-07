@@ -1,5 +1,5 @@
 import Scene from './scene.js';
-import Domino from '../domino.js';
+import Domino from '../entities/domino.js';
 import GameScene from './game-scene.js';
 
 /** @typedef {import('../game.js').default} Game */
