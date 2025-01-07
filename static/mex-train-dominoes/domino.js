@@ -18,10 +18,11 @@ const PipColors = {
 };
 
 const DOMINO_BACKGROUND_COLOR = '#f8f6ec';
+const DOMINO_LW_RATIO = 2.33;
 
 class Domino {
-  static LENGTH = 70;
-  static WIDTH = 30;
+  static LENGTH = 50;
+  static WIDTH = Domino.LENGTH / DOMINO_LW_RATIO;
 
   /**
    * @param {number} end1 - Number on one end (0-12)
@@ -41,7 +42,7 @@ class Domino {
     /** @type {number} */
     this.height = Domino.WIDTH;
     /** @type {number} */
-    this.pipRadius = 2;
+    this.pipRadius = Domino.WIDTH / 15;
   }
 
   /**
@@ -54,13 +55,13 @@ class Domino {
     ctx.translate(this.position.x, this.position.y);
     ctx.rotate(this.rotation.getRadians());
 
-    const leftX = Math.round(-this.width / 2);
-    const topY = Math.round(-this.height / 2);
+    const leftX = -this.width / 2;
+    const topY = -this.height / 2;
 
     // Draw the domino background
     ctx.fillStyle = DOMINO_BACKGROUND_COLOR;
     ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 1.5;
 
     // Main rectangle with rounded corners
     ctx.beginPath();
@@ -116,8 +117,8 @@ class Domino {
       ctx.beginPath();
       const halfWidth = this.width / 2;
       ctx.arc(
-        Math.round(end1 ? (-halfWidth / 2) + xOffset * 8 : (halfWidth / 2) + xOffset * 8),
-        Math.round(yOffset * 8),
+        end1 ? (-halfWidth / 2) + xOffset * Domino.LENGTH / 9 : (halfWidth / 2) + xOffset * Domino.LENGTH / 9,
+        yOffset * Domino.WIDTH / 3.75,
         this.pipRadius,
         0,
         Math.PI * 2
