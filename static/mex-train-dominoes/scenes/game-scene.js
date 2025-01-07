@@ -13,21 +13,36 @@ class GameScene extends Scene {
    */
   constructor(game) {
     super(game);
-    /** @type {Domino[]} */
+    /** @type {Domino[]} Pile of dominoes to be drawn from */
     this.boneyard = [];
-    /** @type {number} */
-    this.longDiagonal = 120;  // Vertex to opposite vertex
-    /** @type {number} */
-    this.mediumDiagonal = this.longDiagonal * Math.cos(Math.PI / 8);  // Vertex to adjacent vertex (edge to opposite edge)
-    /** @type {number} */
-    this.notchDepth = Domino.LENGTH / 3;  // How deep the notches cut into the hub
-    /** @type {number} */
-    this.notchWidth = Domino.WIDTH * 1.2;  // Slightly wider than domino width
+    /** @type {number} Vertex to opposite vertex */
+    this.longDiagonal = 120;
+    /** @type {number} Vertex to adjacent vertex (edge to opposite edge) */
+    this.mediumDiagonal = this.longDiagonal * Math.cos(Math.PI / 8);
+    /** @type {number} How deep the notches cut into the hub */
+    this.notchDepth = Domino.LENGTH / 3;
+    /** @type {number} Slightly wider than domino width */
+    this.notchWidth = Domino.WIDTH + 5;
 
-    // Add a test domino
-    /** @type {Domino} */
-    this.testDomino = new Domino(11, 12);
+    const centerX = this.game.width / 2;
+    const centerY = this.game.height / 2;
+    
+    /** @type {Domino} Center domino */
+    this.twelveTwelve = new Domino(12, 12)
+      .setEnd1Left()
+      .setPosition({
+        x: centerX,
+        y: centerY
+      });
 
+    /** @type {Domino} Branching domino */
+    this.twelveEleven = new Domino(12, 11)
+      .setEnd1Bottom()
+      .setPosition({
+        x: centerX,
+        y: centerY - this.mediumDiagonal / 2 - this.notchDepth
+      });
+    
     this._createBoneyard();
   }
 
@@ -79,7 +94,22 @@ class GameScene extends Scene {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Draw the notches - one in each cardinal direction
+    // Draw the center notch - a horizontal rectangle slightly larger than a domino
+    ctx.beginPath();
+    const horizontalLength = Domino.LENGTH + 5;   // Slightly longer than domino
+    const verticalWidth = Domino.WIDTH + 5;       // Slightly wider than domino
+    
+    // Draw from left to right, centered both horizontally and vertically
+    ctx.moveTo(centerX - horizontalLength/2, centerY - verticalWidth/2);   // Left edge, centered vertically
+    ctx.lineTo(centerX + horizontalLength/2, centerY - verticalWidth/2);   // Top edge
+    ctx.lineTo(centerX + horizontalLength/2, centerY + verticalWidth/2);   // Right edge
+    ctx.lineTo(centerX - horizontalLength/2, centerY + verticalWidth/2);   // Bottom edge
+    ctx.closePath();
+
+    ctx.fillStyle = POKER_GREEN;
+    ctx.fill();
+
+    // Draw the edge notches - one in each cardinal direction
     const directions = [
       [1, 0],    // Right
       [0, 1],    // Down
@@ -140,15 +170,9 @@ class GameScene extends Scene {
     // Draw the hub
     this._drawHub();
 
-    // Draw test domino aligned with top notch
-    const centerX = this.game.width / 2;
-    const centerY = this.game.height / 2;
-    this.testDomino.position.setPosition({
-      x: centerX,
-      y: centerY - this.mediumDiagonal / 2 - Domino.LENGTH / 4
-    });
-    this.testDomino.rotation.setDegrees(90);  // Align vertically
-    this.testDomino.draw(ctx);
+    // Draw test dominoes
+    this.twelveTwelve.draw(ctx);
+    this.twelveEleven.draw(ctx);
 
     // Draw boneyard count
     this.game.writeText(`Boneyard: ${this.boneyard.length}`, 100, 30, 20);

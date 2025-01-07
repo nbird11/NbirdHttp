@@ -46,6 +46,64 @@ class Domino {
   }
 
   /**
+   * @param {Position} position
+   */
+  setPosition(position) {
+    this.position.setPosition(position);
+
+    return this;  // for chaining
+  }
+
+  setEnd1Left() {
+    this.setRotation(0);
+    return this;
+  }
+
+  setEnd1TopLeft() {
+    this.setRotation(45);
+    return this;
+  }
+
+  setEnd1Top() {
+    this.setRotation(90);
+    return this;
+  }
+
+  setEnd1TopRight() {
+    this.setRotation(135);
+    return this;
+  }
+
+  setEnd1Right() {
+    this.setRotation(180);
+    return this;
+  }
+
+  setEnd1BottomRight() {
+    this.setRotation(225);
+    return this;
+  }
+
+  setEnd1Bottom() {
+    this.setRotation(270);
+    return this;
+  }
+
+  setEnd1BottomLeft() {
+    this.setRotation(315);
+    return this;
+  }
+
+  /**
+   * @param {number} degrees - Angle in degrees
+   */
+  setRotation(degrees) {
+    this.rotation.setDegrees(degrees);
+
+    return this;  // for chaining
+  }
+
+  /**
    * @param {CanvasRenderingContext2D} ctx
    */
   draw(ctx) {
