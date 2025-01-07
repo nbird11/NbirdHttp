@@ -20,6 +20,9 @@ const PipColors = {
 const DOMINO_BACKGROUND_COLOR = '#f8f6ec';
 
 class Domino {
+  static LENGTH = 70;
+  static WIDTH = 30;
+
   /**
    * @param {number} end1 - Number on one end (0-12)
    * @param {number} end2 - Number on the other end (0-12)
@@ -34,9 +37,9 @@ class Domino {
     /** @type {Angle} */
     this.rotation = new Angle(0);  // Angle in radians
     /** @type {number} */
-    this.width = 70;
+    this.width = Domino.LENGTH;
     /** @type {number} */
-    this.height = 30;
+    this.height = Domino.WIDTH;
     /** @type {number} */
     this.pipRadius = 2;
   }
