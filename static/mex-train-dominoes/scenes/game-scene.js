@@ -16,11 +16,17 @@ class GameScene extends Scene {
     /** @type {Domino[]} */
     this.boneyard = [];
     /** @type {number} */
-    this.hubSize = 120;  // Diameter of the octagon
+    this.longDiagonal = 120;  // Vertex to opposite vertex
     /** @type {number} */
-    this.notchDepth = Domino.LENGTH / 4;  // How deep the notches are
+    this.mediumDiagonal = this.longDiagonal * Math.cos(Math.PI / 8);  // Vertex to adjacent vertex (edge to opposite edge)
+    /** @type {number} */
+    this.notchDepth = Domino.LENGTH / 3;  // How deep the notches cut into the hub
     /** @type {number} */
     this.notchWidth = Domino.WIDTH * 1.2;  // Slightly wider than domino width
+
+    // Add a test domino
+    /** @type {Domino} */
+    this.testDomino = new Domino(11, 12);
 
     this._createBoneyard();
   }
@@ -45,26 +51,25 @@ class GameScene extends Scene {
     const ctx = this.game.ctx;
     const centerX = this.game.width / 2;
     const centerY = this.game.height / 2;
-    const radius = this.hubSize / 2;
-    const baseRotation = Math.PI / 8;  // 22.5 degrees
+    const circumradius = this.longDiagonal / 2;  // Distance from center to vertex
+    const inradius = circumradius * Math.cos(Math.PI / 8);  // Distance from center to edge middle = R * cos(45°)
+    const sideLength = 2 * circumradius * Math.sin(Math.PI / 8);  // Length of each edge = 2R * sin(45°)
 
     ctx.save();
-    ctx.translate(centerX, centerY);
-    ctx.rotate(baseRotation);  // Rotate octagon to align edges with axes
 
-    // Draw the main octagon shape
+    // Draw the main octagon shape - edges at cardinal directions
     ctx.beginPath();
-    for (let i = 0; i < 8; i++) {
-      const angle = (i * Math.PI) / 4;
-      const x = Math.cos(angle) * radius;
-      const y = Math.sin(angle) * radius;
-
-      if (i === 0) {
-        ctx.moveTo(x, y);
-      } else {
-        ctx.lineTo(x, y);
-      }
-    }
+    // Start at top edge center and go clockwise
+    ctx.moveTo(centerX, centerY - inradius);                    // Top-middle
+    ctx.lineTo(centerX + sideLength / 2, centerY - inradius);   // Half edge to top-right vertex
+    ctx.lineTo(centerX + inradius, centerY - sideLength / 2);   // To right-top vertex
+    ctx.lineTo(centerX + inradius, centerY + sideLength / 2);   // To right-bottom vertex
+    ctx.lineTo(centerX + sideLength / 2, centerY + inradius);   // To bottom-right vertex
+    ctx.lineTo(centerX - sideLength / 2, centerY + inradius);   // To bottom-left vertex
+    ctx.lineTo(centerX - inradius, centerY + sideLength / 2);   // To left-bottom vertex
+    ctx.lineTo(centerX - inradius, centerY - sideLength / 2);   // To left-top vertex
+    ctx.lineTo(centerX - sideLength / 2, centerY - inradius);   // To top-left vertex
+    ctx.lineTo(centerX, centerY - inradius);                    // Back to top-middle
     ctx.closePath();
 
     // Fill and stroke the octagon
@@ -74,29 +79,48 @@ class GameScene extends Scene {
     ctx.lineWidth = 2;
     ctx.stroke();
 
-    // Draw the notches for the trains
-    for (let i = 0; i < 8; i++) {
-      const midAngle = (i * Math.PI) / 4 + Math.PI / 8;  // Halfway between vertices
-      const midX = Math.cos(midAngle) * radius;
-      const midY = Math.sin(midAngle) * radius;
+    // Draw the notches - one in each cardinal direction
+    const directions = [
+      [1, 0],    // Right
+      [0, 1],    // Down
+      [-1, 0],   // Left
+      [0, -1],   // Up
+      [0.7071, 0.7071],    // Bottom-right
+      [-0.7071, 0.7071],   // Bottom-left
+      [-0.7071, -0.7071],  // Top-left
+      [0.7071, -0.7071],   // Top-right
+    ];
+
+    for (const [dx, dy] of directions) {
+      // Calculate center point of edge
+      const x = centerX + dx * circumradius;
+      const y = centerY + dy * circumradius;
+
+      // Draw notch
+      ctx.beginPath();
+      // Calculate perpendicular direction for notch
+      const perpX = -dy;
+      const perpY = dx;
+      const halfWidth = this.notchWidth / 2;
 
       // Draw notch rectangle
-      ctx.save();
-      ctx.translate(midX, midY);
-      ctx.rotate(((i + 1) * Math.PI / 4) - baseRotation);  // 45° increments, counter-rotated by baseRotation
-
-      // Draw the notch with background color fill only
-      ctx.beginPath();
-      ctx.moveTo(-this.notchWidth / 2, this.notchDepth / 2);
-      ctx.lineTo(-this.notchWidth / 2, -this.notchDepth / 2);
-      ctx.lineTo(this.notchWidth / 2, -this.notchDepth / 2);
-      ctx.lineTo(this.notchWidth / 2, this.notchDepth / 2);
+      ctx.moveTo(x - perpX * halfWidth, y - perpY * halfWidth);
+      ctx.lineTo(
+        x - perpX * halfWidth - dx * this.notchDepth,
+        y - perpY * halfWidth - dy * this.notchDepth
+      );
+      ctx.lineTo(
+        x + perpX * halfWidth - dx * this.notchDepth,
+        y + perpY * halfWidth - dy * this.notchDepth
+      );
+      ctx.lineTo(
+        x + perpX * halfWidth,
+        y + perpY * halfWidth
+      );
       ctx.closePath();
 
       ctx.fillStyle = POKER_GREEN;
       ctx.fill();
-
-      ctx.restore();
     }
 
     ctx.restore();
@@ -115,6 +139,16 @@ class GameScene extends Scene {
 
     // Draw the hub
     this._drawHub();
+
+    // Draw test domino aligned with top notch
+    const centerX = this.game.width / 2;
+    const centerY = this.game.height / 2;
+    this.testDomino.position.setPosition({
+      x: centerX,
+      y: centerY - this.mediumDiagonal / 2 - Domino.LENGTH / 4
+    });
+    this.testDomino.rotation.setDegrees(90);  // Align vertically
+    this.testDomino.draw(ctx);
 
     // Draw boneyard count
     this.game.writeText(`Boneyard: ${this.boneyard.length}`, 100, 30, 20);
