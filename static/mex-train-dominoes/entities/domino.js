@@ -1,28 +1,10 @@
 import Angle from './angle.js';
 import Position from './position.js';
-
-/** @type {Record<number, string>} */
-const PipColors = {
-  1: '#ff0000',   // Red
-  2: '#638c4d',   // Green
-  3: '#7f4db3',   // Purple
-  4: '#63d4d3',   // Bright Blue
-  5: '#ff69b4',   // Pink
-  6: '#d0870e',   // Orange
-  7: '#707070',   // Gray
-  8: '#e6c619',   // Yellow
-  9: '#009d9d',   // Cyan
-  10: '#4242ff',  // Blue
-  11: '#704214',  // Brown
-  12: '#75929b',  // Light Blue
-};
-
-const DOMINO_BACKGROUND_COLOR = '#f8f6ec';
-const DOMINO_LW_RATIO = 2.33;
+import { DOMINO_BG_COLOR, DOMINO_LW_RATIO, PIP_COLORS } from '../utils/constants.js';
 
 class Domino {
   static LENGTH = 50;
-  static WIDTH = Domino.LENGTH / DOMINO_LW_RATIO;
+  static WIDTH = Domino.LENGTH * DOMINO_LW_RATIO;
 
   /**
    * @param {number} end1 - Number on one end (0-12)
@@ -117,7 +99,7 @@ class Domino {
     const topY = -this.height / 2;
 
     // Draw the domino background
-    ctx.fillStyle = DOMINO_BACKGROUND_COLOR;
+    ctx.fillStyle = DOMINO_BG_COLOR;
     ctx.strokeStyle = 'black';
     ctx.lineWidth = 1.5;
 
@@ -170,7 +152,7 @@ class Domino {
     const positions = this._getPipPositions(value);
 
     if (value === 0) return;
-    ctx.fillStyle = PipColors[value];
+    ctx.fillStyle = PIP_COLORS[value];
     positions.forEach(([xOffset, yOffset]) => {
       ctx.beginPath();
       const halfWidth = this.width / 2;

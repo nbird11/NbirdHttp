@@ -1,11 +1,9 @@
 import Scene from './scene.js';
 import Domino from '../entities/domino.js';
 import GameScene from './game-scene.js';
+import { POKER_GREEN, PURPLE } from '../utils/constants.js';
 
 /** @typedef {import('../game.js').default} Game */
-
-const POKER_GREEN = '#35654d';
-const PURPLE = '#5e3c52';
 
 class TitleScene extends Scene {
   /**
