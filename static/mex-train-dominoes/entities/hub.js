@@ -119,6 +119,42 @@ class Hub {
 
     this.centerDomino.draw(ctx);
   }
+
+  /**
+   * @param {number} x - X position
+   * @param {number} y - Y position
+   */
+  setXY(x, y) {
+    this.position.setXY(x, y);
+    this.centerDomino.setPosition({ x, y });
+  }
+
+  /**
+   * @param {Position} position
+   */
+  setPosition(position) {
+    this.position.setPosition(position);
+    this.centerDomino.setPosition(position);
+  }
+
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {number} x - X position
+   * @param {number} y - Y position
+   */
+  drawAt(ctx, x, y) {
+    this.position.setXY(x, y);
+    this.draw(ctx);
+  }
+
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   * @param {Position} position
+   */
+  drawAtPosition(ctx, position) {
+    this.position.setPosition(position);
+    this.draw(ctx);
+  }
 }
 
 export default Hub;

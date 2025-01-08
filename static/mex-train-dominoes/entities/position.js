@@ -17,7 +17,7 @@ class Position {
    * @param {number} x - The x coordinate
    * @param {number} y - The y coordinate
    */
-  set(x, y) {
+  setXY(x, y) {
     this.x = x;
     this.y = y;
 

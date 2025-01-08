@@ -66,6 +66,20 @@ class GameScene extends Scene {
     // Draw boneyard count
     this.game.writeText(`Boneyard: ${this.boneyard.length}`, 100, 30, 20);
   }
+
+  updateDimensions() {
+    super.updateDimensions();
+
+    this.hub.setPosition({
+      x: this.game.width / 2,
+      y: this.game.height / 2
+    });
+
+    this.twelveEleven.setPosition({
+      x: this.game.width / 2,
+      y: this.game.height / 2 - this.hub.mediumDiagonal / 2 - this.hub.notchDepth
+    });
+  }
 }
 
 export default GameScene;
