@@ -1,6 +1,8 @@
 import Domino from './domino.js';
 import Position from './position.js';
-import { POKER_GREEN, HUB_COLOR, HUB_BORDER } from '../utils/constants.js';
+import { POKER_GREEN, HUB_COLOR, HUB_BORDER, OPEN_BRANCH_OWNER } from '../utils/constants.js';
+import { assert, notImplemented } from '../utils/assert.js';
+/** @typedef { {owner: string, dominoes: Domino[], open: boolean} } Branch */
 
 class Hub {
   /**
@@ -8,7 +10,9 @@ class Hub {
    * @param {number} y - Y position
    */
   constructor(x, y) {
+    /** @type {Position} */
     this.position = new Position(x, y);
+
     /** @type {number} Vertex to opposite vertex */
     this.longDiagonal = 120;
     /** @type {number} Vertex to adjacent vertex (edge to opposite edge) */
@@ -20,12 +24,71 @@ class Hub {
 
     /** @type {Domino} Center domino */
     this.centerDomino = new Domino(12, 12).setPosition(this.position);
+    /** @type {Branch[]} List of branches (0-7) */
+    this.branches = [];
+    this._initBranches();
+  }
+
+  /**
+   * @param {Domino} domino - New center domino
+   */
+  updateCenterDomino(domino) {
+    this.centerDomino = domino;
+  }
+
+  /**
+   * @param {string} owner - Owner of the branch
+   */
+  addBranchOwner(owner) {
+    if (this.branches.every(branch => branch.owner != OPEN_BRANCH_OWNER)) {
+      throw new Error('Hub already has 8 player-owned branches');
+    }
+    let branch = this.getBranch(OPEN_BRANCH_OWNER);
+    branch.owner = owner;
+    branch.open = false;
+  }
+
+  /**
+   * @param {string} owner - Owner of the branch
+   */
+  setBranchOpen(owner) {
+    let branch = this.getBranch(owner);
+    branch.open = true;
+  }
+
+  /**
+   * @param {string} owner - Owner of the branch
+   */
+  setBranchClosed(owner) {
+    let branch = this.getBranch(owner);
+    branch.open = false;
+  }
+
+  /**
+   * @param {string} owner - Owner of the branch
+   * @returns {Branch} Branch
+   */
+  getBranch(owner) {
+    let branch = this.branches.find(branch => branch.owner === owner);
+    if (!branch) {
+      throw new Error(`Branch with owner ${owner} not found`);
+    }
+    return branch;
   }
 
   /**
    * @param {CanvasRenderingContext2D} ctx
    */
   draw(ctx) {
+    this._drawHub(ctx);
+    this.centerDomino.draw(ctx);
+    this._drawBranches(ctx);
+  }
+
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  _drawHub(ctx) {
     const centerX = this.position.x;
     const centerY = this.position.y;
     const circumradius = this.longDiagonal / 2;  // Distance from center to vertex
@@ -60,12 +123,12 @@ class Hub {
     ctx.beginPath();
     const horizontalLength = Domino.LENGTH + 5;   // Slightly longer than domino
     const verticalWidth = Domino.WIDTH + 5;       // Slightly wider than domino
-    
+
     // Draw from left to right, centered both horizontally and vertically
-    ctx.moveTo(centerX - horizontalLength/2, centerY - verticalWidth/2);   // Left edge, centered vertically
-    ctx.lineTo(centerX + horizontalLength/2, centerY - verticalWidth/2);   // Top edge
-    ctx.lineTo(centerX + horizontalLength/2, centerY + verticalWidth/2);   // Right edge
-    ctx.lineTo(centerX - horizontalLength/2, centerY + verticalWidth/2);   // Bottom edge
+    ctx.moveTo(centerX - horizontalLength / 2, centerY - verticalWidth / 2);   // Left edge, centered vertically
+    ctx.lineTo(centerX + horizontalLength / 2, centerY - verticalWidth / 2);   // Top edge
+    ctx.lineTo(centerX + horizontalLength / 2, centerY + verticalWidth / 2);   // Right edge
+    ctx.lineTo(centerX - horizontalLength / 2, centerY + verticalWidth / 2);   // Bottom edge
     ctx.closePath();
 
     ctx.fillStyle = POKER_GREEN;
@@ -116,8 +179,16 @@ class Hub {
     }
 
     ctx.restore();
+  }
 
-    this.centerDomino.draw(ctx);
+  /**
+   * @param {CanvasRenderingContext2D} ctx
+   */
+  _drawBranches(ctx) {
+    notImplemented();
+    
+    for (const branch of this.branches) {
+    }
   }
 
   /**
@@ -154,6 +225,16 @@ class Hub {
   drawAtPosition(ctx, position) {
     this.position.setPosition(position);
     this.draw(ctx);
+  }
+
+  _initBranches() {
+    for (let i = 0; i < 8; i++) {
+      this.branches.push({
+        owner: OPEN_BRANCH_OWNER,
+        dominoes: [],
+        open: true,
+      });
+    }
   }
 }
 

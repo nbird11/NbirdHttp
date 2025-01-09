@@ -31,3 +31,6 @@ export const PIP_COLORS = {
   11: '#704214',  // Brown
   12: '#75929b',  // Light Blue
 };
+
+/** @type {string} Open branch owner */
+export const OPEN_BRANCH_OWNER = 'open';

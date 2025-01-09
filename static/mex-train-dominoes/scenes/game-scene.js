@@ -57,14 +57,15 @@ class GameScene extends Scene {
     ctx.fillStyle = POKER_GREEN;
     ctx.fillRect(0, 0, this.game.width, this.game.height);
 
+    // Draw boneyard count
+    this.game.writeText(`Boneyard: ${this.boneyard.length}`, 100, 30, 20);
+
     // Draw the hub
     this.hub.draw(ctx);
 
-
+    // TODO: Move to branch inside hub
     this.twelveEleven.draw(ctx);
 
-    // Draw boneyard count
-    this.game.writeText(`Boneyard: ${this.boneyard.length}`, 100, 30, 20);
   }
 
   updateDimensions() {
