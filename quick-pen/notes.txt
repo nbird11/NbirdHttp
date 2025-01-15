@@ -5,7 +5,7 @@
 Day
 - sprints: Sprint [*]
 
-Week
+~~Week~~
 - days: Day [*]
 
 Sprint
@@ -14,14 +14,17 @@ Sprint
 - avgWPM
 
 
-TODO | Priority
+### TODO | Priority
 - Progress widget:
   - view history for each category. | 1
+  - Show most recent sprint stats minus streak. | 1
+    - Make default rather than today, unless no sprint today. | 1
 
 - Current sprint widget:
   - Duration: toggleShowTimer, always show sprint progress bar? | 1
   - Add ability to reuse an old duration. | 2
     - 3 most recent (or fequent?) durations
+  - Optional: Set word count goal, progress bar for words written to reach goal | 2
 
 - High score widget:
   - High score unit, show (crown?) emoji for new high score. | 2
@@ -31,5 +34,6 @@ TODO | Priority
 
 - History/content viewer widgets
   - Filters for sprint history. e.g., date, tags, wpm ranges, duration, etc. | 1
+  - Ability to add to sprint after timer ends, but note that it doesn't count towards metrics | 1
   - In sprint content viewer, add option to view all content for certain date range (i.e., today, this week, etc.) and be able to save combined content to single file. | 1
   - Add refresh button in history to refetch all sprints. | 2
