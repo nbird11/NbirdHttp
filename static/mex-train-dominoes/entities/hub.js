@@ -186,7 +186,7 @@ class Hub {
    */
   _drawBranches(ctx) {
     notImplemented();
-    
+
     for (const branch of this.branches) {
     }
   }
