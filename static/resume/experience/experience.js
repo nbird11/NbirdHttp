@@ -1,4 +1,4 @@
-import profile from '/scripts/profile.mjs';
+import profile from '/scripts/load-profile.js';
 
 /**
  * Creates the HTML for a single experience item

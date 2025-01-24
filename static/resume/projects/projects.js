@@ -1,4 +1,4 @@
-import projects from './projects.mjs';
+import projects from './load-projects.js';
 
 /**
  * Generates HTML template for a single project card

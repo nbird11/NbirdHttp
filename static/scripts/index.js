@@ -1,4 +1,4 @@
-import profile from './profile.mjs';
+import profile from '/scripts/load-profile.js';
 
 /**
  * Generates the HTML template for the profile information section

@@ -1,4 +1,7 @@
-/** @module projects */
+/**
+ * @module projects
+ * @deprecated Use load-projects.js instead
+ */
 
 /**
  * @typedef {Object} Project

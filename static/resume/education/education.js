@@ -1,4 +1,4 @@
-import profile from '/scripts/profile.mjs';
+import profile from '/scripts/load-profile.js';
 
 /**
  * Generates HTML template for a single education item

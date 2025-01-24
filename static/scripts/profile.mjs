@@ -1,4 +1,7 @@
-/** @module profile */
+/**
+ * @module profile
+ * @deprecated Use load-profile.js instead
+ */
 
 /**
  * @typedef {Object} Contact
