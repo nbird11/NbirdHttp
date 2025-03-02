@@ -149,6 +149,20 @@ th {
   color: #cc0000; /* Darker red for failed boards */
 }
 
+/* Multiple board highlight */
+.score-display[data-board-count="2"] {
+  text-shadow: 0 0 2px gold;
+}
+
+.score-display[data-board-count="3"] {
+  text-shadow: 0 0 3px gold;
+}
+
+.score-display[data-board-count="4"] {
+  text-shadow: 0 0 4px gold;
+  font-size: 1.1em;
+}
+
 .round-cards {
   font-size: 0.8em;
   font-style: italic;

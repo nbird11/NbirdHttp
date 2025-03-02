@@ -161,7 +161,6 @@ function addPlayerCellToRow(row, playerIndex, roundIndex) {
   bidInput.setAttribute('data-round', roundIndex);
   bidInput.setAttribute('data-player', playerIndex);
   bidInput.setAttribute('data-type', 'bid');
-  bidInput.setAttribute('maxlength', '1'); // Allow only a single character
   bidInput.addEventListener('change', updateBid);
   bidDiv.appendChild(bidInput);
   
@@ -205,18 +204,27 @@ function updateBid(event) {
     rounds[roundIndex].players[playerIndex] = {};
   }
   
-  // Handle numeric bids or "B" for board
-  if (bidValue === 'B') {
+  // Handle board bids (B, BB, BBB, BBBB) or numeric bids
+  if (bidValue.match(/^B+$/)) {
+    // Store both the fact that it's a board bid and how many B's (multiplier)
     rounds[roundIndex].players[playerIndex].bid = 'B';
+    rounds[roundIndex].players[playerIndex].boardMultiplier = bidValue.length;
   } else {
+    // Regular numeric bid
     const bid = parseInt(bidValue) || 0;
     rounds[roundIndex].players[playerIndex].bid = bid;
+    // Clear any board multiplier
+    delete rounds[roundIndex].players[playerIndex].boardMultiplier;
   }
   
   // Update score if both bid and got values exist
   if (rounds[roundIndex].players[playerIndex].got !== undefined) {
     calculateRoundScore(roundIndex, playerIndex);
   }
+  
+  // If this is a board bid or changed from a board bid, recalculate scores for all players 
+  // in this round who have board bids, as the multiplier may have changed
+  updateAllBoardScoresInRound(roundIndex);
 }
 
 // Update tricks taken
@@ -246,16 +254,25 @@ function calculateRoundScore(roundIndex, playerIndex) {
   let score = 0;
   let displayClass = '';
   
+  // Count the total board multiplier in this round
+  const totalBoardMultiplier = countTotalBoardMultiplier(roundIndex);
+  
   // Handle "board" bid (B)
   if (bid === 'B') {
+    // Get this player's specific board multiplier (how many B's they entered)
+    const playerMultiplier = playerRound.boardMultiplier || 1;
+    
+    // Base points per trick for a board is 10
+    const pointsPerTrick = 10 * playerMultiplier;
+    
     // Board bid - all tricks or nothing
     if (got === rounds[roundIndex].cards) {
-      // Made board: 10 points per trick
-      score = got * 10;
+      // Made board: points per trick × number of tricks
+      score = got * pointsPerTrick;
       displayClass = 'made board';
     } else {
-      // Missed board: -10 points per trick
-      score = -(rounds[roundIndex].cards * 10);
+      // Missed board: -points per trick × number of tricks
+      score = -(rounds[roundIndex].cards * pointsPerTrick);
       displayClass = 'set board';
     }
   } else {
@@ -279,8 +296,55 @@ function calculateRoundScore(roundIndex, playerIndex) {
   scoreDisplay.textContent = score;
   scoreDisplay.className = 'score-display ' + displayClass;
   
+  // Add data attribute for board multiplier if this is a board bid
+  if (bid === 'B' && playerRound.boardMultiplier > 1) {
+    scoreDisplay.setAttribute('data-board-count', playerRound.boardMultiplier);
+  } else {
+    scoreDisplay.removeAttribute('data-board-count');
+  }
+  
   // Update totals
   updateTotals();
+}
+
+// Count the total board multiplier across all players in a round
+function countTotalBoardMultiplier(roundIndex) {
+  let total = 0;
+  
+  // Loop through all players in this round
+  for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
+    const playerData = rounds[roundIndex].players[playerIndex];
+    if (playerData && playerData.bid === 'B') {
+      total += playerData.boardMultiplier || 1;
+    }
+  }
+  
+  return total;
+}
+
+// Count how many players bid "B" in a specific round
+function countBoardBidsInRound(roundIndex) {
+  let count = 0;
+  
+  // Loop through all players in this round
+  for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
+    const playerData = rounds[roundIndex].players[playerIndex];
+    if (playerData && playerData.bid === 'B') {
+      count++;
+    }
+  }
+  
+  return count;
+}
+
+// Update scores for all players with board bids in a round
+function updateAllBoardScoresInRound(roundIndex) {
+  for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
+    const playerData = rounds[roundIndex].players[playerIndex];
+    if (playerData && playerData.bid === 'B' && playerData.got !== undefined) {
+      calculateRoundScore(roundIndex, playerIndex);
+    }
+  }
 }
 
 // Update totals for all players
