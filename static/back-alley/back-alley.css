@@ -1,0 +1,167 @@
+main {
+  padding: 2rem;
+}
+
+h2 {
+  margin: 0;
+}
+
+.score-sheet {
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+.round-label {
+  text-align: left;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 80px;
+}
+
+.trump-selector {
+  width: 36px;
+  padding: 2px;
+  font-size: 1em;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  color: #666;
+}
+
+.trump-selector:hover {
+  background-color: #f0f0f0;
+}
+
+.trump-selector:focus {
+  outline: none;
+  border: 1px solid #888;
+}
+
+.trump-selector option[value="hearts"],
+.trump-selector option[value="diamonds"] {
+  color: red;
+}
+
+.trump-selector option[value="spades"],
+.trump-selector option[value="clubs"],
+.trump-selector option[value=""] {
+  color: black;
+}
+
+.trump-selector option[value="nt"] {
+  color: blue;
+}
+
+.trump-selector.red-suit {
+  color: red;
+}
+
+.trump-selector.black-suit {
+  color: black;
+}
+
+.trump-selector.blue-suit {
+  color: blue;
+}
+
+.score-input {
+  width: 40px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.controls {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.total-row {
+  font-weight: bold;
+  background-color: #f2f2f2;
+}
+
+.player-name-input {
+  width: 100px;
+}
+
+.player-score {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.bid-row, .got-row {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.bid-row {
+  color: inherit;
+  font-size: inherit;
+}
+
+.score-display {
+  margin-left: 4px;
+}
+
+.set {
+  color: red;
+}
+
+.made {
+  color: green;
+}
+
+/* Styling for board bids */
+.board {
+  font-weight: bold;
+}
+
+.made.board {
+  color: #009900; /* Darker green for successful boards */
+}
+
+.set.board {
+  color: #cc0000; /* Darker red for failed boards */
+}
+
+.round-cards {
+  font-size: 0.8em;
+  font-style: italic;
+  color: #666;
+}
+
+.rules {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 1rem;
+  margin: 2rem 0;
+}
+
+.rules li {
+  margin-bottom: 10px;
+} 

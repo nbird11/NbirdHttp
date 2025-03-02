@@ -15,8 +15,20 @@ function headerTemplate() {
           <a href="/resume/projects/">Projects</a>
         </div>
       </div>
-      <a href="/punch.html">Punch Clock</a>
-      <a href="/quick-pen/">QuickPen</a>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">Games ▾</a>
+        <div class="dropdown-content">
+          <a href="/back-alley/">Back Alley</a>
+          <a href="/mex-train-dominoes/">Mex Train Dominoes</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href="#" class="dropbtn">Other ▾</a>
+        <div class="dropdown-content">
+          <a href="/quick-pen/">QuickPen</a>
+          <a href="/punch.html">Punch Clock</a>
+        </div>
+      </div>
     </nav>
   `;
 }

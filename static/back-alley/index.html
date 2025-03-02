@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/assets/card.svg" type="image/svg+xml">
+  <title>Back Alley Score Sheet</title>
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="./back-alley.css">
+  <script src="./back-alley.js" defer></script>
+</head>
+
+<body>
+
+  <header>
+    <script src="/scripts/load-header.js"></script>
+  </header>
+
+  <main>
+    <h1>Back Alley Score Sheet</h1>
+
+    <div class="controls">
+      <input type="text" id="player-name" class="player-name-input" placeholder="Player name">
+      <button id="add-player">Add Player</button>
+      <button id="reset-game">Reset Game</button>
+    </div>
+
+    <div class="score-sheet">
+      <table id="score-table">
+        <thead>
+          <tr id="header-row">
+            <th>Round</th>
+            <!-- Player columns will be added dynamically -->
+          </tr>
+        </thead>
+        <tbody id="score-body">
+          <!-- Score rows will be added dynamically -->
+        </tbody>
+        <tfoot>
+          <tr id="total-row" class="total-row">
+            <td>Total</td>
+            <!-- Total cells will be added dynamically -->
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <div class="game-info rules">
+      <h2>How to Score Back Alley</h2>
+      <ul>
+        <li>The game starts with 13 cards and decreases by 1 each round until 1 card.</li>
+        <li>Players bid how many tricks they think they'll take in each round.</li>
+        <li>Scoring:
+          <ul>
+            <li><strong>If you make your bid or more:</strong> 3 points × bid + 1 point for each extra trick</li>
+            <li><strong>If you don't make your bid:</strong> -3 points × bid (you "go set")</li>
+            <li><strong>Board (Enter "B"):</strong> If you bid "B", you're betting you'll take all tricks in the round
+              <ul>
+                <li>If successful: 10 points × number of tricks</li>
+                <li>If unsuccessful (miss even one trick): -10 points × number of tricks</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Enter bids in the "Bid" field and actual tricks taken in the "Got" field.</li>
+        <li>Scores update automatically after entering both bid and result.</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer>
+    <script src="/scripts/load-footer.js"></script>
+  </footer>
+
+</body>
+
+</html>
