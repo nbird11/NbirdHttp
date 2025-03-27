@@ -1,6 +1,7 @@
-/**
- * @module profile
- * @deprecated Use load-profile.js instead
+/** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *  @module profile
+ *  @deprecated Use load-profile.js instead
+ *  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
 /**

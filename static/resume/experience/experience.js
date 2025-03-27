@@ -1,17 +1,19 @@
 import profile from '/scripts/load-profile.js';
 
+const logoFallback = '/assets/NBLogoNew-cropped-rounded.png';
+
 /**
  * Creates the HTML for a single experience item
- * @param {import('../scripts/profile.mjs').Experience} experience
+ * @param {import('../../scripts/load-profile.js').Experience} experience
  * @returns {string} HTML string for the experience item
  */
 function experienceTemplate(experience) {
-  const logoSrc = experience.logo || '/assets/simple-NB-logo.png';
+  const logoSrc = experience.logo || logoFallback;
   const bullets = experience.bullets.map(bullet => `<li>${bullet}</li>`).join('');
 
   return `
     <div class="card-item">
-      <img class="card-logo company-logo" src="${logoSrc}" alt="${experience.company} logo">
+      <img class="card-logo company-logo" src="${logoSrc}" alt="${experience.company} logo" onerror="this.src='${logoFallback}'">
       <div class="card-content">
         <div class="card-header">
           <h2 class="card-title">${experience.title}</h2>

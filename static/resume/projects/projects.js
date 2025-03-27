@@ -2,7 +2,7 @@ import projects from './load-projects.js';
 
 /**
  * Generates HTML template for a single project card
- * @param {import('./projects.mjs').Project} project The project object containing all project details
+ * @param {import('./load-projects.js').Project} project The project object containing all project details
  * @returns {string} HTML string representing the project card
  */
 function projectTemplate(project) {

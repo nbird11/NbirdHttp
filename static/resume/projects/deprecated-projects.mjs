@@ -1,6 +1,7 @@
-/**
- * @module projects
- * @deprecated Use load-projects.js instead
+/** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ *  @module projects
+ *  @deprecated Use load-projects.js instead
+ *  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
 /**
