@@ -283,37 +283,50 @@ function addPlayerCellToRow(row, playerIndex, roundIndex) {
   const inputContainer = document.createElement('div');
   inputContainer.className = 'input-container';
   
-  // Create bid input
+  // Create bid input and tooltip
   const bidInput = document.createElement('input');
   bidInput.type = 'text';
   bidInput.className = 'score-input';
   bidInput.setAttribute('data-round', roundIndex);
   bidInput.setAttribute('data-player', playerIndex);
   bidInput.setAttribute('data-type', 'bid');
-  bidInput.setAttribute('data-tooltip', 'Enter bid');
   bidInput.addEventListener('change', updateBid);
   bidInput.addEventListener('input', handleBidInput);
   
-  // Create tricks taken input
+  const bidTooltip = document.createElement('div');
+  bidTooltip.className = 'tooltip';
+  bidTooltip.textContent = 'Enter bid';
+  
+  // Create tricks taken input and tooltip
   const gotInput = document.createElement('input');
-  // gotInput.type = 'number';
-  // gotInput.min = '0';
-  // gotInput.max = rounds[roundIndex].cards;
   gotInput.className = 'score-input';
   gotInput.setAttribute('data-round', roundIndex);
   gotInput.setAttribute('data-player', playerIndex);
   gotInput.setAttribute('data-type', 'got');
-  gotInput.setAttribute('data-tooltip', 'Enter tricks taken');
   gotInput.addEventListener('change', updateGot);
+  
+  const gotTooltip = document.createElement('div');
+  gotTooltip.className = 'tooltip';
+  gotTooltip.textContent = 'Enter tricks taken';
   
   // Create score display
   const scoreDiv = document.createElement('div');
   scoreDiv.className = 'score-display';
   scoreDiv.id = `score-${roundIndex}-${playerIndex}`;
   
-  // Add inputs to input container
-  inputContainer.appendChild(bidInput);
-  inputContainer.appendChild(gotInput);
+  // Add inputs and tooltips to input container
+  const bidContainer = document.createElement('div');
+  bidContainer.className = 'input-container';
+  bidContainer.appendChild(bidInput);
+  bidContainer.appendChild(bidTooltip);
+  
+  const gotContainer = document.createElement('div');
+  gotContainer.className = 'input-container';
+  gotContainer.appendChild(gotInput);
+  gotContainer.appendChild(gotTooltip);
+  
+  inputContainer.appendChild(bidContainer);
+  inputContainer.appendChild(gotContainer);
   
   // Add all elements to the player score container
   playerScore.appendChild(inputContainer);

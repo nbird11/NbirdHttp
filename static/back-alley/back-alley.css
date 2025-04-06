@@ -152,8 +152,11 @@ th {
 }
 
 /* Tooltips */
-.score-input::after {
-  content: attr(data-tooltip);
+.input-container {
+  position: relative;
+}
+
+.tooltip {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -169,17 +172,26 @@ th {
   transition: opacity 0.2s;
   pointer-events: none;
   margin-bottom: 4px;
+  z-index: 100;
 }
 
-.score-input:hover::after {
-  opacity: 0;
-  visibility: hidden;
+.score-input:hover + .tooltip {
+  opacity: 1;
+  visibility: visible;
   transition-delay: 1s;
 }
 
+/* Remove old tooltip styles */
+.score-input::after {
+  display: none;
+}
+
+.score-input:hover::after {
+  display: none;
+}
+
 .score-input:hover:active::after {
-  opacity: 1;
-  visibility: visible;
+  display: none;
 }
 
 /* Remove old bid/got row styles */
