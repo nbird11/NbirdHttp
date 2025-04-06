@@ -178,4 +178,73 @@ th {
 
 .rules li {
   margin-bottom: 10px;
+}
+
+/* Add Frame button styling */
+.add-frame-container {
+  position: relative;
+  height: 20px;
+  margin: 10px 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.add-frame-container:hover {
+  opacity: 1;
+}
+
+.add-frame-button {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.add-frame-button:hover {
+  background: #45a049;
+}
+
+/* Tooltip */
+.add-frame-button::after {
+  content: "Add Frame";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  margin-bottom: 4px;
+}
+
+.add-frame-button:hover::after {
+  opacity: 1;
+}
+
+/* Intermediate total row styling */
+.intermediate-total-row {
+  background-color: #e9e9e9;
+  font-weight: bold;
+}
+
+.intermediate-total-row td {
+  border-top: 2px solid #ccc;
+  border-bottom: 2px solid #ccc;
 } 

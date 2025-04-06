@@ -1,6 +1,7 @@
 // Game state
 let players = [];
 let rounds = [];
+let frameCount = 1;
 const TOTAL_ROUNDS = 13;
 
 // DOM References
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   document.getElementById('add-player').addEventListener('click', addPlayer);
   document.getElementById('reset-game').addEventListener('click', resetGame);
+  document.querySelector('.add-frame-button').addEventListener('click', addFrame);
   
   // Initialize the game
   initializeGame();
@@ -30,24 +32,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize the game
 function initializeGame() {
-  // Initialize rounds structure
-  for (let i = 0; i < TOTAL_ROUNDS; i++) {
-    rounds.push({
-      cards: TOTAL_ROUNDS - i,
-      players: {},
-      trump: ''
-    });
-  }
+  // Initialize rounds structure for first frame
+  initializeFrame(true);
   
   // Create all round rows
-  createRoundRows();
+  createRoundRows(0, true);
 }
 
-// Create all round rows at once
-function createRoundRows() {
+// Initialize a new frame
+function initializeFrame(isDescending) {
+  const startIndex = (frameCount - 1) * TOTAL_ROUNDS;
+  for (let i = 0; i < TOTAL_ROUNDS; i++) {
+    const cardCount = isDescending ? TOTAL_ROUNDS - i : i + 1;
+    rounds.push({
+      cards: cardCount,
+      players: {},
+      trump: '',
+      frameIndex: frameCount - 1
+    });
+  }
+}
+
+// Create round rows for a frame
+function createRoundRows(startIndex, isDescending) {
   for (let i = 0; i < TOTAL_ROUNDS; i++) {
     const row = document.createElement('tr');
-    row.id = `round-${i}`;
+    const roundIndex = startIndex + i;
+    row.id = `round-${roundIndex}`;
     
     // Add round label - use card count as round name
     const roundCell = document.createElement('td');
@@ -55,13 +66,13 @@ function createRoundRows() {
     
     // Create round label with card count
     const roundLabel = document.createElement('div');
-    roundLabel.textContent = TOTAL_ROUNDS - i;
+    roundLabel.textContent = isDescending ? TOTAL_ROUNDS - i : i + 1;
     roundCell.appendChild(roundLabel);
     
     // Create trump suit selector
     const trumpSelector = document.createElement('select');
     trumpSelector.className = 'trump-selector';
-    trumpSelector.setAttribute('data-round', i);
+    trumpSelector.setAttribute('data-round', roundIndex);
     trumpSelector.addEventListener('change', updateTrump);
     
     // Add suit options with just symbols
@@ -86,10 +97,106 @@ function createRoundRows() {
     
     // Add empty cells for future players
     for (let j = 0; j < players.length; j++) {
-      addPlayerCellToRow(row, j, i);
+      addPlayerCellToRow(row, j, roundIndex);
     }
     
     scoreBody.appendChild(row);
+  }
+
+  // Add intermediate total row if this isn't the first frame
+  if (startIndex > 0) {
+    addIntermediateTotalRow(startIndex - 1);
+  }
+}
+
+// Add intermediate total row
+function addIntermediateTotalRow(lastRoundIndex) {
+  const intermediateRow = document.createElement('tr');
+  intermediateRow.className = 'intermediate-total-row';
+  intermediateRow.id = `intermediate-total-${lastRoundIndex}`;
+  
+  // Add "Frame Total" label
+  const labelCell = document.createElement('td');
+  labelCell.textContent = `Frame ${Math.floor(lastRoundIndex / TOTAL_ROUNDS) + 1} Total`;
+  intermediateRow.appendChild(labelCell);
+  
+  // Add total cells for each player
+  for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
+    const totalCell = document.createElement('td');
+    totalCell.setAttribute('data-player', playerIndex);
+    totalCell.setAttribute('data-frame', Math.floor(lastRoundIndex / TOTAL_ROUNDS));
+    intermediateRow.appendChild(totalCell);
+  }
+  
+  // Insert before the next frame's first row or the final total row
+  const nextRow = document.getElementById(`round-${lastRoundIndex + 1}`) || totalRow;
+  scoreBody.insertBefore(intermediateRow, nextRow);
+  
+  // Update the totals
+  updateTotals();
+}
+
+// Add a new frame
+function addFrame() {
+  frameCount++;
+  const startIndex = (frameCount - 1) * TOTAL_ROUNDS;
+  const isDescending = frameCount % 2 !== 0;
+  
+  // Initialize new frame data
+  initializeFrame(isDescending);
+  
+  // Create new round rows
+  createRoundRows(startIndex, isDescending);
+  
+  // Move total row to the end
+  scoreBody.appendChild(totalRow.parentElement.removeChild(totalRow));
+  
+  // Update all totals
+  updateTotals();
+}
+
+// Update totals for all players
+function updateTotals() {
+  // Update intermediate totals
+  for (let frame = 0; frame < frameCount; frame++) {
+    const frameStartIndex = frame * TOTAL_ROUNDS;
+    const frameEndIndex = frameStartIndex + TOTAL_ROUNDS - 1;
+    
+    for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
+      let frameTotal = 0;
+      
+      // Sum up all round scores for this player in this frame
+      for (let roundIndex = frameStartIndex; roundIndex <= frameEndIndex; roundIndex++) {
+        if (rounds[roundIndex]?.players[playerIndex]?.score !== undefined) {
+          frameTotal += rounds[roundIndex].players[playerIndex].score;
+        }
+      }
+      
+      // Update intermediate total if it exists
+      const intermediateRow = document.getElementById(`intermediate-total-${frameEndIndex}`);
+      if (intermediateRow) {
+        const totalCell = intermediateRow.querySelector(`td[data-player="${playerIndex}"][data-frame="${frame}"]`);
+        if (totalCell) {
+          totalCell.textContent = frameTotal;
+        }
+      }
+    }
+  }
+  
+  // Update final total
+  for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
+    let total = 0;
+    
+    // Sum up all round scores for this player across all frames
+    for (let roundIndex = 0; roundIndex < rounds.length; roundIndex++) {
+      if (rounds[roundIndex]?.players[playerIndex]?.score !== undefined) {
+        total += rounds[roundIndex].players[playerIndex].score;
+      }
+    }
+    
+    // Update total display
+    const totalCell = totalRow.querySelector(`td[data-player="${playerIndex}"]`);
+    totalCell.textContent = total;
   }
 }
 
@@ -129,20 +236,38 @@ function addPlayer() {
   playerTh.textContent = playerName;
   headerRow.appendChild(playerTh);
   
-  // Add player cell to total row
+  // Add player cells to all existing round rows across all frames
+  const totalRounds = frameCount * TOTAL_ROUNDS;
+  for (let i = 0; i < totalRounds; i++) {
+    const row = document.getElementById(`round-${i}`);
+    if (row) {
+      addPlayerCellToRow(row, playerIndex, i);
+    }
+  }
+
+  // Add player cell to all intermediate total rows
+  for (let frame = 0; frame < frameCount - 1; frame++) {
+    const frameEndIndex = (frame + 1) * TOTAL_ROUNDS - 1;
+    const intermediateRow = document.getElementById(`intermediate-total-${frameEndIndex}`);
+    if (intermediateRow) {
+      const totalCell = document.createElement('td');
+      totalCell.setAttribute('data-player', playerIndex);
+      totalCell.setAttribute('data-frame', frame);
+      intermediateRow.appendChild(totalCell);
+    }
+  }
+  
+  // Add player cell to final total row
   const totalCell = document.createElement('td');
   totalCell.setAttribute('data-player', playerIndex);
   totalCell.textContent = '0';
   totalRow.appendChild(totalCell);
   
-  // Add player cells to all existing round rows
-  for (let i = 0; i < TOTAL_ROUNDS; i++) {
-    const row = document.getElementById(`round-${i}`);
-    addPlayerCellToRow(row, playerIndex, i);
-  }
-  
   // Clear the input field after adding the player
   playerNameInput.value = '';
+  
+  // Update all totals to include the new player
+  updateTotals();
 }
 
 // Add player cell to a row
@@ -352,25 +477,6 @@ function updateAllBoardScoresInRound(roundIndex) {
   }
 }
 
-// Update totals for all players
-function updateTotals() {
-  for (let playerIndex = 0; playerIndex < players.length; playerIndex++) {
-    let total = 0;
-    
-    // Sum up all round scores for this player
-    for (let roundIndex = 0; roundIndex < TOTAL_ROUNDS; roundIndex++) {
-      if (rounds[roundIndex].players[playerIndex] && 
-          rounds[roundIndex].players[playerIndex].score !== undefined) {
-        total += rounds[roundIndex].players[playerIndex].score;
-      }
-    }
-    
-    // Update total display
-    const totalCell = totalRow.querySelector(`td[data-player="${playerIndex}"]`);
-    totalCell.textContent = total;
-  }
-}
-
 // Reset the game
 function resetGame() {
   if (confirm('Are you sure you want to reset the game? All scores will be lost.')) {
@@ -381,7 +487,8 @@ function resetGame() {
       rounds.push({
         cards: TOTAL_ROUNDS - i,
         players: {},
-        trump: ''
+        trump: '',
+        frameIndex: 0
       });
     }
     
@@ -401,6 +508,6 @@ function resetGame() {
     }
     
     // Recreate round rows
-    createRoundRows();
+    createRoundRows(0, true);
   }
 } 
