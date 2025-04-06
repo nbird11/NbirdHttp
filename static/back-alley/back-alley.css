@@ -20,6 +20,7 @@ th, td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: center;
+  min-height: 3rem;
 }
 
 th {
@@ -27,7 +28,8 @@ th {
 }
 
 .round-label {
-  text-align: left;
+  font-size: 1.2rem;
+  justify-content: center;
   font-weight: bold;
   display: flex;
   align-items: center;
@@ -85,10 +87,104 @@ th {
   color: blue;
 }
 
+/* Player cell styling */
+.player-score {
+  display: flex;
+  position: relative;
+  align-items: center;
+  min-width: 60px;
+  padding: 4px;
+}
+
+/* Input base styles */
 .score-input {
-  width: 40px;
+  background: #f5f5f5;
+  border: none;
+  border-radius: 4px;
   text-align: center;
-  text-transform: uppercase;
+  transition: background-color 0.2s, width 0.2s;
+  position: relative;
+}
+
+.score-input:hover {
+  background: #e5e5e5;
+}
+
+.score-input:focus {
+  outline: none;
+  background: #e0e0e0;
+}
+
+/* Bid input styling */
+.score-input[data-type="bid"] {
+  font-size: 1.2em;
+  width: 40px;
+  padding: 4px 8px;
+}
+
+/* Got input styling */
+.score-input[data-type="got"] {
+  font-size: 0.8em;
+  width: 24px;
+  padding: 2px 4px;
+  position: absolute;
+  left: 100%;  /* Position relative to bid input width */
+  top: 0;
+  transform: translate(-50%, -25%);  /* Adjust to overlap slightly with bid input */
+}
+
+/* Container for bid and got inputs */
+.input-container {
+  position: relative;
+  display: inline-flex;
+  margin-right: 8px;  /* Space for score display */
+}
+
+/* Score display positioning */
+.score-display {
+  margin-left: auto;  /* Push to the right */
+}
+
+/* Grow bid input for board bids */
+.score-input[data-type="bid"].board-bid {
+  width: auto; /* this is making the width be way too wide */
+  max-width: 4rem;
+}
+
+/* Tooltips */
+.score-input::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 4px 8px;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  margin-bottom: 4px;
+}
+
+.score-input:hover::after {
+  opacity: 0;
+  visibility: hidden;
+  transition-delay: 1s;
+}
+
+.score-input:hover:active::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Remove old bid/got row styles */
+.bid-row, .got-row {
+  display: none;
 }
 
 .controls {
@@ -104,28 +200,6 @@ th {
 
 .player-name-input {
   width: 100px;
-}
-
-.player-score {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-}
-
-.bid-row, .got-row {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-}
-
-.bid-row {
-  color: inherit;
-  font-size: inherit;
-}
-
-.score-display {
-  margin-left: 4px;
 }
 
 .set {

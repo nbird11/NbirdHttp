@@ -275,51 +275,63 @@ function addPlayerCellToRow(row, playerIndex, roundIndex) {
   const cell = document.createElement('td');
   cell.className = 'player-cell';
   
-  // Create a container for the two inputs and score
+  // Create a container for the inputs and score
   const playerScore = document.createElement('div');
   playerScore.className = 'player-score';
   
-  // Create bid input
-  const bidDiv = document.createElement('div');
-  bidDiv.className = 'bid-row';
-  bidDiv.textContent = 'Bid:';
+  // Create input container
+  const inputContainer = document.createElement('div');
+  inputContainer.className = 'input-container';
   
-  // Changed from number to text input to allow "B" for board
+  // Create bid input
   const bidInput = document.createElement('input');
-  bidInput.type = 'text'; 
+  bidInput.type = 'text';
   bidInput.className = 'score-input';
   bidInput.setAttribute('data-round', roundIndex);
   bidInput.setAttribute('data-player', playerIndex);
   bidInput.setAttribute('data-type', 'bid');
+  bidInput.setAttribute('data-tooltip', 'Enter bid');
   bidInput.addEventListener('change', updateBid);
-  bidDiv.appendChild(bidInput);
+  bidInput.addEventListener('input', handleBidInput);
   
   // Create tricks taken input
-  const gotDiv = document.createElement('div');
-  gotDiv.className = 'got-row';
-  gotDiv.textContent = 'Got:';
   const gotInput = document.createElement('input');
-  gotInput.type = 'number';
-  gotInput.min = '0';
-  gotInput.max = rounds[roundIndex].cards;
+  // gotInput.type = 'number';
+  // gotInput.min = '0';
+  // gotInput.max = rounds[roundIndex].cards;
   gotInput.className = 'score-input';
   gotInput.setAttribute('data-round', roundIndex);
   gotInput.setAttribute('data-player', playerIndex);
   gotInput.setAttribute('data-type', 'got');
+  gotInput.setAttribute('data-tooltip', 'Enter tricks taken');
   gotInput.addEventListener('change', updateGot);
-  gotDiv.appendChild(gotInput);
   
   // Create score display
   const scoreDiv = document.createElement('div');
   scoreDiv.className = 'score-display';
   scoreDiv.id = `score-${roundIndex}-${playerIndex}`;
   
-  // Add all elements to the container
-  playerScore.appendChild(bidDiv);
-  playerScore.appendChild(gotDiv);
+  // Add inputs to input container
+  inputContainer.appendChild(bidInput);
+  inputContainer.appendChild(gotInput);
+  
+  // Add all elements to the player score container
+  playerScore.appendChild(inputContainer);
   playerScore.appendChild(scoreDiv);
   cell.appendChild(playerScore);
   row.appendChild(cell);
+}
+
+// Handle bid input to adjust width for board bids
+function handleBidInput(event) {
+  const input = event.target;
+  const value = input.value.trim().toUpperCase();
+  
+  if (value.match(/^B+$/)) {
+    input.classList.add('board-bid');
+  } else {
+    input.classList.remove('board-bid');
+  }
 }
 
 // Update a bid
