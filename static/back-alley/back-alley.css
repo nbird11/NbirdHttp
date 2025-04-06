@@ -71,20 +71,12 @@ th {
   color: black;
 }
 
-.trump-selector option[value="nt"] {
-  color: blue;
-}
-
 .trump-selector.red-suit {
   color: red;
 }
 
 .trump-selector.black-suit {
   color: black;
-}
-
-.trump-selector.blue-suit {
-  color: blue;
 }
 
 /* Player cell styling */
@@ -198,6 +190,7 @@ th {
 
 .controls {
   margin: 20px 0;
+  padding: 10px 0;
   display: flex;
   gap: 10px;
 }
@@ -268,12 +261,6 @@ th {
   position: relative;
   height: 20px;
   margin: 10px 0;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-.add-frame-container:hover {
-  opacity: 1;
 }
 
 .add-frame-button {

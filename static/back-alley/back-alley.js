@@ -213,10 +213,8 @@ function updateTrump(event) {
   select.className = 'trump-selector'; // Reset class
   if (trump === 'hearts' || trump === 'diamonds') {
     select.classList.add('red-suit');
-  } else if (trump === 'spades' || trump === 'clubs') {
+  } else if (trump === 'spades' || trump === 'clubs' || trump === 'nt') {
     select.classList.add('black-suit');
-  } else if (trump === 'nt') {
-    select.classList.add('blue-suit');
   }
 }
 
