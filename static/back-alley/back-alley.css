@@ -82,6 +82,7 @@ th {
 /* Player cell styling */
 .player-score {
   display: flex;
+  justify-content: space-around;
   position: relative;
   align-items: center;
   min-width: 60px;
@@ -135,16 +136,7 @@ th {
   margin-right: 8px;  /* Space for score display */
 }
 
-/* Score display positioning */
-.score-display {
-  margin-left: auto;  /* Push to the right */
-}
-
 /* Tooltips */
-.input-container {
-  position: relative;
-}
-
 .tooltip {
   position: absolute;
   bottom: 100%;
@@ -299,6 +291,7 @@ th {
   font-size: 12px;
   white-space: nowrap;
   opacity: 0;
+  visibility: hidden;
   transition: opacity 0.2s;
   pointer-events: none;
   margin-bottom: 4px;
@@ -306,6 +299,8 @@ th {
 
 .add-frame-button:hover::after {
   opacity: 1;
+  visibility: visible;
+  transition-delay: 1s;
 }
 
 /* Intermediate total row styling */

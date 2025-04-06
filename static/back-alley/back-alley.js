@@ -293,7 +293,7 @@ function addPlayerCellToRow(row, playerIndex, roundIndex) {
   
   const bidTooltip = document.createElement('div');
   bidTooltip.className = 'tooltip';
-  bidTooltip.textContent = 'Enter bid';
+  bidTooltip.textContent = 'Bid';
   
   // Create tricks taken input and tooltip
   const gotInput = document.createElement('input');
@@ -305,7 +305,7 @@ function addPlayerCellToRow(row, playerIndex, roundIndex) {
   
   const gotTooltip = document.createElement('div');
   gotTooltip.className = 'tooltip';
-  gotTooltip.textContent = 'Enter tricks taken';
+  gotTooltip.textContent = 'Tricks taken';
   
   // Create score display
   const scoreDiv = document.createElement('div');
