@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', function() {
   playerNameInput = document.getElementById('player-name');
   
   // Add event listeners
+  document.getElementById('player-name').addEventListener('keyup', function(event) {
+    if (event.key === 'Enter') {
+      addPlayer();
+    }
+  });
   document.getElementById('add-player').addEventListener('click', addPlayer);
   document.getElementById('reset-game').addEventListener('click', resetGame);
   
