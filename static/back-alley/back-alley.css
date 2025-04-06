@@ -118,8 +118,11 @@ th {
 /* Bid input styling */
 .score-input[data-type="bid"] {
   font-size: 1.2em;
-  width: 40px;
+  min-width: 2.5ch;
+  width: var(--content-width, 2.5ch);
   padding: 4px 8px;
+  box-sizing: content-box;
+  transition: width 0.2s;
 }
 
 /* Got input styling */
@@ -143,12 +146,6 @@ th {
 /* Score display positioning */
 .score-display {
   margin-left: auto;  /* Push to the right */
-}
-
-/* Grow bid input for board bids */
-.score-input[data-type="bid"].board-bid {
-  width: auto; /* this is making the width be way too wide */
-  max-width: 4rem;
 }
 
 /* Tooltips */

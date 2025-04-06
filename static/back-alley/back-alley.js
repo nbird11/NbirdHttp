@@ -335,10 +335,14 @@ function addPlayerCellToRow(row, playerIndex, roundIndex) {
   row.appendChild(cell);
 }
 
-// Handle bid input to adjust width for board bids
+// Handle bid input to adjust styling for board bids
 function handleBidInput(event) {
   const input = event.target;
   const value = input.value.trim().toUpperCase();
+  
+  // Set the width based on content length, with a minimum of 2.5ch
+  const contentWidth = value.length * 1.2;
+  input.style.setProperty('--content-width', `${contentWidth}ch`);
   
   if (value.match(/^B+$/)) {
     input.classList.add('board-bid');
