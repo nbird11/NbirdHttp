@@ -1,6 +1,6 @@
 import profile from '/scripts/load-profile.js';
 
-const logoFallback = '/assets/NBLogoNew-cropped-rounded.png';
+const logoFallback = '/assets/NB-logo_v2.png';
 
 /**
  * Creates the HTML for a single experience item

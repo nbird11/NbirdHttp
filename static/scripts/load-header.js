@@ -4,7 +4,7 @@
  */
 function headerTemplate() {
   return `
-    <img src="/assets/NBLogoNew-cropped-rounded.png" alt="NB Logo" class="logo">
+    <img src="/assets/NB-logo_v2.png" alt="NB Logo" class="logo">
     <nav>
       <a href="/">Home</a>
       <div class="dropdown">

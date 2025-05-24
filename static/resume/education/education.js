@@ -1,6 +1,6 @@
 import profile from '/scripts/load-profile.js';
 
-const logoFallback = '/assets/NBLogoNew-cropped-rounded.png';
+const logoFallback = '/assets/NB-logo_v2.png';
 
 /**
  * Generates HTML template for a single education item
