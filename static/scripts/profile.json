@@ -5,7 +5,7 @@
     "email": "nathanbirdka@gmail.com",
     "phone": "(385) 392-5995"
   },
-  "bio": "Former Backend Software Development Intern at FamilySearch\nSoftware Engineering Student at Brigham Young University-Idaho",
+  "bio": "Software Engineering Student at Brigham Young University-Idaho",
   "websites": [
     {
       "name": "YouTube",
@@ -24,7 +24,7 @@
       "url": "https://nbird.dev/"
     }
   ],
-  "about": "I'm currently a full-time student at BYU-Idaho studying Software Engineering with a focus on Software Design, optimizing algorithms, and reducing complexity. Over the summer, I interned as a Backend Web Developer at FamilySearch, where I built and maintained backend REST APIs, handled data collection, and monitored AWS builds/deploys. Notably, I contributed to a Paris 2024 Olympics project under a tight deadline.\nMy passion for technology extends beyond my professional life. I enjoy working on personal programming projects, which allows me to explore new technologies and enhance my skills. I am also an active member of the Association for Computing Machinery (ACM) at BYU-Idaho, participating in discussions on various Computer Science topics. Outside of tech, I love playing board games with friends, practicing the piano, and singing.\nDuring the height of the covid pandemic, I served a proselyting mission for the Church of Jesus Christ of Latter-day Saints where I taught, performed service, and provided spiritual aid in Colorado and Brazil, in English and Portuguese respectively.\nLooking forward to contributing to innovative projects and making a meaningful impact in the tech community.",
+  "about": "I'm a Software Engineering student at BYU–Idaho, passionate about clean design, efficient systems, and impactful projects. In my most recent professional role, I interned as a Backend Web Developer at FamilySearch, where I built and maintained backend REST APIs, developed a large-scale web crawler for the Paris 2024 Olympics, and delivered production-level code rarely assigned to interns. I’ve also worked as a programming tutor and research assistant, mentoring peers and contributing to cross-platform mobile app research. Outside of coursework, I enjoy building personal programming projects, which often allow me to explore new technologies and enhance my skills. Outside of tech, I enjoy board games, playing piano, and choral singing. During the COVID-19 pandemic, I served a proselyting mission for the Church of Jesus Christ of Latter-day Saints where I taught, performed service, and provided spiritual aid in Colorado and Brazil in English and Portuguese. I'm eager to join teams where I can keep learning, building, and making a difference through technology.",
   "education": [
     {
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF_oufUviU5FA/company-logo_200_200/company-logo_200_200/0/1733247939985/byu_idaho_logo?e=1748476800&v=beta&t=wHJRmZeJxcpcrBH4e2bIN_bnEm8DA6iPMVa0ehXXm1c",
@@ -34,7 +34,8 @@
       "end": "2025",
       "gpa": "3.98",
       "activities": [
-        "Association for Computing Machinery (ACM)"
+        "Certificate in Software Design",
+        "Awarded full-ride BYU–Idaho Scholarship for academic excellence (top percentile GPA, 3.98)"
       ]
     },
     {
@@ -55,20 +56,21 @@
       "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF_oufUviU5FA/company-logo_100_100/company-logo_100_100/0/1733247939985/byu_idaho_logo?e=1748476800&v=beta&t=VeB9eOOCJya8_LQi935HdS7Ibq2Jm5Q4MhysC-Vw7-A",
       "title": "Programming Tutor",
       "company": "Brigham Young University–Idaho",
-      "employmentType": "Part-time",
-      "start": "Sep 2024",
+      "employmentType": "Seasonal",
+      "start": "Sep 2023",
       "end": "Feb 2025",
       "location": "Rexburg, Idaho, United States",
       "locationType": "On-site",
       "bullets": [
-        "Facilitated individual and group sessions to assess understanding of software design principles in Python, C++, C, SQL, and JavaScript.",
-        "Mentored students in 8 distinct courses: Algorithm Design, Encapsulation Design, Inheritance Design, Dynamic Web Fundamentals, Intro to Programming, Discrete Mathematics, SQL, C Language, and Applied Programming.",
-        "Motivated students in discovering solutions to course-related questions independently."
+        "Mentored 40+ students across 8 university-level courses over 5 semesters, analyzing ~75K lines of code",
+        "Facilitated 100+ sessions covering software design principles in Python, C, C++, SQL, HTML, CSS, and JavaScript, creating custom walkthroughs from prior high-scoring coursework to reinforce key concepts",
+        "Broke down code involving drag force, Mach number, gravity at altitude, and linear interpolation into simple steps for students in a notorious C++ physics simulation course",
+        "Demonstrated technical mastery and strong communication—one student sought my guidance through 3 advanced successive courses and offered private compensation over free university alternatives after my official role ended"
       ]
     },
     {
       "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGoC_lEdSbT4w/company-logo_100_100/company-logo_100_100/0/1645790791911/familysearch_logo?e=1748476800&v=beta&t=1kIcycwK5cEk6YgV9R5wiY_OBg8T_nwzECC9RsAAaa8",
-      "title": "Backend Software Development Intern",
+      "title": "Backend Development Intern",
       "company": "FamilySearch",
       "employmentType": "Internship",
       "start": "Apr 2024",
@@ -76,10 +78,11 @@
       "location": "Lehi, Utah, United States",
       "locationType": "Hybrid",
       "bullets": [
-        "Developed and maintained 7 backend REST APIs and microservices in Java Spring Boot.",
-        "Consulted on the architectural discussion of 3 backend APIs for new projects.",
-        "Delivered a prototype demonstration of a current-events user experience developed under a tight deadline.",
-        "Implemented over 1000 unit and integration tests utilizing Spring methodologies."
+        "Selected for 1 of only 2 backend intern roles from a pool of 30+ web/QA candidates",
+        "Recognized for exceeding expectations and trusted to write production-level code typically reserved for full-time engineers",
+        "Developed and maintained 7 REST APIs and microservices in Java Spring Boot, contributing 2K+ lines of production code",
+        "Designed and deployed a web crawler that ran for 9 hours overnight gathering data on 65K+ Olympians for a 2024 Paris Olympics initiative, directly enabling Olympic content search capabilities for the site",
+        "Authored ~800 unit/integration tests with Spring Boot and Mockito, increasing coverage to 95%+ across 7 services"
       ]
     },
     {
@@ -92,25 +95,10 @@
       "location": "Rexburg, Idaho, United States",
       "locationType": "Remote",
       "bullets": [
-        "Conducted in-depth analysis of Angular Ionic framework as part of a comparative study across 5 mobile app platforms.",
-        "Developed a mobile app prototype using Angular Ionic, evaluating project setup, learning curve, and maintenance challenges.",
-        "Integrated AWS Amplify and transitioned to Google Firestore, achieving a 30% increase in development efficiency, and assessed other pitfalls specific to Angular development.",
-        "Documented findings across 15 key metrics, including resource availability and development efficiency, contributing to a comprehensive cross-platform comparison report."
-      ]
-    },
-    {
-      "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF_oufUviU5FA/company-logo_100_100/company-logo_100_100/0/1733247939985/byu_idaho_logo?e=1748476800&v=beta&t=VeB9eOOCJya8_LQi935HdS7Ibq2Jm5Q4MhysC-Vw7-A",
-      "title": "Programming Tutor",
-      "company": "Brigham Young University–Idaho",
-      "employmentType": "Seasonal",
-      "start": "Oct 2023",
-      "end": "Dec 2023",
-      "location": "Rexburg, Idaho, United States",
-      "locationType": "On-site",
-      "bullets": [
-        "Led individual and group sessions with over 30 students to assess their understanding of Python.",
-        "Tutored students in Intro to Programming and Algorithm Design classes.",
-        "Guided students in discovering solutions to course-related questions independently."
+        "Built ~15K lines of Angular Ionic code across 150 files as part of a comparative study on 5 mobile app platforms",
+        "Evaluated setup, learning curve, and maintainability by developing a full mobile app with 114 commits over 3 months",
+        "Diagnosed persistent incompatibilities between AWS Amplify and Angular, leading to a successful migration to Firebase",
+        "Synthesized findings across 15 key metrics, including build complexity, documentation quality, and dev efficiency, contributing to a 20-page technical report"
       ]
     },
     {
@@ -123,7 +111,8 @@
       "location": "Saratoga Springs, Utah, United States",
       "locationType": "Remote",
       "bullets": [
-        "Built and developed custom software for clients looking for professional and well-maintained solutions."
+        "Designed and delivered 4 custom Python-based solutions totaling 3K+ lines of code and 130 commits, spanning GUI development, image metadata tools, facial tracking via OpenCV, and SQL-based file management systems",
+        "Independently built a 3D scene renderer from scratch with only NumPy and OpenCV to visualize facial tracking data—an unrequested tool that impressed the client and enhanced calibration accuracy"
       ]
     }
   ]
