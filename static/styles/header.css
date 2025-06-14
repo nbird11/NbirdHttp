@@ -46,8 +46,14 @@ nav a:hover {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  border: 2px solid var(--background-color-light);
   border-radius: 4px;
   margin-top: 0.5rem;
+}
+
+.dropdown:last-child .dropdown-content {
+  left: auto;
+  right: 0;
 }
 
 .dropdown-content a {

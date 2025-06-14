@@ -11,7 +11,9 @@ function headerTemplate() {
         <a href="#" class="dropbtn">Résumé ▾</a>
         <div class="dropdown-content">
           <a href="/resume/experience/">Experience</a>
+          <hr>
           <a href="/resume/education/">Education</a>
+          <hr>
           <a href="/resume/projects/">Projects</a>
         </div>
       </div>
@@ -19,14 +21,17 @@ function headerTemplate() {
         <a href="#" class="dropbtn">Games ▾</a>
         <div class="dropdown-content">
           <a href="/back-alley/">Back Alley</a>
+          <hr>
           <a href="/dining-philosophers/">Dining Philosophers</a>
-          <a href="/mex-train-dominoes/">Mex Train Dominoes</a>
+          <hr>
+          <a href="/mex-train-dominoes/">Mexican Train Dominoes</a>
         </div>
       </div>
       <div class="dropdown">
         <a href="#" class="dropbtn">Other ▾</a>
         <div class="dropdown-content">
           <a href="/quick-pen/">QuickPen</a>
+          <hr>
           <a href="/punch.html">Punch Clock</a>
         </div>
       </div>
