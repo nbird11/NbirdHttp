@@ -9,17 +9,28 @@ header {
 .logo {
   width: 50px;
   height: auto;
+  margin-right: 5rem;
+}
+
+.header-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--headline-color-on-color);
+  margin: 0;
+  white-space: nowrap;
 }
 
 nav {
   display: flex;
   gap: 2rem;
   align-items: center;
+  margin-left: auto;
 }
 
 nav a {
   color: white;
   text-decoration: none;
+  white-space: nowrap;
   font-family: var(--heading-font);
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -96,13 +107,14 @@ nav a:hover {
   color: var(--background-color);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 850px) {
   header {
     padding: 0.75rem;
   }
 
   .logo {
     width: 40px;
+    margin-right: 3rem;
   }
 
   nav {
@@ -115,7 +127,11 @@ nav a:hover {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 650px) {
+  .logo {
+    margin-right: 2rem;
+  }
+
   nav {
     flex-wrap: wrap;
     justify-content: flex-end;
@@ -124,5 +140,7 @@ nav a:hover {
 
   .dropdown-content {
     text-align: left;
+    left: auto;
+    right: 0;
   }
 }

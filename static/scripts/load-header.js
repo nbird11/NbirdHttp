@@ -3,8 +3,17 @@
  * @returns {string} HTML string containing the logo and navigation menu
  */
 function headerTemplate() {
+  const headerTitle = document.querySelector('header').dataset.title;
+
   return `
-    <img src="/assets/NB-logo_v2.png" alt="NB Logo" class="logo">
+    <img
+      src="/assets/NB-logo_v2.png"
+      alt="NB Logo"
+      class="logo"
+      onclick="window.location.href = '/'"
+      style="cursor: pointer;"
+    >
+    ${headerTitle ? `<h1 class="header-title">${headerTitle}</h1>` : ''}
     <nav>
       <a href="/">Home</a>
       <div class="dropdown">
