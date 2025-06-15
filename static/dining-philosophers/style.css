@@ -63,13 +63,13 @@
   z-index: 100;
 }
 
-#reset-btn {
+#reset {
   font-size: 0.8em;
   padding: 10px 20px;
-  cursor: pointer;
   margin-top: 20px;
   border-radius: 5px;
   border: none;
+  color: #000;
   background-color: #f0f0f0;
 }
 

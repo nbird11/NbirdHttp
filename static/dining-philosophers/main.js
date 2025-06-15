@@ -1,6 +1,10 @@
-const N = 5; // Number of philosophers
-const PHILOSOPHER_COLORS = ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF', '#A0C4FF', '#BDB2FF', '#FFC6FF'];
+// --- Config ---
+const N = 5;  // Number of philosophers
 const STOP_EATING_WHEN_FULL = false;
+const AUTO_RESET = true;
+
+// --- Global State ---
+const PHILOSOPHER_COLORS = ['#FFADAD', '#FFD6A5', '#FDFFB6', '#CAFFBF', '#9BF6FF', '#A0C4FF', '#BDB2FF', '#FFC6FF'];
 /** @type {HTMLElement} */
 const table = document.getElementById('table');
 /** @type {Philosopher[]} */
@@ -15,7 +19,7 @@ let startTime;
 /** @type {boolean} */
 let isSimulationRunning = true;
 
-// --- Visualization ---
+// --- UI ---
 function setupTable() {
   for (let i = 0; i < N; i++) {
     // Create philosopher element
@@ -52,7 +56,7 @@ function setupTable() {
   }
 }
 
-// --- Logic ---
+// --- Models ---
 class Chopstick {
   /**
    * @param {number} id
@@ -203,12 +207,16 @@ class Philosopher {
     this.state = 'eating';
     this.updateUI();
 
-    // Eat until full or a max time has passed
-    // const maxEatingTime = new Date().getTime() + Math.random() * 3000 + 1000;
-    // while (new Date().getTime() < maxEatingTime && this.hunger < 100 && isSimulationRunning) {
-    //   await new Promise(resolve => setTimeout(resolve, 100));
-    // }
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 3000 + 1000));
+    // Eat until full or a max time has passed,
+    //   else eat for a random time
+    if (STOP_EATING_WHEN_FULL) {
+      const maxEatingTime = new Date().getTime() + Math.random() * 3000 + 1000;
+      while (new Date().getTime() < maxEatingTime && this.hunger < 100 && isSimulationRunning) {
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+    } else {
+      await new Promise(resolve => setTimeout(resolve, Math.random() * 3000 + 1000));
+    }
 
     firstChopstick.release();
     secondChopstick.release();
@@ -222,7 +230,7 @@ class Philosopher {
   }
 }
 
-// --- Initialization ---
+// --- Main ---
 function main() {
   startTime = new Date();
   setupTable();
@@ -264,18 +272,35 @@ function main() {
       gameOverEl.id = 'game-over';
       gameOverEl.innerHTML = `Game Over.<br>Philosopher ${starvedPhilosopher.id} has starved!<br>Survived for ${elapsedSeconds} seconds.`;
 
-      const resetBtn = document.createElement('button');
-      resetBtn.id = 'reset-btn';
-      resetBtn.textContent = 'Reset';
-      resetBtn.addEventListener('click', resetSimulation);
+      let resetEl;
+      const secs = 5;
+      if (AUTO_RESET) {
+        resetEl = document.createElement('div');
+        resetEl.id = 'reset';
+        resetEl.textContent = `Reset in ${secs} seconds...`;
+        gameOverEl.appendChild(resetEl);
+      } else {
+        resetEl = document.createElement('button');
+        resetEl.id = 'reset';
+        resetEl.textContent = 'Reset';
+        resetEl.style.cursor = 'pointer';
+        resetEl.addEventListener('click', resetSimulation);
+      }
 
-      gameOverEl.appendChild(document.createElement("br"))
-      gameOverEl.appendChild(resetBtn);
+      gameOverEl.appendChild(document.createElement('br'));
+      gameOverEl.appendChild(resetEl);
       table.appendChild(gameOverEl);
+
+      if (AUTO_RESET) {
+        setTimeout(() => {
+          resetSimulation();
+        }, secs * 1000);
+      }
     }
   }, 100);
 }
 
+// --- Reset ---
 function resetSimulation() {
   isSimulationRunning = true;
   philosophers.length = 0;
