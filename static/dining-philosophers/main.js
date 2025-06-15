@@ -266,11 +266,13 @@ function main() {
       clearInterval(hungerIntervalId);
 
       const elapsedTime = new Date() - startTime;
-      const elapsedSeconds = (elapsedTime / 1000).toFixed(2);
+      const minutes = Math.floor(elapsedTime / 60000);
+      const seconds = ((elapsedTime % 60000) / 1000).toFixed(0).padStart(2, '0');
+      const elapsedTimeFormatted = `${minutes}:${seconds}`;
 
       const gameOverEl = document.createElement('div');
       gameOverEl.id = 'game-over';
-      gameOverEl.innerHTML = `Game Over.<br>Philosopher ${starvedPhilosopher.id} has starved!<br>Survived for ${elapsedSeconds} seconds.`;
+      gameOverEl.innerHTML = `Game Over.<br>Philosopher ${starvedPhilosopher.id} has starved!<br>Survived for MM:SS | ${elapsedTimeFormatted}.`;
 
       let resetEl;
       const secs = 5;
