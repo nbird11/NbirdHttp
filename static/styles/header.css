@@ -108,8 +108,9 @@ nav a:hover {
 }
 
 @media (max-width: 850px) {
-  header {
+  .header-title {
     padding: 0.75rem;
+    white-space: wrap;
   }
 
   .logo {
