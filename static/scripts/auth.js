@@ -44,7 +44,27 @@ function authTemplate() {
       margin-top: auto;
       max-width: 600px;
     }
+/*
+// TODO: Button styles from quick-pen.css should be used here
+    button {
+      width: 100%;
+      max-width: 200px;
+      padding: 0.75rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
+    button:hover {
+      background: var(--secondary-color);
+      transform: translateY(-1px);
+    }
+*/
     .button-container {
       display: flex;
       flex-direction: row;

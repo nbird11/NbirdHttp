@@ -1,3 +1,6 @@
+/* TODO: This is a major hack to get the button styles from quick-pen.css */
+@import url('/quick-pen/quick-pen.css');
+
 .content {
   grid-template-columns: 1fr 1fr;
 }

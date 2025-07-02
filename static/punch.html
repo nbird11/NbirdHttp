@@ -5,54 +5,57 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Punch Clock Application</title>
-  <link rel="icon" type="image/svg+xml" href="./assets/punch-favicon.svg">
-  <link rel="stylesheet" href="./styles/global.css">
-  <link rel="stylesheet" href="./styles/punch.css">
-  <script src="./scripts/punch.js"></script>
-  <script src="./scripts/auth.js"></script>
+  <link rel="icon" type="image/svg+xml" href="/assets/punch-favicon.svg">
+  <link rel="stylesheet" href="/styles/global.css">
+  <link rel="stylesheet" href="/styles/punch.css">
+  <script src="/scripts/punch.js"></script>
+  <!-- <script src="./scripts/auth.js"></script> -->
 </head>
 
 <body>
-  <header>
-    <script src="./scripts/load-header.js"></script>
+  <header data-title="Punch Clock">
+    <script src="/scripts/load-header.js"></script>
   </header>
 
   <h1 style="text-align: center; color: red;">This page is under construction.</h1>
 
-  <div id="auth"></div>
+  <!-- <div id="auth"></div> -->
+  <script type="module" src="/scripts/auth.js"></script>
 
   <!-- Hidden by default until logged in. -->
-  <div class="content" id="app" style="display: none;">
-    <h2>Commands</h2>
-    <div class="command">
-      <button onclick="punchIn()">Punch In</button>
-    </div>
-    <div class="command">
-      <button onclick="startBreak()">Start Break</button>
-      <button onclick="endBreak()">End Break</button>
-    </div>
-    <div class="command">
-      <button onclick="punchOut()">Punch Out</button>
-    </div>
+  <main>
+    <div class="content" id="app" style="display: none;">
+      <h2>Commands</h2>
+      <div class="command">
+        <button onclick="punchIn()">Punch In</button>
+      </div>
+      <div class="command">
+        <button onclick="startBreak()">Start Break</button>
+        <button onclick="endBreak()">End Break</button>
+      </div>
+      <div class="command">
+        <button onclick="punchOut()">Punch Out</button>
+      </div>
 
-    <div class="status">
-      <h2>Status</h2>
-      <ul id="status">
-        <!-- Status elements will be appended here -->
-      </ul>
-      <div class="status command">
-        <label for="workHours">Work Hours:</label>
-        <input id="workHours" type="number" value="8" min="1" max="24">
-        <button onclick="checkStatus()">Refresh Status</button>
+      <div class="status">
+        <h2>Status</h2>
+        <ul id="status">
+          <!-- Status elements will be appended here -->
+        </ul>
+        <div class="status command">
+          <label for="workHours">Work Hours:</label>
+          <input id="workHours" type="number" value="8" min="1" max="24">
+          <button onclick="checkStatus()">Refresh Status</button>
+        </div>
+      </div>
+
+      <div class="notes">
+        <p>
+          &sup1; Time spanned from one day to the next (i.e. over midnight) will not be correctly calculated.
+        </p>
       </div>
     </div>
-
-    <div class="notes">
-      <p>
-        &sup1; Time spanned from one day to the next (i.e. over midnight) will not be correctly calculated.
-      </p>
-    </div>
-  </div>
+  </main>
   <footer>
     <script src="./scripts/load-footer.js"></script>
   </footer>
