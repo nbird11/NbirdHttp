@@ -27,7 +27,7 @@
   "about": "I'm a Software Engineering student at BYU–Idaho, passionate about clean design, efficient systems, and impactful projects. In my most recent professional role, I interned as a Backend Web Developer at FamilySearch, where I built and maintained backend REST APIs, developed a large-scale web crawler for the Paris 2024 Olympics, and delivered production-level code rarely assigned to interns. I’ve also worked as a programming tutor and research assistant, mentoring peers and contributing to cross-platform mobile app research.\nOutside of coursework, I enjoy building personal programming projects, which often allow me to explore new technologies and enhance my skills.\nOutside of tech, I enjoy board games, playing piano, and choral singing. During the COVID-19 pandemic, I served a proselyting mission for the Church of Jesus Christ of Latter-day Saints where I taught, performed service, and provided spiritual aid in Colorado and Brazil in English and Portuguese.\nI'm eager to join teams where I can keep learning, building, and making a difference through technology.",
   "education": [
     {
-      "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF_oufUviU5FA/company-logo_200_200/company-logo_200_200/0/1733247939985/byu_idaho_logo?e=1748476800&v=beta&t=wHJRmZeJxcpcrBH4e2bIN_bnEm8DA6iPMVa0ehXXm1c",
+      "logo": "/resume/assets/byu_idaho_logo.jpeg",
       "institution": "Brigham Young University-Idaho",
       "degree": "Bachelor of Science in Software Engineering",
       "start": "2019",
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQF-Aqi67LbmYg/company-logo_100_100/company-logo_100_100/0/1630592259166?e=1748476800&v=beta&t=OZwVRwdPmRQQsdPRIdFlNWP9mnhK9iFnS3MiPEe9aUY",
+      "logo": "/resume/assets/santa_teresa_hs_logo.jpeg",
       "institution": "Santa Teresa High School",
       "degree": "High School Diploma",
       "start": "2015",
@@ -53,7 +53,7 @@
   ],
   "experience": [
     {
-      "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF_oufUviU5FA/company-logo_100_100/company-logo_100_100/0/1733247939985/byu_idaho_logo?e=1748476800&v=beta&t=VeB9eOOCJya8_LQi935HdS7Ibq2Jm5Q4MhysC-Vw7-A",
+      "logo": "/resume/assets/byu_idaho_logo.jpeg",
       "title": "Programming Tutor",
       "company": "Brigham Young University–Idaho",
       "employmentType": "Seasonal",
@@ -69,7 +69,7 @@
       ]
     },
     {
-      "logo": "https://media.licdn.com/dms/image/v2/C4E0BAQGoC_lEdSbT4w/company-logo_100_100/company-logo_100_100/0/1645790791911/familysearch_logo?e=1748476800&v=beta&t=1kIcycwK5cEk6YgV9R5wiY_OBg8T_nwzECC9RsAAaa8",
+      "logo": "/resume/assets/familysearch_logo.jpeg",
       "title": "Backend Development Intern",
       "company": "FamilySearch",
       "employmentType": "Internship",
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "logo": "https://media.licdn.com/dms/image/v2/D4E0BAQF_oufUviU5FA/company-logo_100_100/company-logo_100_100/0/1733247939985/byu_idaho_logo?e=1748476800&v=beta&t=VeB9eOOCJya8_LQi935HdS7Ibq2Jm5Q4MhysC-Vw7-A",
+      "logo": "/resume/assets/byu_idaho_logo.jpeg",
       "title": "Research Assistant",
       "company": "Brigham Young University–Idaho",
       "employmentType": "Part-time",
