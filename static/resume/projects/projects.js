@@ -29,7 +29,7 @@ function projectTemplate(project) {
         <p>${project.description}</p>
         <div class="project-links">
           ${project.demo ? `<a href="${project.demo}" target="_blank" class="demo-link">Demo</a>` : ''}
-          ${project.github ? `<a href="${project.github}" target="_blank" class="github-link">Learn More</a>` : ''}
+          ${project.github ? `<a href="${project.github}" target="_blank" class="github-link">Source Code</a>` : ''}
         </div>
       </div>
     </div>`;

@@ -1,6 +1,6 @@
 [
   {
-    "title": "Dynamic Resume",
+    "title": "Dynamic Resume Prototype",
     "description": "A dynamic resume website built with vanilla JavaScript and CSS.",
     "technologies": [
       "HTML",
@@ -13,7 +13,7 @@
     ],
     "image": "assets/dynamic-resume.png",
     "demo": "https://wdd131.nbird.dev/resume",
-    "github": "https://github.com/nbird11/WDD-131/tree/main/resume",
+    "github": "https://github.com/nbird11/NbirdHttp",
     "featured": false,
     "date": "Late 2024"
   },
@@ -38,10 +38,21 @@
   },
   {
     "title": "QuickPen",
+    "description": "A full stack web app productivity tool built to motivate writers to track their writing progress.",
+    "technologies": ["Full Stack", "Google Firebase", "React", "TypeScript", "Bootstrap"],
+    "categories": ["web"],
+    "image": "assets/quickpen.svg",
+    "demo": "https://quickpen.web.app",
+    "github": "https://github.com/nbird11/quickpen",
+    "featured": false,
+    "date": "Early 2025-Mid 2025"
+  },
+  {
+    "title": "QuickPen Prototype",
     "description": "A writing application built for writers to quickly jot down ideas.",
     "technologies": ["HTML", "CSS", "JavaScript"],
     "categories": ["web"],
-    "image": "assets/quickpen.png",
+    "image": "assets/quickpen-proto.png",
     "demo": "https://nbird.dev/quick-pen",
     "github": null,
     "featured": false,
