@@ -16,7 +16,7 @@ If you wish to run this project by itself, please be aware that `index.html` ref
 - `/scripts/load-header.js`
 - `/scripts/load-footer.js`
 
-When you open `index.html` directly, your browser will not be able to find these files, which will result in errors in the developer console and a missing icon. However, **these errors will not prevent the scorecard from functioning.**
+When you open `index.html` directly, your browser will not be able to find these files, which will result in errors in the developer console. However, **these errors will not prevent the scorecard from functioning.**
 
 For a cleaner experience, you can optionally comment out or remove the `<link>` for `global.css`, the `<header>` and `<footer>` sections from `index.html`.
 
