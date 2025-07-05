@@ -1,13 +1,17 @@
 # Dining Philosophers
 
-A real-time, visual simulation of the classic Dining Philosophers concurrency problem. This project provides an interactive way to observe the challenges of resource allocation and deadlock avoidance in a multi-threaded environment.
+This project is a real-time, visual simulation of the classic Dining Philosophers concurrency problem, providing an interactive way to observe the challenges of resource allocation and deadlock avoidance.
+
+> [!NOTE]
+> While this problem is traditionally used to illustrate concurrency in multi-threaded languages, this implementation uses JavaScript's `async/await` to simulate the behavior in a single-threaded environment.
 
 The simulation displays philosophers sitting around a circular table with chopsticks placed between them. You can see their status (thinking, hungry, or eating) indicated by the color of their border, and their hunger level represented by a bar.
 
 ## How to Run
 
 > [!NOTE]
-> This project is part of a larger monorepo.
+> This project is part of a larger monorepo.  
+> If you want to see this project in the context of its hosting site, you can visit [https://nbird.dev/dining-philosophers](https://nbird.dev/dining-philosophers)
 
 ### Standalone Usage
 
@@ -28,11 +32,16 @@ After making these changes, you can open `index.html` directly in your browser, 
 If you have Python installed, navigate to this directory in your terminal and run:
 
 ```bash
-# For Python 3
 python -m http.server
 ```
 
-Then open `http://localhost:8000` in your browser.
+or
+
+```bash
+python3 -m http.server
+```
+
+Then open [http://localhost:8000](http://localhost:8000) in your browser.
 
 #### Using VS Code Live Server
 
