@@ -37,6 +37,7 @@ quick-pen/.*
 # Build/util scripts
 # dev
 run.ps1
+subtreepush.ps1
 # prod
 build
 restart
