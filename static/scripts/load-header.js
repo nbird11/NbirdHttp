@@ -1,5 +1,6 @@
 /**
- * Generates the HTML template for the header
+ * Generates the HTML template for the header.  
+ * If the header has a data-title attribute, it will be displayed as a title.
  * @returns {string} HTML string containing the logo and navigation menu
  */
 function headerTemplate() {
@@ -48,6 +49,14 @@ function headerTemplate() {
   `;
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+/**
+ * Refreshes the header.  
+ * Call this if you change the header's `dataset.title` attribute in JS.
+ */
+function refreshHeader() {
   document.querySelector('header').innerHTML = headerTemplate();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  refreshHeader();
 });
