@@ -11,7 +11,7 @@ function projectTemplate(project) {
   ).join('');
 
   return `
-    <div class="project-card" data-categories="${project.categories.join(' ')}">
+    <div class="project-card" data-categories="${project.categories.join(' ').concat(project.featured ? ' featured' : '')}">
       <div class="project-image">
         ${project.featured ? '<span class="featured-badge">Featured</span>' : ''}
         <img src="${project.image || './assets/project-default.png'}"

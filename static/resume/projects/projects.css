@@ -1,10 +1,5 @@
 @import url('/styles/card.css');
 
-main h1 {
-  margin: 2rem 0;
-  text-align: center;
-}
-
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -55,7 +50,7 @@ main h1 {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background: var(--secondary-color-high-contrast-white);
+  background: var(--accent1-color);
   color: white;
   padding: 0.5rem 1rem;
   border-radius: 4px;
@@ -93,16 +88,16 @@ main h1 {
 }
 
 .github-link {
-  background-color: var(--accent2-color);
-  color: var(--background-color);
+  background-color: var(--secondary-color);
+  color: var(--background-color-light);
 }
 
 .demo-link:hover {
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color-hover);
 }
 
 .github-link:hover {
-  background-color: var(--accent1-color);
+  background-color: var(--secondary-color-hover);
   color: white;
 }
 

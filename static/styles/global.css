@@ -6,7 +6,9 @@
 :root {
   /* Colors */
   --primary-color: #3D6541;
+  --primary-color-hover: #2D4A2F;
   --secondary-color: #AE9461;
+  --secondary-color-hover: #87734B;
   --accent1-color: #70566D;
   --accent2-color: #C3DFE0;
   --background-color: #112A2B;
