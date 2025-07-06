@@ -22,17 +22,16 @@ All frontend applications are served from the `/static` directory.
 
 - **Homepage (`/`)**: A personal landing page.
 - **Punch Clock (`/punch` or `/punch.html`)**: The user interface for the Punch Clock application.  
-    ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
-- **QuickPen (`/quick-pen/`)**: A feature-rich interface for the writing sprint application, complete with a timer, progress dashboards, high scores, and sprint history.
-  > [!TIP]
-  > This is just a prototype. See [QuickPen Github](https://github.com/nbird11/quickpen), [QuickPen Homepage](https://quickpen.web.app/) for a beta implementation of the web app in React (TS) and Firebase.
+  ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
+- **QuickPen (`/quick-pen/`)**: A feature-rich interface for the writing sprint application, complete with a timer, progress dashboards, high scores, and sprint history.  
+  ![Static Badge](https://img.shields.io/badge/Prototype-forestgreen) – See [QuickPen Github](https://github.com/nbird11/quickpen), [QuickPen Homepage](https://quickpen.web.app/) for a beta implementation of the web app in React (TS) and Firebase.
 - **Resume (`/resume/`)**: A dynamic online resume.
 - **Back Alley Score Sheet (`/back-alley/`)**: A web-based score sheet for the card game "Back Alley".
 - **Dining Philosophers (`/dining-philosophers/`)**: A visualization of the classic Dining Philosophers computer science problem.
 - **Mexican Train Dominoes (`/mex-train-dominoes/`)**: A canvas-based implementation of the game Mexican Train Dominoes.  
-    ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
+  ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
 - **Seating Chart (`/seating/`)**: An application for creating and managing seating charts.  
-    ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
+  ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
 
 ## Codebase & Design
 
