@@ -26,7 +26,7 @@ function projectTemplate(project) {
         <div class="tech-stack">
           ${techStack}
         </div>
-        <p>${project.description}</p>
+        <p>${project.description}<br /><a href="./project.html?id=${project.id}">See more</a></p>
         <div class="project-links">
           ${project.demo ? `<a href="${project.demo}" target="_blank" class="demo-link">Demo</a>` : ''}
           ${project.github ? `<a href="${project.github}" target="_blank" class="github-link">Source Code</a>` : ''}

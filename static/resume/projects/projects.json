@@ -1,7 +1,9 @@
 [
   {
+    "id": "dynamic-resume-prototype",
     "title": "Dynamic Resume Prototype",
     "description": "A dynamic resume website built with vanilla JavaScript and CSS.",
+    "longDescription": "This project is a dynamic and comprehensive personal portfolio for software engineer Nathan Bird, designed to showcase a wide array of his technical skills and experiences. Rather than a simple static page, it functions as a data-driven web application. The core of the site is built with vanilla HTML, CSS, and JavaScript, and it dynamically loads project and professional data from JSON files. This architecture not only makes the content easily updatable but also serves as a practical demonstration of the creator's web development capabilities. The entire portfolio is self-hosted on a custom Go web server running on a Raspberry Pi, highlighting skills in backend development and infrastructure management.\nThe centerpiece of the website is an extensive and interactive project portfolio that allows visitors to explore Nathan's work in detail. Users can filter projects by categories such as web, desktop, and embedded systems, and view individual project pages with in-depth descriptions, technologies used, and links to live demos and GitHub repositories. This feature provides tangible proof of his skills and offers a deep dive into his development process and coding style. The site also includes thorough sections on his professional work experience and educational background, presenting a complete and well-rounded professional profile.\nThe portfolio demonstrates a remarkable breadth of expertise across various domains of software engineering. It features full-stack web applications built with technologies like React and Google Firebase, complex desktop simulators and games developed in C++, and hands-on hardware projects using Arduino for embedded systems. Additionally, it includes a mobile application built with Angular and Ionic, showcasing versatility and an ability to adapt to different platforms and technologies. In essence, the project is a living resume that effectively documents and demonstrates Nathan Bird's journey and proficiency as a software engineer.",
     "technologies": [
       "HTML",
       "CSS",
@@ -18,8 +20,10 @@
     "date": "Late 2024"
   },
   {
+    "id": "orbital-simulator",
     "title": "Orbital Simulator",
     "description": "A desktop application simulating the motion of multiple satellites in orbit around the Earth.",
+    "longDescription": "This project is a C++ application that simulates orbital mechanics, featuring a variety of satellites as well as interactive elements. I developed a system where complex satellites are constructed from individual, destructible parts. When a satellite is hit by a projectile, it breaks apart into fragments and its component pieces, each continuing to move according to orbital physics. The simulation includes several types of satellites, from GPS and Hubble to Starlink and the Crew Dragon, each with unique component layouts.\nThe core of the project is a physics engine that accurately models gravitational forces, velocity, and acceleration, ensuring all objects—satellites, parts, fragments, and projectiles—follow believable trajectories. I implemented a user interface using OpenGL to visualize the simulation, allowing for interaction with the orbital environment. The design is object-oriented, with a clear separation between the simulation logic, physics calculations, and the user interface, and includes a comprehensive suite of unit tests for each component.",
     "technologies": [
       "C++",
       "unit testing",
@@ -37,8 +41,10 @@
     "date": "Late 2024"
   },
   {
+    "id": "quickpen",
     "title": "QuickPen",
     "description": "A full stack web app productivity tool built to motivate writers to track their writing progress.",
+    "longDescription": "QuickPen is a web app built to help writers build a consistent writing habit through timed sprints. It provides a clean, focused environment for setting custom writing durations and tracking key stats like word count, words per minute, and writing streaks. Writers can use the app for free with access to unlimited sprints, basic tracking, and daily streaks, or subscribe to the Pro tier for $5/month to unlock advanced analytics, custom tagging, and export features.\nThe app is live and available for public use at quickpen.web.app. It's built with React and powered by Firebase, using GitHub Actions for automatic deployments—merges to `main` go live instantly, and pull requests generate preview builds for testing. While the backend configuration is handled through environment variables, the frontend is open source, and contributions are encouraged.\nQuickPen began as a simple prototype using vanilla JS and Go, later evolving into a more modern stack to better serve the needs of consistent writers. Inspired by real-world writing techniques and habit-building strategies, the app now serves as both a writing tool and a personal progress tracker.",
     "technologies": [
       "Full Stack",
       "Google Firebase",
@@ -50,14 +56,16 @@
       "web"
     ],
     "image": "assets/quickpen.svg",
-    "demo": "https://quickpen.web.app",
+    "demo": "https://quickpen.web.app/home",
     "github": "https://github.com/nbird11/quickpen",
     "featured": false,
     "date": "Early 2025-Mid 2025"
   },
   {
+    "id": "quickpen-prototype",
     "title": "QuickPen Prototype",
     "description": "A writing application built for writers to quickly jot down ideas.",
+    "longDescription": "QuickPen is a full-stack web application designed to help writers improve their focus and build consistent habits through timed writing sprints. This version serves as a fully functional prototype, establishing the core user experience of setting a custom duration, engaging in a focused writing session with a live timer and progress bar, and tracking key performance metrics. The interface is intentionally minimalist, providing standard controls to start, pause, and resume sprints while offering real-time feedback through a live word count. To help users visualize progress and stay motivated, the application automatically tracks metrics like word count and WPM, powering a progress dashboard, a \"Current Streak\" tracker, and a \"High Scores\" section. All completed sprints, along with their full text content and user-added tags, are saved to a detailed history for later review.\nThis prototype is architected as a modern single-page application (SPA) built with clean, modular vanilla JavaScript, communicating with a custom backend API. The backend was developed entirely in Go using the standard net/http library to handle all business logic. A key design decision for this prototype was the use of a custom, file-based storage system instead of a traditional database. This approach made the application lightweight, portable, and entirely self-contained, which was ideal for validating the core concept. Following the success of this prototype, a full-scale implementation was developed using React and Firebase to enhance scalability and add more complex features. For details on the production-ready version, please see the separate portfolio entry.",
     "technologies": [
       "HTML",
       "CSS",
@@ -73,8 +81,10 @@
     "date": "Mid 2024-Early 2025"
   },
   {
+    "id": "weather-station",
     "title": "Weather Station",
     "description": "A 'weather station' built using an Elegoo Arduino Uno, a DHT11 temperature and humidity sensor, a photocell, and a 16x2 LCD display.",
+    "longDescription": "This project is a simple 'weather station' built using an Arduino Uno microcontroller, a DHT11 temperature and humidity sensor, a photocell, and a 16x2 LCD display. The Arduino is programmed in C++ to read the sensor data and display it on the LCD screen. The photocell is used to measure the ambient light level, and the DHT11 is used to measure the temperature and humidity. The LCD display is used to display the data in a user-friendly format.",
     "technologies": [
       "Arduino",
       "C++",
@@ -91,8 +101,10 @@
     "date": "Late 2024"
   },
   {
+    "id": "cpp-chess",
     "title": "C++ Chess",
     "description": "A chess game built in C++ using OpenGL for graphics. Features all chess piece movements, including castling, en passant, and promotion.",
+    "longDescription": "This project is a fully playable chess game developed from the ground up in C++. It features a graphical interface and implements the complete set of chess rules, including complex maneuvers such as pawn promotion, castling, and en passant. The application provides an intuitive user experience, allowing players to select pieces and see all valid moves highlighted on the board before making a turn.\nThe game was engineered using object-oriented design principles to create a logical and maintainable structure. Each chess piece is treated as a self-contained object, responsible for knowing its own unique rules for movement. This modular approach makes the system predictable and easy to manage. It also means the project can be easily extended—for instance, adding a new or custom piece would not require redesigning the core game logic.\nA key focus of this project was ensuring its reliability. To achieve this, I developed a comprehensive suite of automated tests that validate every aspect of the game's logic. This testing framework guarantees that each piece behaves exactly as expected and that the core rules of chess are always enforced. This commitment to quality assurance results in a robust application and allows for future modifications to be made with confidence.",
     "technologies": [
       "C++",
       "unit testing",
@@ -110,8 +122,10 @@
     "date": "Late 2024"
   },
   {
+    "id": "fan-controller",
     "title": "Fan Controller",
     "description": "A fan controller built using an Arduino Uno, a DC motor with the fan attachment, a 5V PWM and battery pack to power the fan, and joystick to control the speed and direction of the fan.",
+    "longDescription": "This project is a simple fan controller built using an Arduino Uno microcontroller, a DC motor with the fan attachment, a 5V PWM and battery pack to power the fan, and joystick to control the speed and direction of the fan. The Arduino is programmed in C++ to read the joystick data and control the fan speed and direction. The 5V PWM and battery pack are used to power the fan.",
     "technologies": [
       "Arduino",
       "C++",
@@ -128,11 +142,15 @@
     "date": "Late 2024"
   },
   {
+    "id": "punch-clock",
     "title": "Punch Clock",
-    "description": "A time-tracking web application evolved from a CLI tool that utilized Google Sheets API integration. Calculates work hours and allows you to easily see when you've hit a certain number of hours. Now a full-stack authenticated web app accessible from any device.",
+    "description": "A time-tracking web application evolved from a CLI tool. Source Code button links to the second version of the CLI tool written in Python for UNIX machines.",
+    "longDescription": "This project is slightly confusing. It was originally developed for myself as a CLI tool written in Python. It used the pyinstaller library to create a standalone executable, and was structured in a very Windows-centric way, using files in appdata to store the punch data. This first version also integrated with Google Sheets API to upload data, which was a cool gimmick, but was pretty niche and didn't really add that much value.\nThe next version was still written in Python, but added the ability to start and stop breaks while punched in. This version was more UNIX-centric, as I was using it on my work Mac during an internship. Since then, Punch has evolved into a light-weight, full-stack, authenticated web application due to a need to track my hours from any device, with the backend written in Go. The web application is hosted on the same Raspberry Pi that hosts this portfolio site.\nNote that the source code linked to from this entry is for the Mac version of the CLI tool written in Python, not the web application. You can also find the original version of the tool with the Sheets integration in the 'master' branch of the linked GitHub repository.",
     "technologies": [
       "Full Stack",
       "Authentication",
+      "Go",
+      "Python",
       "Google Sheets API"
     ],
     "categories": [
@@ -146,14 +164,17 @@
     "date": "Mid 2024"
   },
   {
+    "id": "nbird-http-go-webserver",
     "title": "NBird HTTP Go Webserver",
-    "description": "A Raspberry Pi-hosted webserver written in Go, serving static content and REST endpoints for various personal projects. Currently hosting this portfolio site.",
+    "description": "A Raspberry Pi-hosted webserver written in Go, serving REST endpoints and static content for various personal projects. It is also what is currently hosting this portfolio site!",
+    "longDescription": "NbirdHttp is a monorepo project containing a self-hosted web server written in Go and a collection of frontend web applications. The Go backend, built using only the standard library, provides public facing APIs for authentication, time-tracking, and my writing utility prototype. The frontend consists of several applications built with vanilla HTML, CSS, and JavaScript. The project prioritizes simplicity and portability, designed for efficient operation on a Raspberry Pi.\nI developed NbirdHttp as a full-stack, self-hosted platform and playground for many of my personal projects. I engineered the backend from scratch in Go, using only the standard library to build a lightweight server ideal for resource-constrained environments like a Raspberry Pi. A key challenge I tackled was creating a custom, file-based persistence layer, which avoided the need for an external database. This project showcases my skills in Go backend development, API design, and system architecture, including implementing features like graceful shutdown. On the frontend, I intentionally used vanilla HTML, CSS, and JavaScript to demonstrate strong foundational web development skills, creating modular and reusable UI components without relying on frameworks.",
     "technologies": [
       "Go",
       "Raspberry Pi",
       "REST API"
     ],
     "categories": [
+      "full stack",
       "web",
       "server"
     ],
@@ -164,8 +185,10 @@
     "date": "Mid 2024"
   },
   {
+    "id": "journal-bird-app",
     "title": "Journal Bird App",
-    "description": "A mobile journaling application developed as part of Angular framework research. Features comprehensive journaling capabilities with a focus on user experience.",
+    "description": "A mobile journaling application developed as part of Angular framework research.",
+    "longDescription": "This project is a mobile journaling application developed as part of a study on mobile app development frameworks. It features a comprehensive journaling interface with features like tags, categories, and a rich text editor. The application is built with Angular and Ionic, and uses the Capacitor framework for cross-platform compatibility. The project showcases my skills in Angular development, Ionic framework integration, and mobile app development.\nUnfortunately, the application is not currently live, but you can view the demo video linked below. The source code is also not publicly available on GitHub, but you can view the source code for the web utils in the linked repository.",
     "technologies": [
       "Angular",
       "TypeScript",
@@ -178,13 +201,15 @@
     ],
     "image": "assets/journal-bird.png",
     "demo": "https://www.youtube.com/watch?v=3DLyW0TV9Mg",
-    "github": "https://nbird11.github.io/Journal-Bird-Web-Utils/",
+    "github": "https://github.com/nbird11/Journal-Bird-Web-Utils",
     "featured": true,
     "date": "Early 2024"
   },
   {
+    "id": "m777-howitzer-simulator",
     "title": "M777 Howitzer Simulator",
     "description": "A simulation of the M777 Howitzer, built in C++ using OpenGL for graphics. Features accurate physics and ballistics calculations, taking into account the effects of differing drag, speed of sound, and gravity at different altitudes.",
+    "longDescription": "This project is a 2D artillery simulation of the M777 Howitzer, written in C++. It features a detailed physics model that goes beyond simple parabolic motion to provide a realistic projectile trajectory. The primary goal was to create an engaging, interactive simulation grounded in real-world physics principles.\nThe core of the application is a sophisticated, custom-built physics engine. Unlike basic trajectory calculations, this engine simulates projectile flight through iterative, discrete time steps. In each step, it calculates the forces acting on the shell, including gravity and aerodynamic drag. The physics model is data-driven, using lookup tables and linear interpolation to determine key variables based on the projectile's state. Gravity is adjusted based on altitude, and air density is similarly interpolated. Most notably, the drag coefficient is dynamically calculated based on the projectile's Mach number, which itself depends on the altitude-adjusted speed of sound. This level of detail ensures that the projectile's behavior accurately reflects real-world ballistic challenges.\nThe simulation is rendered using OpenGL, providing a clean and interactive user interface. Players can adjust the howitzer's elevation angle with fine control and fire the projectile with a keypress. The interface provides real-time telemetry during the shell's flight, including its current speed, altitude, distance from the howitzer, and total flight time. Upon impact, the simulation reports whether the shot was a direct hit on the target. A fading trail follows the projectile, visually representing its path across the screen.\nFrom a software engineering perspective, the project is built with a focus on modularity and correctness. The code is organized into distinct classes representing the simulation's key entities: Howitzer, Projectile, Ground, and the static Physics library. This separation of concerns makes the codebase clean and maintainable. To ensure the reliability of the foundational components, I implemented a suite of unit tests for the Position and Ground classes. This testing framework validates the core logic for coordinate systems and terrain generation, demonstrating a commitment to robust and verifiable code.",
     "technologies": [
       "C++",
       "unit testing",
@@ -200,8 +225,10 @@
     "date": "Early 2024"
   },
   {
+    "id": "oribital-simulator",
     "title": "Apollo 11 Lunar Lander Simulator",
     "description": "A simulation of the Apollo 11 Lunar Lander, built in C++ using OpenGL for graphics. Features accurate physics of the lander under the effects of lunar gravity.",
+    "longDescription": "This project is a 2D simulation of the Apollo 11 lunar landing, developed in C++. Using the OpenGL and GLUT libraries for graphics and window management, the application creates a game environment where the player pilots a lunar module to a safe landing on the moon's surface.\nThe simulation is built with an object-oriented design, featuring distinct classes for the primary game components: the LunarModule, the Ground, the Sky, and a main Game class that orchestrates the simulation. The core logic resides within a game loop that processes user input, updates the physics, handles collision detection, and renders the scene in real-time.\nPlayers control the lunar module's orientation and main thruster to counteract gravity and navigate the terrain. The module has a finite amount of fuel, adding a layer of resource management to the challenge. The simulation displays key telemetry data on-screen, including the lander's altitude, velocity, and remaining fuel. A successful landing requires touching down on the designated landing platform with a velocity below a critical threshold; exceeding this speed or hitting other parts of the terrain results in a crash. The lunar surface and the star-filled sky are procedurally generated for each new attempt, offering varied challenges and replayability.",
     "technologies": [
       "C++",
       "unit testing",
@@ -217,8 +244,10 @@
     "date": "Early 2024"
   },
   {
+    "id": "cloud-database-task-manager",
     "title": "Cloud Database Task Manager",
     "description": "A task manager CLI application using Google Firebase (Firestore) to store and retrieve tasks.",
+    "longDescription": null,
     "technologies": [
       "Python",
       "Google Firebase"
@@ -235,8 +264,10 @@
     "date": "Late 2023"
   },
   {
+    "id": "jdbc-postgresql-expense-tracker",
     "title": "JDBC PostgreSQL Expense Tracker",
     "description": "A refactored version of the Java Expense Tracker using PostgreSQL database instead of CSV files, showcasing database integration and JDBC implementation.",
+    "longDescription": null,
     "technologies": [
       "Java",
       "PostgreSQL",
@@ -254,8 +285,10 @@
     "date": "Late 2023"
   },
   {
+    "id": "rust-file-cipher-encryption",
     "title": "Rust File Cipher Encryption",
     "description": "A file encryption tool built in Rust, demonstrating systems programming and cipher encryption implementation.",
+    "longDescription": null,
     "technologies": [
       "Rust",
       "Encryption"
@@ -271,8 +304,10 @@
     "date": "Late 2023"
   },
   {
+    "id": "java-expense-tracker",
     "title": "Java Expense Tracker",
     "description": "An expense tracking application built in Java, featuring CSV file storage and basic expense management functionality.",
+    "longDescription": null,
     "technologies": [
       "Java",
       "File I/O",
@@ -289,8 +324,10 @@
     "date": "Late 2023"
   },
   {
+    "id": "directory-tree-scanner",
     "title": "Directory Tree Scanner",
     "description": "A cli tool that scans a directory and prints out the directory tree. Similar to the 'tree' command in Unix/Linux. Added colors to distinguish depth since the demo.",
+    "longDescription": null,
     "technologies": [
       "TypeScript",
       "CLI",
@@ -306,8 +343,10 @@
     "date": "Late 2023"
   },
   {
+    "id": "folder-organizer",
     "title": "Folder Organizer",
     "description": "A GUI application built with customtkinter that helps users create organized directory systems. Built for my roommate at university to automatically generate his course unit folders. My first real project for a client.",
+    "longDescription": null,
     "technologies": [
       "Python",
       "customtkinter",
