@@ -1,5 +1,25 @@
 [
   {
+    "id": "dining-philosophers",
+    "title": "Dining Philosophers",
+    "description": "A simple visual implementation of the classical \"Dining Philosophers\" concurrency problem in JS.",
+    "longDescription": "This project is a real-time, visual simulation of the classic Dining Philosophers concurrency problem, providing an interactive way to observe the challenges of resource allocation and deadlock avoidance.\nNote that while this problem is traditionally used to illustrate concurrency in multi-threaded languages, this implementation uses JavaScript's async/await to simulate the behavior in a single-threaded environment.\nThe simulation displays philosophers sitting around a circular table with chopsticks placed between them. You can see their status (thinking, hungry, or eating) indicated by the color of their border, and their hunger level represented by a bar.",
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Concurrency"
+    ],
+    "categories": [
+      "web"
+    ],
+    "image": "assets/dining-philosophers.png",
+    "demo": "https://nbird.dev/dining-philosophers",
+    "github": "https://github.com/nbird11/dining-philosophers",
+    "featured": true,
+    "date": "Mid 2025"
+  },
+  {
     "id": "dynamic-resume-prototype",
     "title": "Dynamic Resume Prototype",
     "description": "A dynamic resume website built with vanilla JavaScript and CSS.",
