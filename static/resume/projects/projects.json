@@ -22,8 +22,8 @@
   {
     "id": "dynamic-resume-prototype",
     "title": "Dynamic Resume Prototype",
-    "description": "A dynamic resume website built with vanilla JavaScript and CSS.",
-    "longDescription": "This project is a dynamic and comprehensive personal portfolio for software engineer Nathan Bird, designed to showcase a wide array of his technical skills and experiences. Rather than a simple static page, it functions as a data-driven web application. The core of the site is built with vanilla HTML, CSS, and JavaScript, and it dynamically loads project and professional data from JSON files. This architecture not only makes the content easily updatable but also serves as a practical demonstration of the creator's web development capabilities. The entire portfolio is self-hosted on a custom Go web server running on a Raspberry Pi, highlighting skills in backend development and infrastructure management.\nThe centerpiece of the website is an extensive and interactive project portfolio that allows visitors to explore Nathan's work in detail. Users can filter projects by categories such as web, desktop, and embedded systems, and view individual project pages with in-depth descriptions, technologies used, and links to live demos and GitHub repositories. This feature provides tangible proof of his skills and offers a deep dive into his development process and coding style. The site also includes thorough sections on his professional work experience and educational background, presenting a complete and well-rounded professional profile.\nThe portfolio demonstrates a remarkable breadth of expertise across various domains of software engineering. It features full-stack web applications built with technologies like React and Google Firebase, complex desktop simulators and games developed in C++, and hands-on hardware projects using Arduino for embedded systems. Additionally, it includes a mobile application built with Angular and Ionic, showcasing versatility and an ability to adapt to different platforms and technologies. In essence, the project is a living resume that effectively documents and demonstrates Nathan Bird's journey and proficiency as a software engineer.",
+    "description": "A dynamic resume website prototype built to populate bio, education, experience, and projects with data from a json file.",
+    "longDescription": "This project was the initial prototype for a dynamic resume website. It was built with vanilla HTML, CSS, and JavaScript, and it dynamically loads data from a json file. It originally was hosted via GitHub pages, but I have since moved it to my personal website under a subdomain, for posterity/history. The original intent was to have a web scraper getting data from my LinkedIn page, but it turned out that their robots.txt was too restrictive, so I had to manually enter the data (and still do with the current site, though it's nice to have it centralized in a single json file).\nMany of the original features have stuck around in the current version of my personal website, such as the ability to filter projects by category and the links to live demos and GitHub repositories; however, most of the information found there is outdated, so, even though it looks similar, don't pay much attention to the information there.",
     "technologies": [
       "HTML",
       "CSS",
@@ -35,7 +35,7 @@
     ],
     "image": "assets/dynamic-resume.png",
     "demo": "https://wdd131.nbird.dev/resume",
-    "github": "https://github.com/nbird11/NbirdHttp",
+    "github": "https://github.com/nbird11/WDD-131/tree/main/resume",
     "featured": false,
     "date": "Late 2024"
   },
