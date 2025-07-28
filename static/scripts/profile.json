@@ -1,11 +1,11 @@
 {
   "name": "Nathan Bird",
   "contact": {
-    "location": "Rexburg, ID",
+    "location": "Saratoga Springs, UT",
     "email": "nathanbirdka@gmail.com",
     "phone": "(385) 392-5995"
   },
-  "bio": "Software Engineering Student @ Brigham Young University-Idaho",
+  "bio": "Entry-Level Software Engineer | BYU–Idaho Alumnus",
   "websites": [
     {
       "name": "YouTube",
@@ -24,7 +24,7 @@
       "url": "https://nbird.dev/"
     }
   ],
-  "about": "I'm a Software Engineering student at BYU–Idaho, set to graduate at the end of this upcoming July. I'm particularly interested in (some) software design patterns and in recreating the performance/efficiency of systems-level concepts.\nIn a recent professional role, I interned as a Backend Web Developer at FamilySearch, where I built and maintained backend REST APIs, developed a large-scale web crawler for the Paris 2024 Olympics, and delivered production-level code that I was told was rarely assigned to interns. I’ve also worked as a programming tutor and research assistant where I mentored peers and contributed to mobile app development research for my university.\nI'm highly adaptable and love to learn; I especially enjoy working on personal programming projects that allow me to explore new technologies and expand my technical breadth. Outside of tech, I enjoy board games, playing piano, choral singing, and editorial writing.\nI served a proselyting mission for the Church of Jesus Christ of Latter-day Saints during the COVID pandemic, where I taught, performed service, and provided spiritual aid in Colorado and Brazil, in both English and Portuguese.\nI am currently seeking full-time opportunities.",
+  "about": "I'm a recently-graduated Software Engineer from BYU–Idaho with hands-on experience in Java and Spring[boot]. Currently seeking full-time roles where I can contribute and grow.\nIn a recent professional role, I interned as a Backend Web Developer at FamilySearch, where I built and maintained backend REST APIs, developed a large-scale web crawler for a Paris 2024 Olympics genealogical campaign, and delivered production-level code that, I was told, was rarely assigned to interns. I’ve also worked as a programming tutor and research assistant where I mentored peers and contributed to mobile app development research for my university.\nI'm highly adaptable and love to learn; I especially enjoy working on personal programming projects that allow me to explore new technologies and expand my technical breadth. Outside of tech, I enjoy board games, playing piano, choral singing, and editorial writing.\nI served a proselyting mission for the Church of Jesus Christ of Latter-day Saints during the COVID pandemic, where I taught, performed service, and provided spiritual aid in Colorado and Brazil, in both English and Portuguese.",
   "education": [
     {
       "logo": "/resume/assets/byu_idaho_logo.jpeg",
@@ -34,7 +34,7 @@
       "end": "2025",
       "gpa": "3.98",
       "activities": [
-        "Certificate in Software Design",
+        "Completed Certificate in Software Design as part of degree",
         "Awarded full-ride BYU–Idaho Scholarship for academic excellence (top percentile GPA, 3.98)"
       ]
     },
@@ -64,8 +64,8 @@
       "bullets": [
         "Mentored 40+ students across 8 university-level courses over 5 semesters, analyzing ~75K lines of code",
         "Facilitated 100+ sessions covering software design principles in Python, C, C++, SQL, HTML, CSS, and JavaScript, creating custom walkthroughs from prior high-scoring coursework to reinforce key concepts",
-        "Broke down code involving drag force, Mach number, gravity at altitude, and linear interpolation into simple steps for students in a notorious C++ physics simulation course",
-        "Demonstrated technical mastery and strong communication—one student sought my guidance through 3 advanced successive courses and offered private compensation over free university alternatives after my official role ended"
+        "Troubleshooted code involving drag force, Mach number, gravity at altitude, and linear interpolation for students in a notorious C++ physics simulation course",
+        "Demonstrated technical mastery and strong communication—one student sought guidance through 3 advanced successive courses and offered private compensation over free university alternatives after official role ended"
       ]
     },
     {
@@ -79,10 +79,10 @@
       "locationType": "Hybrid",
       "bullets": [
         "Selected for 1 of only 2 backend intern roles from a pool of 30+ web/QA candidates",
-        "Recognized for exceeding expectations and trusted to write production-level code typically reserved for full-time engineers",
-        "Developed and maintained 7 REST APIs and microservices in Java Spring Boot, contributing 2K+ lines of production code",
-        "Designed and deployed a web crawler that ran for 9 hours overnight gathering data on 65K+ Olympians for a 2024 Paris Olympics initiative, directly enabling Olympic content search capabilities for the site",
-        "Authored ~800 unit/integration tests with Spring Boot and Mockito, increasing coverage to 95%+ across 7 services"
+        "Exceeded expectations and trusted to write 2K+ lines of production code typically reserved for full-time engineers",
+        "Developed and maintained 7 REST APIs and microservices in Java Spring Boot",
+        "Devised and deployed a web crawler that ran for 9 hours overnight gathering data on 65K+ Olympians for a 2024 Paris Olympics initiative, directly enabling Olympic content search capabilities for the site",
+        "Authored 700+ unit/integration tests with Spring Boot and Mockito, increasing coverage to 95%+ across 7 services"
       ]
     },
     {
@@ -95,9 +95,9 @@
       "location": "Rexburg, Idaho, United States",
       "locationType": "Remote",
       "bullets": [
-        "Built ~15K lines of Angular Ionic code across 150 files as part of a comparative study on 5 mobile app platforms",
+        "Constructed ~15K lines of Angular Ionic code across 150 files as part of a comparative study on 5 mobile app platforms",
         "Evaluated setup, learning curve, and maintainability by developing a full mobile app with 114 commits over 3 months",
-        "Diagnosed persistent incompatibilities between AWS Amplify and Angular, leading to a successful migration to Firebase",
+        "Diagnosed persistent incompatibilities between AWS Amplify and Angular, leading to a migration to Firebase",
         "Synthesized findings across 15 key metrics, including build complexity, documentation quality, and dev efficiency, contributing to a 20-page technical report"
       ]
     },
@@ -112,7 +112,7 @@
       "locationType": "Remote",
       "bullets": [
         "Designed and delivered 4 custom Python-based solutions totaling 3K+ lines of code and 130 commits, spanning GUI development, image metadata tools, facial tracking via OpenCV, and SQL-based file management systems",
-        "Independently built a 3D scene renderer from scratch with only NumPy and OpenCV to visualize facial tracking data—an unrequested tool that impressed the client and enhanced calibration accuracy"
+        "Built a 3D scene renderer independently from scratch with only NumPy and OpenCV to visualize facial tracking data—an unrequested tool which impressed the client and enhanced calibration accuracy"
       ]
     }
   ]

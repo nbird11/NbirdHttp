@@ -38,6 +38,9 @@ quick-pen/.*
 # dev
 run.ps1
 subtreepush.ps1
+extractbullets.ps1
+# resume doc to extract bullet points from
+*[Rr]esume_*
 # prod
 build
 restart

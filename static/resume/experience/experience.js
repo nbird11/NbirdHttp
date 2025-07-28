@@ -13,7 +13,11 @@ function experienceTemplate(experience) {
 
   return `
     <div class="card-item">
-      <img class="card-logo company-logo" src="${logoSrc}" alt="${experience.company} logo" onerror="this.src='${logoFallback}'">
+      <img class="card-logo company-logo"
+        src="${logoSrc}"
+        alt="${experience.company} logo"
+        onerror="this.src='${logoFallback}'"
+        style="border-radius:15px">
       <div class="card-content">
         <div class="card-header">
           <h2 class="card-title">${experience.title}</h2>
