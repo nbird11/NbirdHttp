@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os/signal"
+	"slices"
 	"syscall"
 )
 
@@ -79,10 +80,11 @@ Serving at http://localhost
 	// Listen for 'q' in a separate goroutine
 	go func() {
 		var input string
+		shutdownChars := []string{"q", "Q", "r", "R"}
 		for {
 			fmt.Scanf("%s", &input)
-			if input == "q" || input == "Q" {
-				fmt.Println("\nShutting down server...")
+			if slices.Contains(shutdownChars, input) {
+				fmt.Printf("\nShutting down server with flag [%s]...\n", input)
 				close(shutdown)
 				return
 			}
