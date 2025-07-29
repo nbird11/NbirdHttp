@@ -266,8 +266,8 @@ func punchOutHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Breaks exist                && Taken at least one break      && Last break has no end time
-	if cd.FocusEntry.Breaks != nil && len(cd.FocusEntry.Breaks) > 0 && cd.FocusEntry.Breaks[len(cd.FocusEntry.Breaks)-1][1] == "" {
+	// Taken at least one break      && Last break has no end time
+	if len(cd.FocusEntry.Breaks) > 0 && cd.FocusEntry.Breaks[len(cd.FocusEntry.Breaks)-1][1] == "" {
 		w.WriteHeader(http.StatusConflict)
 		fmt.Fprintln(w, "Still on break.")
 		return
