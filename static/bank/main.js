@@ -111,9 +111,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (afterThree && (value === 2 || value === 12)) disabled = true;
       }
       btn.disabled = disabled;
-      // 7 danger only after third roll
+      // Style 7 based on roll phase
       if (value === 7) {
-        if (afterThree) btn.classList.add('danger'); else btn.classList.remove('danger');
+        if (afterThree) {
+          btn.classList.add('danger');
+          btn.classList.remove('special');
+        } else {
+          btn.classList.remove('danger');
+          btn.classList.add('special');
+        }
       }
     });
     const doubleBtn = elements.sumPanel.querySelector('.doubleBtn');

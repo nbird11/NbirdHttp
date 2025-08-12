@@ -47,6 +47,10 @@ h1 {
   gap: 0.25rem;
 }
 
+i {
+  cursor: pointer;
+}
+
 label {
   font-family: var(--heading-font);
   font-size: 0.9rem;
@@ -248,6 +252,13 @@ input[type="search"],
   border-color: #C0392B;
 }
 
+/* Special styling for 7 during the first three rolls */
+.sumBtn.special {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--headline-color-on-color);
+}
+
 .doubleBtn {
   background: var(--secondary-color);
   color: white;
@@ -336,6 +347,10 @@ input[type="search"],
   padding: 0.35rem 0.75rem;
   border-radius: 999px;
   font-family: var(--heading-font);
+}
+
+.selectChip:hover {
+  cursor: pointer;
 }
 
 .selectChip.active {
