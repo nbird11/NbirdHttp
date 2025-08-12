@@ -7,7 +7,7 @@ body {
 footer {
   background-color: var(--background-color);
   color: white;
-  padding: 1rem;
+  padding: 0 1rem;
   margin-top: auto;
   display: flex;
   justify-content: space-between;
@@ -19,9 +19,19 @@ footer a {
   text-decoration: none;
 }
 
+footer p {
+  margin-bottom: 12px;
+}
+
 .social-icons {
   display: flex;
   gap: 1rem;
+  align-items: center;
+}
+
+.social-icons a {
+  display: flex;
+  align-items: center;
 }
 
 .social-icons img {
