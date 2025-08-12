@@ -118,21 +118,20 @@
     .bankBtn { grid-column: 3; }
     .playerCard.active { outline: 2px solid var(--secondary-color); box-shadow: 0 0 0 3px rgba(174,148,97,0.15); }
 
-    .potRow { display: flex; justify-content: center; align-items: center; margin: 0.5rem 0 0.75rem 0; }
-    .potValue { font-size: 2.25rem; font-weight: 900; color: var(--primary-color); }
+    .potRow { display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0 0.75rem 0; }
+    .potLabel { font-family: var(--heading-font); color: var(--paragraph-color-on-white); }
+    .potValue { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); }
 
     .dice { font-size: 64px; text-align: center; line-height: 1; }
     .dice.rolling { animation: wiggle 350ms ease-in-out infinite; }
     @keyframes wiggle { 0% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(3deg) scale(1.03);} 50% { transform: rotate(0deg) scale(1);} 75% { transform: rotate(-3deg) scale(1.03);} 100% { transform: rotate(0deg) scale(1);} }
 
-    #controls { display: flex; flex-direction: column; gap: 0.75rem; justify-content: center; }
-    .panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-    .sumBtn, .doubleBtn { font-size: larger; padding: 0.75rem 0.5rem; border-radius: 10px; border: 1px solid #DDE3E4; background: white; font-family: var(--heading-font); font-weight: 700; color: var(--headline-color-on-white); }
-    .sumBtn[disabled], .doubleBtn[disabled] { opacity: 0.5; }
-    .sumBtn.danger { background: #C0392B; color: white; border-color: #C0392B; }
-    .doubleBtn { background: var(--secondary-color); color: white; border-color: var(--secondary-color); }
-    .doubleBtn:disabled { background: #bfbfbf; border-color: #bfbfbf; color: white; }
+    #controls { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
 
+    #log { margin-top: 0.75rem; background: white; padding: 0.75rem; border-radius: 8px; height: 180px; overflow-y: auto; border: 1px solid #E8EEEE; }
+    .event { background: #FFF9E8; border: 1px solid #FFF0C2; padding: 6px 8px; margin: 4px 0; border-radius: 6px; }
+
+    .help { margin-top: 0.5rem; color: var(--paragraph-color-dim-on-white); font-size: 0.9rem; text-align: center; }
     .rules { background: white; border: 1px solid #E8EEEE; border-radius: 10px; padding: 0.75rem; }
     .rules summary { cursor: pointer; font-family: var(--heading-font); }
     .rules ul { margin: 0.5rem 0 0 0; padding-left: 18px; }
@@ -185,12 +184,14 @@
     </div>
     <div id="round" style="display:none;">
       <div id="leftCol">
-        <div id="players"></div>
+      <div id="players"></div>
         <div class="potRow">
+          <div class="potLabel">Shared Pot</div>
           <div class="potValue" id="pot">0</div>
         </div>
-        <div id="controls">
-          <div class="panel" id="sumPanel"></div>
+        <div class="dice" id="dice" aria-live="polite" aria-atomic="true">🎲🎲</div>
+      <div id="controls">
+          <button class="btn" id="rollBtn">Roll</button>
           <button class="btn ghost" id="newGameBtn">New Game</button>
         </div>
       </div>
@@ -206,6 +207,7 @@
             <li>The game runs for a set number of rounds; highest score at the end wins.</li>
           </ul>
         </details>
+        <div id="log" aria-live="polite" aria-atomic="false"></div>
       </div>
     </div>
   </div>
@@ -221,7 +223,9 @@
       totalRoundsMeta: document.getElementById('totalRoundsMeta'),
       players: document.getElementById('players'),
       pot: document.getElementById('pot'),
-      sumPanel: document.getElementById('sumPanel'),
+      dice: document.getElementById('dice'),
+      log: document.getElementById('log'),
+      rollBtn: document.getElementById('rollBtn'),
       newGameBtn: document.getElementById('newGameBtn'),
       roundNumber: document.getElementById('roundNumber'),
     };
@@ -267,13 +271,7 @@
     }
 
     function setButtonsEnabled(isTurnActive) {
-      const buttons = elements.sumPanel.querySelectorAll('.sumBtn, .doubleBtn');
-      if (!isTurnActive) {
-        buttons.forEach(btn => { btn.disabled = true; });
-      } else {
-        // When enabling for a turn, re-apply round constraints (Double disabled for first 3 rolls, etc.)
-        updatePanelState();
-      }
+      elements.rollBtn.disabled = !isTurnActive;
     }
 
     function renderPlayers() {
@@ -309,86 +307,16 @@
       elements.totalRoundsMeta.textContent = state.totalRounds;
     }
 
-    // log removed per spec
-
-    function updatePanelState() {
-      const afterThree = state.rollCount >= 3;
-      const active = state.isRoundActive;
-      const buttons = elements.sumPanel.querySelectorAll('.sumBtn');
-      buttons.forEach(btn => {
-        const value = parseInt(btn.dataset.sum, 10);
-        let disabled = !active;
-        if (!disabled) {
-          if (afterThree && (value === 2 || value === 12)) disabled = true;
-        }
-        btn.disabled = disabled;
-        // 7 danger only after third roll
-        if (value === 7) {
-          if (afterThree) btn.classList.add('danger'); else btn.classList.remove('danger');
-        }
-      });
-      const doubleBtn = elements.sumPanel.querySelector('.doubleBtn');
-      if (doubleBtn) doubleBtn.disabled = !active || !afterThree;
+    function logEvent(message) {
+      const div = document.createElement('div');
+      div.className = 'event';
+      div.textContent = message;
+      elements.log.prepend(div);
     }
 
-    function renderPanel() {
-      elements.sumPanel.innerHTML = '';
-      const rows = [
-        [2,3,4],
-        [5,6,7],
-        [8,9,10],
-        [11,12,'dbl'],
-      ];
-      rows.flat().forEach(cell => {
-        if (cell === 'dbl') {
-          const dbl = document.createElement('button');
-          dbl.className = 'doubleBtn';
-          dbl.type = 'button';
-          dbl.textContent = 'Double';
-          dbl.addEventListener('click', () => applyRoll({ sum: 0, isDouble: true }));
-          elements.sumPanel.appendChild(dbl);
-        } else {
-          const s = cell;
-          const btn = document.createElement('button');
-          btn.className = 'sumBtn';
-          btn.type = 'button';
-          btn.dataset.sum = String(s);
-          btn.textContent = String(s);
-          btn.addEventListener('click', () => applyRoll({ sum: s, isDouble: false }));
-          elements.sumPanel.appendChild(btn);
-        }
-      });
-      updatePanelState();
-    }
-
-    function applyRoll({ sum, isDouble }) {
-      if (!state.isRoundActive) return;
-      const currentPlayerIndex = state.activePlayerIndices[state.currentActiveIndex];
-      state.lastTurnPlayerIndex = currentPlayerIndex;
-      state.rollCount += 1;
-
-      if (state.rollCount <= 3) {
-        if (sum === 7) {
-          state.sharedPot += 70;
-        } else {
-          state.sharedPot += sum;
-        }
-      } else {
-        if (sum === 7) {
-          renderMeta();
-          state.nextStartingPlayerIndex = (state.lastTurnPlayerIndex + 1) % state.players.length;
-          endRound('');
-          return;
-        }
-        if (isDouble) {
-          state.sharedPot *= 2;
-        } else {
-          state.sharedPot += sum;
-        }
-      }
-      renderMeta();
-      updatePanelState();
-      nextPlayer();
+    function getDieFace(n) {
+      const faces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+      return faces[n - 1];
     }
 
     function showRound() {
@@ -396,9 +324,9 @@
       elements.round.style.display = 'grid';
       renderPlayers();
       renderMeta();
-      renderPanel();
       setButtonsEnabled(true);
-      // Round start message removed with log
+      elements.log.innerHTML = '';
+      logEvent(`Round ${state.roundNumber} started!`);
       // show meta bar in play
       const meta = document.getElementById('metaBar');
       if (meta) meta.style.display = 'flex';
@@ -407,10 +335,11 @@
     function endRound(reason) {
       state.isRoundActive = false;
       setButtonsEnabled(false);
+      if (reason) logEvent(reason);
       saveState();
       // Auto-advance unless final round reached
       if (state.roundNumber < state.totalRounds) {
-        nextRound();
+        setTimeout(() => { nextRound(); }, 1000);
       } else {
         endGame();
       }
@@ -424,13 +353,53 @@
       saveState();
     }
 
-    // dice rolling removed in favor of manual input panel
+    function rollDice() {
+      if (!state.isRoundActive) return;
+      elements.dice.classList.add('rolling');
+      setTimeout(() => {
+      const die1 = Math.floor(Math.random() * 6) + 1;
+      const die2 = Math.floor(Math.random() * 6) + 1;
+        elements.dice.textContent = `${getDieFace(die1)}${getDieFace(die2)}`;
+        elements.dice.classList.remove('rolling');
+        state.rollCount += 1;
+        const sum = die1 + die2;
+        const currentPlayerIndex = state.activePlayerIndices[state.currentActiveIndex];
+        state.lastTurnPlayerIndex = currentPlayerIndex;
+
+        if (state.rollCount <= 3) {
+        if (sum === 7) {
+            state.sharedPot += 70;
+            logEvent(`${state.players[currentPlayerIndex]} rolled a 7 (+70 to pot)`);
+        } else {
+            state.sharedPot += sum;
+            logEvent(`${state.players[currentPlayerIndex]} rolled ${sum} (+${sum} to pot)`);
+        }
+      } else {
+        if (sum === 7) {
+            logEvent(`${state.players[currentPlayerIndex]} rolled a 7 — round ends! Pot lost.`);
+            renderMeta();
+            state.nextStartingPlayerIndex = (state.lastTurnPlayerIndex + 1) % state.players.length;
+            endRound('');
+          return;
+        } else if (die1 === die2) {
+            state.sharedPot *= 2;
+            logEvent(`${state.players[currentPlayerIndex]} rolled doubles — pot doubled!`);
+        } else {
+            state.sharedPot += sum;
+            logEvent(`${state.players[currentPlayerIndex]} rolled ${sum} (+${sum} to pot)`);
+          }
+        }
+        renderMeta();
+        nextPlayer();
+      }, 220);
+    }
 
     function bankPlayer(playerIndex) {
       if (!state.isRoundActive) return;
       const pos = state.activePlayerIndices.indexOf(playerIndex);
       if (pos === -1) return; // already banked this round
       state.scores[playerIndex] += state.sharedPot;
+      logEvent(`${state.players[playerIndex]} banks ${state.sharedPot}!`);
       // Pot remains for remaining players (per rules)
       // Remove player from active
       state.activePlayerIndices.splice(pos, 1);
@@ -520,8 +489,6 @@
       state.roundNumber += 1;
       resetRoundState();
       showRound();
-      renderPanel();
-      updatePanelState();
       saveState();
     }
 
@@ -542,6 +509,8 @@
       });
       elements.setup.style.display = 'grid';
       elements.round.style.display = 'none';
+      elements.log.innerHTML = '';
+      elements.dice.textContent = '🎲🎲';
       elements.totalRoundsMeta.textContent = state.totalRounds;
       const meta = document.getElementById('metaBar');
       if (meta) meta.style.display = 'none';
@@ -556,53 +525,30 @@
         .map(o => o.i);
       state.winnerIndices = winners;
       if (winners.length === 1) {
-        // announce winner silently in UI for now
+        logEvent(`${state.players[winners[0]]} wins the game with ${state.scores[winners[0]]} points!`);
       } else {
-        // announce tie silently in UI for now
+        const names = winners.map(i => state.players[i]).join(', ');
+        logEvent(`Tie! ${names} with ${maxScore} points.`);
       }
-      // no roll controls now
+      elements.rollBtn.disabled = true;
     }
 
     // Event listeners
     elements.addPlayerBtn.addEventListener('click', addPlayerFromInput);
     elements.addPlayerName.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addPlayerFromInput(); } });
     elements.startGameBtn.addEventListener('click', startGame);
-    // no roll button now
+    elements.rollBtn.addEventListener('click', rollDice);
     elements.newGameBtn.addEventListener('click', newGame);
 
     // Attempt to restore previous game
-    if (loadState()) {
-      const gameEnded = state.roundNumber >= state.totalRounds && !state.isRoundActive;
-      if (gameEnded || state.players.length === 0) {
-        // Show setup on reload after a finished game
-        Object.assign(state, {
-          players: [],
-          scores: [],
-          activePlayerIndices: [],
-          currentActiveIndex: 0,
-          sharedPot: 0,
-          rollCount: 0,
-          isRoundActive: false,
-          roundNumber: 1,
-          // keep chosen totalRounds; default if missing
-          totalRounds: state.totalRounds || 15,
-          winnerIndices: [],
-          lastTurnPlayerIndex: 0,
-          nextStartingPlayerIndex: 0,
-        });
-        elements.setup.style.display = 'grid';
-        elements.round.style.display = 'none';
-        const meta = document.getElementById('metaBar');
-        if (meta) meta.style.display = 'none';
-        saveState();
-      } else {
-        elements.setup.style.display = 'none';
-        elements.round.style.display = 'grid';
-        renderPlayers();
-        renderMeta();
-        renderPanel();
-        updatePanelState();
-      }
+    if (loadState() && state.players.length > 0) {
+      elements.setup.style.display = 'none';
+      elements.round.style.display = 'grid';
+      renderPlayers();
+      renderMeta();
+      elements.dice.textContent = '🎲🎲';
+      setButtonsEnabled(state.isRoundActive);
+      if (!state.isRoundActive && state.roundNumber >= state.totalRounds) endGame();
     }
     // Default setup view
     if (elements.setup.style.display !== 'none') {
