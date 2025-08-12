@@ -27,6 +27,7 @@ All frontend applications are served from the `/static` directory.
   ![Static Badge](https://img.shields.io/badge/Prototype-forestgreen) – See [QuickPen Github](https://github.com/nbird11/quickpen), [QuickPen Homepage](https://quickpen.web.app/) for a beta implementation of the web app in React (TS) and Firebase.
 - **Resume (`/resume/`)**: A dynamic online resume.
 - **Back Alley Score Sheet (`/back-alley/`)**: A web-based score sheet for the card game "Back Alley".
+- **Bank Dice Game (`/bank/`)**: A push-your-luck dice game with a shared pot, manual roll input, and localStorage persistence.
 - **Dining Philosophers (`/dining-philosophers/`)**: A visualization of the classic Dining Philosophers computer science problem.
 - **Mexican Train Dominoes (`/mex-train-dominoes/`)**: A canvas-based implementation of the game Mexican Train Dominoes.  
   ![Static Badge](https://img.shields.io/badge/Under_Construction-goldenrod)
@@ -59,6 +60,7 @@ The repository is organized as a monorepo with the following structure:
 ├── quick-pen/        # Go package for the QuickPen writing application
 ├── static/           # All frontend assets and applications
 │   ├── assets/
+│   ├── bank/
 │   ├── back-alley/
 │   ├── dining-philosophers/
 │   ├── mex-train-dominoes/
