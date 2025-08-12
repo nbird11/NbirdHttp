@@ -27,6 +27,10 @@ nav {
   margin-left: auto;
 }
 
+nav hr {
+  margin: 0;
+}
+
 nav a {
   color: white;
   text-decoration: none;
@@ -72,6 +76,7 @@ nav a:hover {
   padding: 0.5rem 1rem;
   text-decoration: none;
   display: block;
+  border-radius: 0;
 }
 
 .dropdown-content a:hover {
