@@ -32,6 +32,8 @@ function headerTemplate() {
         <div class="dropdown-content">
           <a href="/back-alley/">Back Alley</a>
           <hr>
+          <a href="/bank/">Bank (Dice Game)</a>
+          <hr>
           <a href="/dining-philosophers/">Dining Philosophers</a>
           <hr>
           <a href="/mex-train-dominoes/">Mexican Train Dominoes</a>

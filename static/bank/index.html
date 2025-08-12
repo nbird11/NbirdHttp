@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
+  <title>Bank Dice Game</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@latest/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="/styles/global.css">
+  <style>
+    :root {
+      --surface: #ffffff;
+      --surface-2: #F5F7F7;
+      --ring: rgba(0,0,0,0.06);
+    }
+
+    body {
+      background: var(--background-color-light);
+    }
+
+    #game {
+      width: min(100%, 960px);
+      margin: 2rem auto;
+      background: var(--surface);
+      padding: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px var(--ring);
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 0 0 1rem 0;
+      color: var(--headline-color-on-white);
+    }
+
+    .meta {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      color: var(--paragraph-color-dim-on-white);
+      font-size: 0.95rem;
+    }
+
+    #setup {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 0.75rem;
+      align-items: end;
+      margin-bottom: 1rem;
+    }
+
+    #setup .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    label { font-family: var(--heading-font); font-size: 0.9rem; }
+    input[type="number"], input[type="text"], input[type="search"], .text {
+      padding: 0.5rem 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #DDE3E4;
+      background: var(--surface-2);
+      color: var(--paragraph-color-on-white);
+      font-family: var(--paragraph-font);
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-family: var(--heading-font);
+      font-weight: 600;
+      background: var(--primary-color);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.04s ease, background 0.2s ease, opacity 0.2s ease;
+    }
+    .btn:hover { background: var(--primary-color-hover); }
+    .btn:active { transform: translateY(1px); }
+    .btn.secondary { background: var(--secondary-color); }
+    .btn.secondary:hover { background: var(--secondary-color-hover); }
+    .btn.ghost { background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); }
+    .btn[disabled] { opacity: 0.6; cursor: not-allowed; }
+
+    #round {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    #leftCol, #rightCol { background: var(--surface-2); border-radius: 12px; padding: 1rem; }
+
+    #players {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .playerCard {
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #E8EEEE;
+      padding: 0.6rem 0.8rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+    }
+    .playerName { grid-column: 1; font-family: var(--heading-font); font-weight: 700; color: var(--headline-color-on-white); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .scoreBadge { grid-column: 2; background: var(--accent2-color); color: var(--headline-color-on-white); padding: 0.2rem 0.5rem; border-radius: 999px; font-weight: 700; width: 4.5ch; text-align: center; justify-self: center; }
+    .bankBtn { grid-column: 3; }
+    .playerCard.active { outline: 2px solid var(--secondary-color); box-shadow: 0 0 0 3px rgba(174,148,97,0.15); }
+
+    .potRow { display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0 0.75rem 0; }
+    .potLabel { font-family: var(--heading-font); color: var(--paragraph-color-on-white); }
+    .potValue { font-size: 1.5rem; font-weight: 800; color: var(--primary-color); }
+
+    .dice { font-size: 64px; text-align: center; line-height: 1; }
+    .dice.rolling { animation: wiggle 350ms ease-in-out infinite; }
+    @keyframes wiggle { 0% { transform: rotate(0deg) scale(1); } 25% { transform: rotate(3deg) scale(1.03);} 50% { transform: rotate(0deg) scale(1);} 75% { transform: rotate(-3deg) scale(1.03);} 100% { transform: rotate(0deg) scale(1);} }
+
+    #controls { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+
+    #log { margin-top: 0.75rem; background: white; padding: 0.75rem; border-radius: 8px; height: 180px; overflow-y: auto; border: 1px solid #E8EEEE; }
+    .event { background: #FFF9E8; border: 1px solid #FFF0C2; padding: 6px 8px; margin: 4px 0; border-radius: 6px; }
+
+    .help { margin-top: 0.5rem; color: var(--paragraph-color-dim-on-white); font-size: 0.9rem; text-align: center; }
+    .rules { background: white; border: 1px solid #E8EEEE; border-radius: 10px; padding: 0.75rem; }
+    .rules summary { cursor: pointer; font-family: var(--heading-font); }
+    .rules ul { margin: 0.5rem 0 0 0; padding-left: 18px; }
+
+    @media (min-width: 900px) {
+      #round { grid-template-columns: 1.4fr 1fr; }
+    }
+
+    /* Setup players chips */
+    .setupPlayers { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .chip { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.6rem; border-radius: 999px; background: white; border: 1px solid #E8EEEE; }
+    .chip button { border: none; background: transparent; color: #a33; font-weight: 700; padding: 0; margin: 0; font-size: 1rem; }
+    .chip .edit { color: #555; font-weight: 400; font-size: 1rem; }
+    .chip .edit:hover { color: var(--primary-color); }
+    .chip .remove { color: #a33; }
+    .selectChips { display: inline-flex; gap: 0.5rem; }
+    .selectChip { border: 1px solid #DDE3E4; background: white; color: var(--headline-color-on-white); padding: 0.35rem 0.75rem; border-radius: 999px; font-family: var(--heading-font); }
+    .selectChip.active { background: var(--secondary-color); color: white; border-color: var(--secondary-color); }
+  </style>
+</head>
+
+<body>
+  <header data-title="Bank">
+    <script src="/scripts/load-header.js"></script>
+  </header>
+  
+  <div id="game">
+    <h1>Bank Dice Game</h1>
+    <div class="meta" id="metaBar" style="display:none;">
+      <div>Round <span id="roundNumber">1</span> of <span id="totalRoundsMeta">15</span></div>
+    </div>
+    <div id="setup">
+      <div class="field" style="grid-column: 1 / -1;">
+        <label for="addPlayerName">Add Player</label>
+        <div style="display:flex; gap:0.5rem;">
+          <input class="text" type="text" id="addPlayerName" placeholder="Enter player name">
+          <button class="btn" id="addPlayerBtn">Add</button>
+        </div>
+        <div class="setupPlayers" id="playerList"></div>
+      </div>
+      <div class="field">
+        <label>Rounds</label>
+        <div class="selectChips" id="roundChips">
+          <button type="button" class="selectChip" data-rounds="10">10</button>
+          <button type="button" class="selectChip active" data-rounds="15">15</button>
+          <button type="button" class="selectChip" data-rounds="20">20</button>
+        </div>
+      </div>
+      <button class="btn" id="startGameBtn">Start Game</button>
+    </div>
+    <div id="round" style="display:none;">
+      <div id="leftCol">
+      <div id="players"></div>
+        <div class="potRow">
+          <div class="potLabel">Shared Pot</div>
+          <div class="potValue" id="pot">0</div>
+        </div>
+        <div class="dice" id="dice" aria-live="polite" aria-atomic="true">🎲🎲</div>
+      <div id="controls">
+          <button class="btn" id="rollBtn">Roll</button>
+          <button class="btn ghost" id="newGameBtn">New Game</button>
+        </div>
+      </div>
+      <div id="rightCol">
+        <details class="rules">
+          <summary>How to Play</summary>
+          <ul>
+            <li>Players take turns rolling two dice and adding to a shared pot.</li>
+            <li>First 3 rolls in a round: add the sum to the pot; if the sum is 7, add 70 instead.</li>
+            <li>From the 4th roll onward: doubles double the pot; rolling a 7 ends the round and the pot is lost.</li>
+            <li>Any player can Bank at any time to claim the current pot and sit out the rest of the round. The pot remains for others.</li>
+            <li>The round ends when all players have banked, or when a 7 is rolled after the third roll.</li>
+            <li>The game runs for a set number of rounds; highest score at the end wins.</li>
+          </ul>
+        </details>
+        <div id="log" aria-live="polite" aria-atomic="false"></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const elements = {
+      setup: document.getElementById('setup'),
+      round: document.getElementById('round'),
+      startGameBtn: document.getElementById('startGameBtn'),
+      addPlayerName: document.getElementById('addPlayerName'),
+      addPlayerBtn: document.getElementById('addPlayerBtn'),
+      playerList: document.getElementById('playerList'),
+      roundChips: document.getElementById('roundChips'),
+      totalRoundsMeta: document.getElementById('totalRoundsMeta'),
+      players: document.getElementById('players'),
+      pot: document.getElementById('pot'),
+      dice: document.getElementById('dice'),
+      log: document.getElementById('log'),
+      rollBtn: document.getElementById('rollBtn'),
+      newGameBtn: document.getElementById('newGameBtn'),
+      roundNumber: document.getElementById('roundNumber'),
+    };
+
+    const state = {
+      players: [],
+      scores: [],
+      activePlayerIndices: [],
+      currentActiveIndex: 0,
+      sharedPot: 0,
+      rollCount: 0,
+      isRoundActive: false,
+      roundNumber: 1,
+      totalRounds: 15,
+      winnerIndices: [],
+      lastTurnPlayerIndex: 0,
+      nextStartingPlayerIndex: 0,
+    };
+
+    function saveState() {
+      localStorage.setItem('bankGameState', JSON.stringify(state));
+    }
+
+    function loadState() {
+      const raw = localStorage.getItem('bankGameState');
+      if (!raw) return false;
+      try {
+        const saved = JSON.parse(raw);
+        Object.assign(state, saved);
+        return true;
+      } catch { return false; }
+    }
+
+    function resetRoundState() {
+      state.sharedPot = 0;
+      state.rollCount = 0;
+      // start from the nextStartingPlayerIndex (carry-over between rounds)
+      const startIdx = Number.isInteger(state.nextStartingPlayerIndex) ? state.nextStartingPlayerIndex : 0;
+      state.currentActiveIndex = Math.max(0, Math.min(startIdx, Math.max(0, state.players.length - 1)));
+      state.activePlayerIndices = state.players.map((_, i) => i);
+      state.isRoundActive = true;
+      state.winnerIndices = [];
+    }
+
+    function setButtonsEnabled(isTurnActive) {
+      elements.rollBtn.disabled = !isTurnActive;
+    }
+
+    function renderPlayers() {
+      elements.players.innerHTML = '';
+      const activeIndex = state.activePlayerIndices[state.currentActiveIndex];
+      state.players.forEach((name, idx) => {
+        const card = document.createElement('div');
+        card.className = 'playerCard' + (idx === activeIndex && state.isRoundActive ? ' active' : '');
+        const title = document.createElement('div');
+        title.className = 'playerName';
+        title.textContent = name;
+        const score = document.createElement('div');
+        score.className = 'scoreBadge';
+        score.textContent = state.scores[idx];
+        const bankBtn = document.createElement('button');
+        bankBtn.className = 'btn ghost bankBtn';
+        bankBtn.textContent = 'Bank';
+        bankBtn.style.padding = '0.35rem 0.6rem';
+        bankBtn.style.fontSize = '0.9rem';
+        const isActiveThisRound = state.activePlayerIndices.includes(idx);
+        bankBtn.disabled = !state.isRoundActive || !isActiveThisRound;
+        bankBtn.addEventListener('click', () => bankPlayer(idx));
+        card.appendChild(title);
+        card.appendChild(score);
+        card.appendChild(bankBtn);
+        elements.players.appendChild(card);
+      });
+    }
+
+    function renderMeta() {
+      elements.pot.textContent = state.sharedPot;
+      elements.roundNumber.textContent = state.roundNumber;
+      elements.totalRoundsMeta.textContent = state.totalRounds;
+    }
+
+    function logEvent(message) {
+      const div = document.createElement('div');
+      div.className = 'event';
+      div.textContent = message;
+      elements.log.prepend(div);
+    }
+
+    function getDieFace(n) {
+      const faces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+      return faces[n - 1];
+    }
+
+    function showRound() {
+      elements.setup.style.display = 'none';
+      elements.round.style.display = 'grid';
+      renderPlayers();
+      renderMeta();
+      setButtonsEnabled(true);
+      elements.log.innerHTML = '';
+      logEvent(`Round ${state.roundNumber} started!`);
+      // show meta bar in play
+      const meta = document.getElementById('metaBar');
+      if (meta) meta.style.display = 'flex';
+    }
+
+    function endRound(reason) {
+      state.isRoundActive = false;
+      setButtonsEnabled(false);
+      if (reason) logEvent(reason);
+      saveState();
+      // Auto-advance unless final round reached
+      if (state.roundNumber < state.totalRounds) {
+        setTimeout(() => { nextRound(); }, 1000);
+      } else {
+        endGame();
+      }
+    }
+
+    function nextPlayer(keepIndex = false) {
+      if (!keepIndex) {
+        state.currentActiveIndex = (state.currentActiveIndex + 1) % state.activePlayerIndices.length;
+      }
+      renderPlayers();
+      saveState();
+    }
+
+    function rollDice() {
+      if (!state.isRoundActive) return;
+      elements.dice.classList.add('rolling');
+      setTimeout(() => {
+      const die1 = Math.floor(Math.random() * 6) + 1;
+      const die2 = Math.floor(Math.random() * 6) + 1;
+        elements.dice.textContent = `${getDieFace(die1)}${getDieFace(die2)}`;
+        elements.dice.classList.remove('rolling');
+        state.rollCount += 1;
+        const sum = die1 + die2;
+        const currentPlayerIndex = state.activePlayerIndices[state.currentActiveIndex];
+        state.lastTurnPlayerIndex = currentPlayerIndex;
+
+        if (state.rollCount <= 3) {
+        if (sum === 7) {
+            state.sharedPot += 70;
+            logEvent(`${state.players[currentPlayerIndex]} rolled a 7 (+70 to pot)`);
+        } else {
+            state.sharedPot += sum;
+            logEvent(`${state.players[currentPlayerIndex]} rolled ${sum} (+${sum} to pot)`);
+        }
+      } else {
+        if (sum === 7) {
+            logEvent(`${state.players[currentPlayerIndex]} rolled a 7 — round ends! Pot lost.`);
+            renderMeta();
+            state.nextStartingPlayerIndex = (state.lastTurnPlayerIndex + 1) % state.players.length;
+            endRound('');
+          return;
+        } else if (die1 === die2) {
+            state.sharedPot *= 2;
+            logEvent(`${state.players[currentPlayerIndex]} rolled doubles — pot doubled!`);
+        } else {
+            state.sharedPot += sum;
+            logEvent(`${state.players[currentPlayerIndex]} rolled ${sum} (+${sum} to pot)`);
+          }
+        }
+        renderMeta();
+        nextPlayer();
+      }, 220);
+    }
+
+    function bankPlayer(playerIndex) {
+      if (!state.isRoundActive) return;
+      const pos = state.activePlayerIndices.indexOf(playerIndex);
+      if (pos === -1) return; // already banked this round
+      state.scores[playerIndex] += state.sharedPot;
+      logEvent(`${state.players[playerIndex]} banks ${state.sharedPot}!`);
+      // Pot remains for remaining players (per rules)
+      // Remove player from active
+      state.activePlayerIndices.splice(pos, 1);
+      state.lastTurnPlayerIndex = playerIndex;
+      // Adjust current turn pointer to keep the same player on turn if needed
+      if (pos < state.currentActiveIndex) {
+        state.currentActiveIndex -= 1;
+      } else if (pos === state.currentActiveIndex) {
+        // Keep index pointing at the next player now occupying this position
+        if (state.currentActiveIndex >= state.activePlayerIndices.length) state.currentActiveIndex = 0;
+      }
+      renderPlayers();
+      renderMeta();
+      if (state.activePlayerIndices.length === 0) {
+        state.nextStartingPlayerIndex = (state.lastTurnPlayerIndex + 1) % state.players.length;
+        endRound('All players have banked.');
+        return;
+      }
+      saveState();
+    }
+
+    // Setup players management (pre-game)
+    const setupPlayers = [];
+    function renderSetupPlayers() {
+      elements.playerList.innerHTML = '';
+      setupPlayers.forEach((name, idx) => {
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        const label = document.createElement('span');
+        label.textContent = name;
+        const edit = document.createElement('button');
+        edit.type = 'button';
+        edit.className = 'edit';
+        edit.setAttribute('aria-label', `Edit ${name}`);
+        edit.innerHTML = '<i class="bi bi-pencil-square"></i>';
+        edit.addEventListener('click', () => {
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.value = setupPlayers[idx];
+          input.style.border = 'none';
+          input.style.outline = 'none';
+          input.style.fontFamily = 'var(--heading-font)';
+          input.style.fontSize = '0.95rem';
+          const commit = () => { const v = input.value.trim(); if (v) setupPlayers[idx] = v; renderSetupPlayers(); };
+          input.addEventListener('keydown', (e) => { if (e.key === 'Enter') commit(); });
+          input.addEventListener('blur', commit);
+          chip.replaceChild(input, label);
+          input.focus();
+          input.select();
+        });
+        const remove = document.createElement('button');
+        remove.type = 'button';
+        remove.className = 'remove';
+        remove.setAttribute('aria-label', `Remove ${name}`);
+        remove.innerHTML = '<i class="bi bi-x-square"></i>';
+        remove.addEventListener('click', () => { setupPlayers.splice(idx, 1); renderSetupPlayers(); });
+        chip.appendChild(label);
+        chip.appendChild(edit);
+        chip.appendChild(remove);
+        elements.playerList.appendChild(chip);
+      });
+    }
+    function addPlayerFromInput() {
+      const name = (elements.addPlayerName.value || '').trim();
+      if (!name) return;
+      setupPlayers.push(name);
+      elements.addPlayerName.value = '';
+      renderSetupPlayers();
+    }
+
+    function startGame() {
+      const num = Math.max(2, setupPlayers.length);
+      if (setupPlayers.length < 2) {
+        // Seed default players if not enough entered
+        while (setupPlayers.length < 2) setupPlayers.push(`Player ${setupPlayers.length + 1}`);
+      }
+      state.players = setupPlayers.slice(0);
+      state.scores = Array(num).fill(0);
+      state.roundNumber = 1;
+      // totalRounds set via chips; preserve state.totalRounds
+      resetRoundState();
+      showRound();
+      saveState();
+    }
+
+    function nextRound() {
+      state.roundNumber += 1;
+      resetRoundState();
+      showRound();
+      saveState();
+    }
+
+    function newGame() {
+      Object.assign(state, {
+        players: [],
+        scores: [],
+        activePlayerIndices: [],
+        currentActiveIndex: 0,
+        sharedPot: 0,
+        rollCount: 0,
+        isRoundActive: false,
+        roundNumber: 1,
+        totalRounds: 15,
+        winnerIndices: [],
+        lastTurnPlayerIndex: 0,
+        nextStartingPlayerIndex: 0,
+      });
+      elements.setup.style.display = 'grid';
+      elements.round.style.display = 'none';
+      elements.log.innerHTML = '';
+      elements.dice.textContent = '🎲🎲';
+      elements.totalRoundsMeta.textContent = state.totalRounds;
+      const meta = document.getElementById('metaBar');
+      if (meta) meta.style.display = 'none';
+      saveState();
+    }
+
+    function endGame() {
+      const maxScore = Math.max(...state.scores);
+      const winners = state.scores
+        .map((s, i) => ({ s, i }))
+        .filter(o => o.s === maxScore)
+        .map(o => o.i);
+      state.winnerIndices = winners;
+      if (winners.length === 1) {
+        logEvent(`${state.players[winners[0]]} wins the game with ${state.scores[winners[0]]} points!`);
+      } else {
+        const names = winners.map(i => state.players[i]).join(', ');
+        logEvent(`Tie! ${names} with ${maxScore} points.`);
+      }
+      elements.rollBtn.disabled = true;
+    }
+
+    // Event listeners
+    elements.addPlayerBtn.addEventListener('click', addPlayerFromInput);
+    elements.addPlayerName.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); addPlayerFromInput(); } });
+    elements.startGameBtn.addEventListener('click', startGame);
+    elements.rollBtn.addEventListener('click', rollDice);
+    elements.newGameBtn.addEventListener('click', newGame);
+
+    // Attempt to restore previous game
+    if (loadState() && state.players.length > 0) {
+      elements.setup.style.display = 'none';
+      elements.round.style.display = 'grid';
+      renderPlayers();
+      renderMeta();
+      elements.dice.textContent = '🎲🎲';
+      setButtonsEnabled(state.isRoundActive);
+      if (!state.isRoundActive && state.roundNumber >= state.totalRounds) endGame();
+    }
+    // Default setup view
+    if (elements.setup.style.display !== 'none') {
+      setupPlayers.push('Player 1', 'Player 2');
+      renderSetupPlayers();
+    }
+
+    // Rounds chip selection
+    elements.roundChips.addEventListener('click', (e) => {
+      const chip = e.target.closest('.selectChip');
+      if (!chip) return;
+      elements.roundChips.querySelectorAll('.selectChip').forEach(el => el.classList.remove('active'));
+      chip.classList.add('active');
+      const rounds = parseInt(chip.getAttribute('data-rounds') || '15', 10);
+      state.totalRounds = rounds;
+      elements.totalRoundsMeta.textContent = rounds;
+      saveState();
+    });
+  </script>
+
+  <footer>
+    <script src="/scripts/load-footer.js"></script>
+  </footer>
+</body>
+
+</html>
