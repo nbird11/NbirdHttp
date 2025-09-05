@@ -5,7 +5,7 @@
     "email": "nathanbirdka@gmail.com",
     "phone": "(385) 392-5995"
   },
-  "bio": "Entry-Level Software Engineer | BYU–Idaho Alumnus",
+  "bio": "Software Dev Intern @ ICS, Church of Jesus Christ",
   "websites": [
     {
       "name": "YouTube",
@@ -24,7 +24,7 @@
       "url": "https://nbird.dev/"
     }
   ],
-  "about": "I'm a recently-graduated Software Engineer from BYU–Idaho with hands-on experience in Java and Spring[boot]. Currently seeking full-time roles where I can contribute and grow.\nIn a recent professional role, I interned as a Backend Web Developer at FamilySearch, where I built and maintained backend REST APIs, developed a large-scale web crawler for a Paris 2024 Olympics genealogical campaign, and delivered production-level code that, I was told, was rarely assigned to interns. I’ve also worked as a programming tutor and research assistant where I mentored peers and contributed to mobile app development research for my university.\nI'm highly adaptable and love to learn; I especially enjoy working on personal programming projects that allow me to explore new technologies and expand my technical breadth. Outside of tech, I enjoy board games, playing piano, choral singing, and editorial writing.\nI served a proselyting mission for the Church of Jesus Christ of Latter-day Saints during the COVID pandemic, where I taught, performed service, and provided spiritual aid in Colorado and Brazil, in both English and Portuguese.",
+  "about": "I'm a recently-graduated Software Engineer from BYU–Idaho with hands-on experience in Java, C++, and the Microsoft Power Platform (Apps, Pages, Automate, BI, custom JS web-resources).\nI currently work as a Software Developer Intern for the Information and Communication Services (ICS) department of the Church of Jesus Christ of Latter-day Saints, where I'm part of a team that maintains Dynamics 365 software infrastructure for BYU-Pathway Worldwide. Previously, I interned as a Backend Web Developer at FamilySearch, where I developed a large-scale web crawler for a Paris 2024 Olympics genealogical campaign and maintained REST API microservices in Java Springboot. During my undergrad, I also worked as a programming tutor and research assistant, mentoring peers and contributing to mobile app development research for my university.\nI'm highly adaptable and love to learn; I especially enjoy working on personal programming projects that allow me to explore new technologies and expand my technical breadth. Outside of tech, I enjoy board games, playing piano, choral singing, and editorial writing.",
   "education": [
     {
       "logo": "/resume/assets/byu_idaho_logo.jpeg",
@@ -52,6 +52,21 @@
     }
   ],
   "experience": [
+    {
+      "logo": "/resume/assets/church_logo.jpg",
+      "title": "Software Developer Intern",
+      "company": "ICS, Church of Jesus Christ of Latter-day Saints",
+      "employmentType": "Internship",
+      "start": "Aug 2025",
+      "end": "Present",
+      "location": "Riverton, Utah, United States",
+      "locationType": "Hybrid",
+      "bullets": [
+        "Engineered and deployed core software infrastructure for the BYU-Pathway Worldwide Help Center on Dynamics 365, directly supporting thousands of international students",
+        "Developed custom JavaScript web resources to extend Power Platform capabilities beyond native limits, delivering essential features for a seamless user experience",
+        "Constructed dynamic Power BI dashboards to visualize Dataverse entity relationships of 2,510 tables"
+      ]
+    },
     {
       "logo": "/resume/assets/byu_idaho_logo.jpeg",
       "title": "Programming Tutor",
