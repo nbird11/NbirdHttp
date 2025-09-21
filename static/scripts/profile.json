@@ -5,7 +5,7 @@
     "email": "nathanbirdka@gmail.com",
     "phone": "(385) 392-5995"
   },
-  "bio": "Software Dev Intern @ ICS, Church of Jesus Christ",
+  "headline": "Software Dev Intern @ ICS, Church of Jesus Christ",
   "websites": [
     {
       "name": "YouTube",
@@ -20,7 +20,7 @@
       "url": "https://www.linkedin.com/in/nathanabird/"
     },
     {
-      "name": "Personal Webserver",
+      "name": "Portfolio",
       "url": "https://nbird.dev/"
     }
   ],

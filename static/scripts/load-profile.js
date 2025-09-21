@@ -39,7 +39,7 @@
  * @typedef {Object} Profile
  * @property {string} name The name of the LinkedIn profile.
  * @property {Contact} contact The contact information of the LinkedIn profile.
- * @property {string} bio The bio of the LinkedIn profile.
+ * @property {string} headline The headline of the LinkedIn profile.
  * @property {Array<Website>} websites The websites of the LinkedIn profile.
  * @property {string} about The about text of the LinkedIn profile.
  * @property {Array<Education>} education The education of the LinkedIn profile.
