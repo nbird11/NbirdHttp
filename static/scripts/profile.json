@@ -34,8 +34,8 @@
       "end": "2025",
       "gpa": "3.98",
       "activities": [
-        "Completed Certificate in Software Design as part of degree",
-        "Awarded full-ride BYU–Idaho Scholarship for academic excellence (top percentile GPA, 3.98)"
+        "Awarded full-ride BYU–Idaho Scholarship for academic excellence",
+        "Graduated Magna Cum Laude (GPA 3.98)"
       ]
     },
     {
@@ -62,9 +62,10 @@
       "location": "Riverton, Utah, United States",
       "locationType": "Hybrid",
       "bullets": [
-        "Engineered and deployed core software infrastructure for the BYU-Pathway Worldwide Help Center on Dynamics 365, directly supporting thousands of international students",
-        "Developed custom JavaScript web resources to extend Power Platform capabilities beyond native limits, delivering essential features for a seamless user experience",
-        "Constructed dynamic Power BI dashboards to visualize Dataverse entity relationships of 2,510 tables"
+        "Engineered a bespoke, filterable, force-directed entity-relationship visualization of 2,510+ Dataverse tables in Power BI, enabling teams to navigate complex data models far beyond the capabilities of out-of-box documentation tools",
+        "Automate documentation for 5,000+ Power Automate flows by designing a pipeline that integrates Azure AI with the Power Platform Center of Excellence, transforming a manual, months-long process into a scalable, intelligent catalog",
+        "Enhance multilingual support within the BYU–Pathway Worldwide Help Center, implementing the groundwork for global student accessibility and driving adoption in non-English speaking regions",
+        "Extend Dynamics 365 CRM with custom JavaScript web resources to unlock advanced customizations unavailable through native Power Apps, empowering stakeholders with tailored functionality"
       ]
     },
     {
@@ -77,7 +78,7 @@
       "location": "Rexburg, Idaho, United States",
       "locationType": "On-site",
       "bullets": [
-        "Mentored 40+ students across 8 university-level courses over 5 semesters, analyzing ~75K lines of code",
+        "Mentored 40+ students across 8 university courses over 5 semesters, analyzing and critiquing ~75K lines of code",
         "Facilitated 100+ sessions covering software design principles in Python, C, C++, SQL, HTML, CSS, and JavaScript, creating custom walkthroughs from prior high-scoring coursework to reinforce key concepts",
         "Troubleshooted code involving drag force, Mach number, gravity at altitude, and linear interpolation for students in a notorious C++ physics simulation course",
         "Demonstrated technical mastery and strong communication—one student sought guidance through 3 advanced successive courses and offered private compensation over free university alternatives after official role ended"
@@ -85,7 +86,7 @@
     },
     {
       "logo": "/resume/assets/familysearch_logo.jpeg",
-      "title": "Backend Development Intern",
+      "title": "Backend Developer Intern",
       "company": "FamilySearch",
       "employmentType": "Internship",
       "start": "Apr 2024",
