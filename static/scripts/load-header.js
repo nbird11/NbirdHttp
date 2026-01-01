@@ -45,6 +45,8 @@ function headerTemplate() {
           <a href="/quick-pen/">QuickPen</a>
           <hr>
           <a href="/punch.html">Punch Clock</a>
+          <hr>
+          <a href="/books/">Book Inventory</a>
         </div>
       </div>
     </nav>
