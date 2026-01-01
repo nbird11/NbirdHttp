@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Inventory</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="shortcut icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text x='-.13em' y='.91em' font-size='90'>📚</text></svg>"
+    type="image/svg+xml">
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+
+<body>
+  <header class="header">
+    <h1 class="header__title">Book Inventory</h1>
+    <div class="header__actions">
+      <button class="btn btn--icon-text" id="filterToggleBtn" title="Filters">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+        <span class="btn-text">Filters</span>
+      </button>
+      <button class="btn btn--icon-text" id="scanIsbnBtn" title="Scan ISBN">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+          <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+          <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+          <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+          <line x1="7" y1="12" x2="17" y2="12"></line>
+          <line x1="7" y1="8" x2="13" y2="8"></line>
+          <line x1="7" y1="16" x2="11" y2="16"></line>
+        </svg>
+        <span class="btn-text">Scan ISBN</span>
+      </button>
+      <button class="btn btn--icon-text" id="addBookBtn" title="Add Manually">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        <span class="btn-text">Add</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="main">
+    <aside class="filters" id="filtersPanel">
+      <div class="filters__grid">
+        <div class="filters__group">
+          <label class="filters__label" for="searchInput">Search</label>
+          <input type="text" id="searchInput" placeholder="Title or author..." class="input">
+        </div>
+
+        <div class="filters__group">
+          <label class="filters__label" for="genreFilter">Genre</label>
+          <select id="genreFilter" class="select">
+            <option value="">All Genres</option>
+          </select>
+        </div>
+
+        <div class="filters__group">
+          <label class="filters__label" for="statusFilter">Read Status</label>
+          <select id="statusFilter" class="select">
+            <option value="">All</option>
+            <option value="unread">Unread</option>
+            <option value="reading">Reading</option>
+            <option value="read">Read</option>
+          </select>
+        </div>
+
+        <div class="filters__group">
+          <label class="filters__label" for="signedFilter">Signed</label>
+          <select id="signedFilter" class="select">
+            <option value="">All</option>
+            <option value="true">Signed</option>
+            <option value="false">Not Signed</option>
+          </select>
+        </div>
+
+        <div class="filters__group">
+          <label class="filters__label" for="tagFilter">Tag</label>
+          <select id="tagFilter" class="select">
+            <option value="">All Tags</option>
+          </select>
+        </div>
+
+        <div class="filters__actions">
+          <button class="btn btn--secondary" id="clearFiltersBtn">Clear Filters</button>
+        </div>
+      </div>
+    </aside>
+
+    <section class="books">
+      <div class="books__stats" id="bookStats"></div>
+      <div class="books__grid" id="booksGrid"></div>
+      <div class="books__empty" id="emptyState">
+        <p>No books found. Add your first book!</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add/Edit Book Modal -->
+  <div class="modal" id="bookModal">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 class="modal__title" id="modalTitle">Add Book</h2>
+        <button class="modal__close" id="closeModal">&times;</button>
+      </div>
+      <form class="form" id="bookForm">
+        <input type="hidden" id="bookId">
+
+        <div class="form__group">
+          <label class="form__label" for="title">Title *</label>
+          <input type="text" id="title" class="input" required>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="author">Author *</label>
+          <input type="text" id="author" class="input" required>
+        </div>
+
+        <div class="form__row">
+          <div class="form__group">
+            <label class="form__label" for="genre">Genre</label>
+            <input type="text" id="genre" class="input" list="genreList">
+            <datalist id="genreList"></datalist>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="readStatus">Read Status</label>
+            <select id="readStatus" class="select">
+              <option value="unread">Unread</option>
+              <option value="reading">Reading</option>
+              <option value="read">Read</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="coverImage">Cover Image</label>
+          <input type="file" id="coverImage" class="input" accept="image/*">
+          <div class="form__preview" id="imagePreview"></div>
+        </div>
+
+        <div class="form__group form__group--checkbox">
+          <input type="checkbox" id="isSigned">
+          <label class="form__label" for="isSigned">Signed by Author</label>
+        </div>
+
+        <div class="form__group">
+          <label class="form__label" for="tagsInput">Tags</label>
+          <input type="text" id="tagsInput" class="input" placeholder="Press Enter to add tags">
+          <div class="tags" id="tagsContainer"></div>
+        </div>
+
+        <div class="form__actions">
+          <button type="button" class="btn btn--secondary" id="cancelBtn">Cancel</button>
+          <button type="submit" class="btn btn--primary">Save Book</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal" id="deleteModal">
+    <div class="modal__overlay"></div>
+    <div class="modal__content modal__content--small">
+      <div class="modal__header">
+        <h2 class="modal__title">Delete Book</h2>
+        <button class="modal__close" id="closeDeleteModal">&times;</button>
+      </div>
+      <p class="modal__message">Are you sure you want to delete "<span id="deleteBookTitle"></span>"?</p>
+      <div class="modal__actions">
+        <button class="btn btn--secondary" id="cancelDeleteBtn">Cancel</button>
+        <button class="btn btn--danger" id="confirmDeleteBtn">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ISBN Scan Modal -->
+  <div class="modal" id="scanModal">
+    <div class="modal__overlay"></div>
+    <div class="modal__content modal__content--scan">
+      <div class="modal__header">
+        <h2 class="modal__title">Scan ISBN Barcode</h2>
+        <button class="modal__close" id="closeScanModal">&times;</button>
+      </div>
+      <div class="scan">
+        <div class="scan__reader" id="scanReader"></div>
+        <p class="scan__hint">Point camera at book's ISBN barcode</p>
+        <div class="scan__status" id="scanStatus"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Preview Modal (after ISBN scan) -->
+  <div class="modal" id="previewModal">
+    <div class="modal__overlay"></div>
+    <div class="modal__content">
+      <div class="modal__header">
+        <h2 class="modal__title">Confirm Book Details</h2>
+        <button class="modal__close" id="closePreviewModal">&times;</button>
+      </div>
+      <div class="preview">
+        <div class="preview__cover">
+          <img id="previewCover" src="" alt="Book cover">
+          <div class="preview__cover-placeholder" id="previewCoverPlaceholder">📖</div>
+        </div>
+        <form class="form" id="previewForm">
+          <input type="hidden" id="previewIsbn">
+          <input type="hidden" id="previewCoverPath">
+
+          <div class="form__group">
+            <label class="form__label" for="previewTitle">Title *</label>
+            <input type="text" id="previewTitle" class="input" required>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="previewAuthor">Author *</label>
+            <input type="text" id="previewAuthor" class="input" required>
+          </div>
+
+          <div class="form__row">
+            <div class="form__group">
+              <label class="form__label" for="previewGenre">Genre</label>
+              <input type="text" id="previewGenre" class="input">
+            </div>
+
+            <div class="form__group">
+              <label class="form__label" for="previewReadStatus">Read Status</label>
+              <select id="previewReadStatus" class="select">
+                <option value="unread">Unread</option>
+                <option value="reading">Reading</option>
+                <option value="read">Read</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form__group form__group--checkbox">
+            <input type="checkbox" id="previewIsSigned">
+            <label class="form__label" for="previewIsSigned">Signed by Author</label>
+          </div>
+
+          <div class="form__group">
+            <label class="form__label" for="previewTagsInput">Tags</label>
+            <input type="text" id="previewTagsInput" class="input" placeholder="Press Enter to add tags">
+            <div class="tags" id="previewTagsContainer"></div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn btn--secondary" id="cancelPreviewBtn">Cancel</button>
+            <button type="submit" class="btn btn--primary">Add to Collection</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

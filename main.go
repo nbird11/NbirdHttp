@@ -2,6 +2,7 @@ package main
 
 import (
 	"NbirdHttp/auth"
+	"NbirdHttp/books"
 	"NbirdHttp/punch"
 	qp "NbirdHttp/quick-pen"
 	"context"
@@ -37,7 +38,7 @@ func helloController() {
 			name = "World!"
 		}
 
-		w.Write([]byte(fmt.Sprintf("Hello %s\n", name)))
+		fmt.Fprintf(w, "Hello %s\n", name)
 	})
 }
 
@@ -71,6 +72,7 @@ Serving at http://localhost
 
 	helloController()
 	auth.AuthController()
+	books.BooksController()
 	punch.PunchController()
 	qp.QuickPenController()
 
