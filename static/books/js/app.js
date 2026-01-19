@@ -256,11 +256,13 @@ function openModal(bookId = null) {
 
   renderTags();
   bookModal.classList.add('open');
+  document.body.classList.add('modal-open');
   document.getElementById('title').focus();
 }
 
 function closeModal() {
   bookModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
   editingBookId = null;
   currentTags = [];
 }
@@ -269,10 +271,12 @@ function openDeleteModal(id, title) {
   deleteBookId = id;
   deleteBookTitle.textContent = title;
   deleteModal.classList.add('open');
+  document.body.classList.add('modal-open');
 }
 
 function closeDeleteModal() {
   deleteModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
   deleteBookId = null;
 }
 
@@ -393,55 +397,114 @@ function debounce(fn, delay) {
 // Scan Modal Functions
 function openScanModal() {
   scanModal.classList.add('open');
-  scanStatus.textContent = '';
-  scanStatus.className = 'scan__status';
+  document.body.classList.add('modal-open');
+  scanStatus.textContent = 'Initializing camera...';
+  scanStatus.className = 'scan__status scan__status--loading';
   startScanner();
 }
 
 function closeScanModal() {
   stopScanner();
   scanModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
 }
 
 async function startScanner() {
   if (isScanning) return;
 
   try {
-    html5QrCode = new Html5Qrcode('scanReader');
+    // Initialize scanner with ISBN-specific formats
+    html5QrCode = new Html5Qrcode('scanReader', {
+      formatsToSupport: [
+        Html5QrcodeSupportedFormats.EAN_13,
+        Html5QrcodeSupportedFormats.EAN_8,
+        Html5QrcodeSupportedFormats.UPC_A,
+        Html5QrcodeSupportedFormats.UPC_E
+      ]
+    });
+
+    // Configuration optimized for barcode scanning
+    const config = {
+      fps: 10, // Balanced frame rate
+      qrbox: function (viewfinderWidth, viewfinderHeight) {
+        // Dynamic qrbox sizing - rectangular for barcodes
+        const minDimension = Math.min(viewfinderWidth, viewfinderHeight);
+        const qrboxWidth = Math.floor(minDimension * 0.8);
+        const qrboxHeight = Math.floor(minDimension * 0.4); // Wider, shorter for barcodes
+        return { width: qrboxWidth, height: qrboxHeight };
+      },
+      aspectRatio: 1.777778, // 16:9 for better mobile camera support
+      disableFlip: false // Keep enabled for flexibility
+    };
+
     isScanning = true;
 
+    // Prefer back camera for scanning
     await html5QrCode.start(
       { facingMode: 'environment' },
-      {
-        fps: 10,
-        qrbox: { width: 250, height: 150 },
-        aspectRatio: 1.0
-      },
+      config,
       onScanSuccess,
-      () => { } // Ignore scan failures
+      onScanFailure
     );
+
+    scanStatus.textContent = 'Point camera at ISBN barcode';
+    scanStatus.className = 'scan__status';
   } catch (error) {
-    console.error('Scanner error:', error);
-    scanStatus.textContent = 'Camera access denied or not available';
-    scanStatus.className = 'scan__status scan__status--error';
-    isScanning = false;
+    console.error('Scanner initialization error:', error);
+    handleScannerError(error);
   }
+}
+
+function onScanFailure(error) {
+  // Silent - errors are normal when no barcode is in view
+  // Only log if it's not a routine "No MultiFormat Readers" error
+  if (!error.includes('No MultiFormat Readers')) {
+    console.debug('Scan failure:', error);
+  }
+}
+
+function handleScannerError(error) {
+  isScanning = false;
+
+  let errorMessage = 'Unable to start camera';
+  let errorDetails = '';
+
+  if (error.name === 'NotAllowedError' || error.message.includes('Permission denied')) {
+    errorMessage = 'Camera access denied';
+    errorDetails = 'Please allow camera access in your browser settings';
+  } else if (error.name === 'NotFoundError' || error.message.includes('No camera found')) {
+    errorMessage = 'No camera found';
+    errorDetails = 'Make sure your device has a camera connected';
+  } else if (error.name === 'NotReadableError' || error.message.includes('Could not start video source')) {
+    errorMessage = 'Camera in use';
+    errorDetails = 'Camera might be used by another application';
+  } else if (error.message) {
+    errorDetails = error.message;
+  }
+
+  scanStatus.innerHTML = `<strong>${errorMessage}</strong><br>${errorDetails}`;
+  scanStatus.className = 'scan__status scan__status--error';
 }
 
 async function stopScanner() {
   if (html5QrCode && isScanning) {
     try {
       await html5QrCode.stop();
+      html5QrCode.clear();
     } catch (error) {
       console.error('Error stopping scanner:', error);
+    } finally {
+      isScanning = false;
+      html5QrCode = null;
     }
-    isScanning = false;
   }
 }
 
-async function onScanSuccess(decodedText) {
-  // Stop scanner immediately
+async function onScanSuccess(decodedText, decodedResult) {
+  // Stop scanner immediately to prevent multiple scans
   await stopScanner();
+
+  console.log('Scanned code:', decodedText, decodedResult);
 
   scanStatus.textContent = `Found ISBN: ${decodedText}. Looking up...`;
   scanStatus.className = 'scan__status scan__status--loading';
@@ -471,6 +534,8 @@ async function onScanSuccess(decodedText) {
     // Restart scanner after delay
     setTimeout(() => {
       if (scanModal.classList.contains('open')) {
+        scanStatus.textContent = 'Restarting camera...';
+        scanStatus.className = 'scan__status scan__status--loading';
         startScanner();
       }
     }, 2000);
@@ -502,11 +567,13 @@ function openPreviewModal(bookData) {
 
   renderPreviewTags();
   previewModal.classList.add('open');
+  document.body.classList.add('modal-open');
   document.getElementById('previewTitle').focus();
 }
 
 function closePreviewModal() {
   previewModal.classList.remove('open');
+  document.body.classList.remove('modal-open');
   previewTags = [];
 }
 
