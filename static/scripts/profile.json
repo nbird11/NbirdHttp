@@ -5,7 +5,7 @@
     "email": "nathanbirdka@gmail.com",
     "phone": "(385) 392-5995"
   },
-  "headline": "Software Dev Intern @ ICS, Church of Jesus Christ",
+  "headline": "Assoc. Software Engineer @ ReliaQuest",
   "websites": [
     {
       "name": "YouTube",
@@ -24,7 +24,7 @@
       "url": "https://nbird.dev/"
     }
   ],
-  "about": "I'm a recently-graduated Software Engineer from BYU–Idaho with hands-on experience in Java, C++, and the Microsoft Power Platform (Apps, Pages, Automate, BI, custom JS web-resources).\nI currently work as a Software Developer Intern for the Information and Communication Services (ICS) department of the Church of Jesus Christ of Latter-day Saints, where I'm part of a team that maintains Dynamics 365 software infrastructure for BYU-Pathway Worldwide. Previously, I interned as a Backend Web Developer at FamilySearch, where I developed a large-scale web crawler for a Paris 2024 Olympics genealogical campaign and maintained REST API microservices in Java Springboot. During my undergrad, I also worked as a programming tutor and research assistant, mentoring peers and contributing to mobile app development research for my university.\nI'm highly adaptable and love to learn; I especially enjoy working on personal programming projects that allow me to explore new technologies and expand my technical breadth. Outside of tech, I enjoy board games, playing piano, choral singing, and editorial writing.",
+  "about": "I’m the kind of engineer who can’t ignore inefficiency. My work is driven by a refusal to accept \"that's just how it is\", whether that means building AI pipelines to automate documentation or creating custom browser extensions to fix unconfigurable dev UI bottlenecks (thanks, Microsoft).\n​I specialize in identifying technical annoyances and automating them out of existence. From developing large-scale web crawlers for FamilySearch to architecting documentation ecosystems for BYU-Pathway Worldwide, my goal is always the same: leave behind tools, docs, and systems that make life easier for the next person in line.\n​I'm a highly adaptable polyglot developer (Java, C#, C++, Python, SQL, PowerShell, Node.js) with hands-on enterprise cloud ecosystem experience in the Microsoft Power Platform and Azure DevOps. Beyond the screen, I’m a choral singer, board game enthusiast, and editorial writer.",
   "education": [
     {
       "logo": "/resume/assets/byu_idaho_logo.jpeg",
@@ -53,12 +53,27 @@
   ],
   "experience": [
     {
+      "logo": "/resume/assets/reliaquest_logo.jpg",
+      "title": "Associate Software Engineer",
+      "company": "ReliaQuest",
+      "employmentType": "Fulll-time",
+      "start": "Feb 2026",
+      "end": "Present",
+      "location": "Sandy, Utah, United States",
+      "locationType": "On-site",
+      "bullets": [
+        "Implemented API key IP allowlisting for a production authentication service within 3 weeks of hire (2 weeks dev time); mitigated critical credential exposure from legacy log leaks affecting customer API access",
+        "Took full-stack ownership across API, service logic, and integration points to deliver production-ready features with minimal ramp-up in complex authentication and content management systems",
+        "Rearchitected the entire Content Management System in under 2 months, eliminating 80% of synchronization issues across US, EU, Canada, and FedRAMP-compliant environments"
+      ]
+    },
+    {
       "logo": "/resume/assets/church_logo.jpg",
       "title": "Software Developer Intern",
       "company": "ICS, Church of Jesus Christ of Latter-day Saints",
       "employmentType": "Internship",
       "start": "Aug 2025",
-      "end": "Present",
+      "end": "Jan 2026",
       "location": "Riverton, Utah, United States",
       "locationType": "Hybrid",
       "bullets": [
